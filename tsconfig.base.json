@@ -16,9 +16,9 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@boilerplate/domain": ["libs/domain/src/index.ts"],
-      "@boilerplate/ui": ["libs/ui/src/index.ts"],
-      "@boilerplate/contracts": ["libs/contracts/src/index.ts"]
+      "@gpseries/domain": ["libs/domain/src/index.ts"],
+      "@gpseries/ui": ["libs/ui/src/index.ts"],
+      "@gpseries/contracts": ["libs/contracts/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

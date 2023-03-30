@@ -1,4 +1,4 @@
-import { ValueObject } from '@boilerplate/domain';
+import { ValueObject } from '@gpseries/domain';
 
 interface Props {
   value: string;

@@ -3,7 +3,7 @@ import {
   EditUserDTO,
   Role,
   UserDTO,
-} from '@boilerplate/contracts';
+} from '@gpseries/contracts';
 import {
   BadRequestException,
   Body,

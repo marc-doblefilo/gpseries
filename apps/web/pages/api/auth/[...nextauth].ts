@@ -2,7 +2,7 @@ import {
   isAccessToken,
   isCredentials,
   isJwtPayload,
-} from '@boilerplate/contracts';
+} from '@gpseries/contracts';
 import axios from 'axios';
 import jose from 'jose';
 import jwt from 'jsonwebtoken';

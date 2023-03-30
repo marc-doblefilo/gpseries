@@ -1,4 +1,4 @@
-import { AccessTokenInterface } from '@boilerplate/contracts';
+import { AccessTokenInterface } from '@gpseries/contracts';
 import {
   Body,
   Controller,

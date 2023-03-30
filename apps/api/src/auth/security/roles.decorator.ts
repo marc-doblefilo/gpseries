@@ -1,4 +1,4 @@
-import { Role } from '@boilerplate/contracts';
+import { Role } from '@gpseries/contracts';
 import { SetMetadata } from '@nestjs/common';
 
 export const ROLES_KEY = 'roles';
