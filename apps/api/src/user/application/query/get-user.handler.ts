@@ -1,26 +1,30 @@
 import { UserDTO } from '@gpseries/contracts';
+import { Nullable } from '@gpseries/domain';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { UserId } from '../../domain';
-import { USERS, Users } from '../../domain/repository/users';
-import { UserMapper } from '../../infrastructure/repository/user.mapper';
+import { UserRepository, userRepository } from '../../domain/repository/user.repository';
 import { GetUserQuery } from './get-user.query';
 
 @QueryHandler(GetUserQuery)
 export class GetUserHandler implements IQueryHandler<GetUserQuery> {
   constructor(
-    @Inject(USERS) private users: Users,
-    private userMapper: UserMapper
+    @Inject(userRepository) private users: UserRepository,
   ) {}
 
-  async execute(query: GetUserQuery): Promise<UserDTO | null> {
+  async execute(query: GetUserQuery): Promise<Nullable<UserDTO>> {
     const user = await this.users.find(UserId.fromString(query.id));
 
     if (!user) {
       return null;
     }
 
-    return this.userMapper.aggregateToEntity(user);
+    return {
+      id: user.id.value,
+      username: user.username.value,
+      password: user.password.value,
+      roles: user.roles.map((role) => role.value)
+    }
   }
 }

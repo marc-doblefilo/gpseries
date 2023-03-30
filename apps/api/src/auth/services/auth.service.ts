@@ -8,7 +8,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { GetUserByUsernameQuery } from '../../user/application';
+import { GetUserQuery } from '../../user/application';
 
 @Injectable()
 export class AuthService {
@@ -21,16 +21,16 @@ export class AuthService {
   }
 
   async validateUser(username: string, password: string): Promise<boolean> {
-    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserDTO>(
-      new GetUserByUsernameQuery(username)
+    const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
+      new GetUserQuery(username)
     );
 
     return user && (await bcrypt.compareSync(password, user.password));
   }
 
   async generateAccessToken(username: string): Promise<AccessTokenInterface> {
-    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserDTO>(
-      new GetUserByUsernameQuery(username)
+    const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
+      new GetUserQuery(username)
     );
 
     const payload: JwtPayloadInterface = {

@@ -7,23 +7,21 @@ import {
   User,
   UserId,
   UserIdNotFoundError,
-  USERS,
-  Users,
+  UserRepository,
+  userRepository,
 } from '../../domain';
-import { UserMapper } from '../../infrastructure/repository/user.mapper';
 import { UpdateUserCommand } from './update-user.command';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(
-    @Inject(USERS) private users: Users,
-    private userMapper: UserMapper
+    @Inject(userRepository) private repository: UserRepository,
   ) {}
 
   async execute(command: UpdateUserCommand) {
     const userId = UserId.fromString(command.userId);
 
-    const user = await this.users.find(userId);
+    const user = await this.repository.find(userId);
     if (!user) {
       throw UserIdNotFoundError.with(userId);
     }
@@ -32,9 +30,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     this.updatePassword(user, command);
     this.updateRoles(user, command);
 
-    this.users.save(user);
-
-    return this.userMapper.aggregateToEntity(user);
+    this.repository.save(user);
   }
 
   private updatePassword(user: User, command: UpdateUserCommand) {

@@ -13,4 +13,4 @@ const httpClient = (url, options = { headers: undefined }) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-export const dataProvider = jsonServerProvider(`/api`, httpClient);
+export const dataProvider = jsonServerProvider('/api', httpClient);

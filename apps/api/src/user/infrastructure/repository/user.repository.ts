@@ -1,53 +1,57 @@
-import { Injectable } from '@nestjs/common';
+import { Nullable } from '@gpseries/domain';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Model } from 'mongoose';
 
-import { User, UserId, Username, Users } from '../../domain';
-import { UserEntity } from '../entity/user.entity';
-import { UserMapper } from './user.mapper';
+import { mongoConnection } from '../../../database/database.provider';
+import { User, UserId , Username, UserRepository } from '../../domain';
+import { UserMapper } from '../mapper/user.mapper';
+import { UserDocument } from './user.document';
+import { UserSchema } from './user.schema';
 
 @Injectable()
-export class UserRepository implements Users {
-  constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
-    private userMapper: UserMapper,
-    private publisher: EventPublisher
-  ) {}
+export class UserMongoRepository implements UserRepository {
+  private model: Model<UserDocument>;
 
-  async find(userId: UserId): Promise<User|null> {
-    const user = await this.userRepository.findOne(userId.value);
+  constructor(@Inject(mongoConnection) connection: Connection, private publisher: EventPublisher) {
+    this.model = connection.model<UserDocument>('users', UserSchema);
+  }
 
-    if (!user) {
+  async find(userId: UserId): Promise<Nullable<User>> {
+    const userDocument = await this.model.findOne({ _id: userId.value });
+
+    if (!userDocument) {
       return null;
     }
 
-    return this.userMapper.entityToAggregate(user);
+    return UserMapper.documentToAggregate(userDocument);
+  }
+
+  async findOneByUsername(username: Username): Promise<User | null> {
+    const userDocument = await this.model.findOne({ username: username.value })
+
+    if (!userDocument) {
+      return null;
+    }
+
+    return UserMapper.documentToAggregate(userDocument);
   }
 
   async findAll(): Promise<User[]> {
-    const users = await this.userRepository.find();
+    const userDocuments = await this.model.find({});
 
-    return users.map(this.userMapper.entityToAggregate);
+    return userDocuments.map(UserMapper.documentToAggregate);
   }
 
-  async findOneByUsername(username: Username): Promise<User|null> {
-    const user = await this.userRepository.findOne({
-      username: username.value,
-    });
-
-    if (!user) {
-      return null;
-    }
-
-    return this.userMapper.entityToAggregate(user);
-  }
-
-  save(user: User): void {
-    this.userRepository.save(this.userMapper.aggregateToEntity(user));
+  async save(user: User): Promise<void> {
+    const userDocument = UserMapper.aggregateToDocument(user);
+    await this.model.create(userDocument);
 
     user = this.publisher.mergeObjectContext(user);
     user.commit();
+  }
+
+  async remove(userId: UserId): Promise<void> {
+    this.model.deleteOne({ _id: userId.value });
   }
 }

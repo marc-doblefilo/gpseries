@@ -8,12 +8,12 @@ export default (url) => ({
         return `.ra-input-${name} .ql-editor`;
       }
       if (type === 'reference-array-input') {
-        return `.ra-input div[role=combobox]`;
+        return '.ra-input div[role=combobox]';
       }
       return `.edit-page [name='${name}']`;
     },
-    inputs: `.ra-input`,
-    tabs: `.form-tab`,
+    inputs: '.ra-input',
+    tabs: '.form-tab',
     snackbar: 'div[role="alert"]',
     submitButton: ".edit-page div[role='toolbar'] button[type='submit']",
     cloneButton: '.button-clone',

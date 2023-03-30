@@ -9,7 +9,7 @@ export default (url) => ({
       }
       return `.create-page ${type}[name='${name}']`;
     },
-    inputs: `.ra-input`,
+    inputs: '.ra-input',
     richTextInputError: '.create-page .ra-rich-text-input-error',
     select: '',
     snackbar: 'div[role="alert"]',

@@ -51,7 +51,6 @@ export class UserController {
   ) {}
 
   @Post()
-  @Roles(Role.Admin)
   @ApiResponse({ status: 200, description: 'User created' })
   async create(@Body() createUserDto: CreateUserDTO): Promise<UserDTO> {
     try {

@@ -13,7 +13,7 @@ const authProvider: AuthProvider = {
     if (!isCredentials(credentials)) {
       throw new Error('authProvider - missing attributes in credentials');
     }
-    const res = await axios.post(`/api/login`, credentials);
+    const res = await axios.post('/api/login', credentials);
 
     saveToken(res.data);
   },
