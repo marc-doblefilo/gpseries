@@ -4,7 +4,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { GetUserQuery } from '../../user/application';
+import { GetUserByUsernameQuery } from '../../user/application/query/get-user-by-username.query';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,8 +17,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayloadInterface): Promise<UserDTO> {
-    const user = await this.queryBus.execute<GetUserQuery, UserDTO>(
-      new GetUserQuery(payload.username)
+    const user = await this.queryBus.execute<GetUserByUsernameQuery, UserDTO>(
+      new GetUserByUsernameQuery(payload.username)
     );
 
     if (!user) {

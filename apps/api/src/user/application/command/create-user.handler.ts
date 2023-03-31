@@ -23,7 +23,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   ) {}
 
   async execute(command: CreateUserCommand) {
-    const userId = UserId.fromString(command.userId);
+    const userId = UserId.generate();
     const username = Username.fromString(command.username);
     const password = Password.fromString(command.password);
 

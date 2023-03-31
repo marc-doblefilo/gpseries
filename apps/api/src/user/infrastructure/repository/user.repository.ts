@@ -28,7 +28,7 @@ export class UserMongoRepository implements UserRepository {
   }
 
   async findOneByUsername(username: Username): Promise<User | null> {
-    const userDocument = await this.model.findOne({ username: username.value })
+    const userDocument = await this.model.findOne({ username: username.value });
 
     if (!userDocument) {
       return null;
