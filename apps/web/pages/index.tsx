@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/client';
 import React from 'react';
 
 export default function Index() {
-  const [ session, loading ] = useSession()
+  const [ session, loading ] = useSession();
 
   return (
     <Layout session={session}>

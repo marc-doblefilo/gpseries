@@ -39,6 +39,6 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({session, children}
       </main>
     </div>
   );
-}
+};
 
 export default Layout;
