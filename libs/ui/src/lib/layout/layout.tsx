@@ -1,42 +1,42 @@
+import { Nullable } from '@gpseries/domain';
 import {
-  Box,
   Container,
   CssBaseline,
-  Drawer,
-  Grid,
-  Paper,
-  Typography,
 } from '@material-ui/core';
-import { Session } from 'next-auth';
+import { Session, signIn, signOut } from 'next-auth/client';
 import React from 'react';
 
+import { LogIn } from '../login/login';
 import Navbar from '../navbar/navbar';
 import Sidebar from '../sidebar/sidebar';
 import { useStyles } from '../theme';
 
 export interface LayoutProps {
-  session?: Session
+  session?: Nullable<Session>
 }
 
 export const Layout: React.FunctionComponent<LayoutProps> = ({session, children}) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+
+  const logIn = () => signIn();
+  const logOut = () => signOut();
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <Navbar
-        open={open}
         session={session}
-        onOpenSidebar={() => setOpen(true)}
       />
-      <Sidebar open={open} onCloseSidebar={() => setOpen(false)} />
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          {children}
-        </Container>
-      </main>
+      {session ? (
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container maxWidth="lg" className={classes.container}>
+            {children}
+          </Container>
+        </main>
+      ) : (
+        <LogIn logIn={logIn} logOut={logOut} session={session} />
+      )}
     </div>
   );
 };

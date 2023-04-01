@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '@gpseries/ui';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { AppProps } from 'next/app';
@@ -7,17 +8,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  React.useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }, []);
 
   return (
     <NextAuthProvider session={pageProps.session}>
-      <React.Fragment>
+      <ChakraProvider>
         <Head>
           <title>GPSeries</title>
           <meta
@@ -27,12 +21,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         </Head>
         <ThemeProvider theme={theme}>
           <div style={{ display: 'flex' }}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <Component {...pageProps} />
           </div>
         </ThemeProvider>
-      </React.Fragment>
+      </ChakraProvider>
     </NextAuthProvider>
   );
 }

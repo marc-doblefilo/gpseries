@@ -29,8 +29,11 @@
   },
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^1.6.10",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/cqrs": "^7.0.1",
@@ -61,7 +64,8 @@
     "swagger-ui-express": "^4.1.6",
     "tslib": "^2.0.0",
     "typeorm": "^0.2.29",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "framer-motion": "^4"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

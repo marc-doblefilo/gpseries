@@ -126,7 +126,7 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(
     @Param('id') id: string,
-    @Body() editUserDTO: EditUserDTO
+      @Body() editUserDTO: EditUserDTO
   ): Promise<UserDTO> {
     try {
       const user = await this.queryBus.execute<GetUserQuery, UserDTO>(

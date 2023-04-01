@@ -1,3 +1,4 @@
+import { Nullable } from '@gpseries/domain';
 import {
   AppBar,
   Button,
@@ -8,41 +9,25 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { Session } from 'next-auth';
-import { useSession } from 'next-auth/client';
+import { Session , useSession } from 'next-auth/client';
 import React from 'react';
 
 import { useStyles } from '../theme';
 
 /* eslint-disable-next-line */
 export interface NavbarProps {
-  open: boolean;
-  onOpenSidebar: (event: React.MouseEvent) => void;
-  session: Session;
+  session?: Nullable<Session>;
 }
 
-export function Navbar({
-  open,
-  onOpenSidebar: onOpenDrawer,
-  session,
-}: NavbarProps) {
+export function Navbar({ session }: NavbarProps) {
   const classes = useStyles();
 
   return (
     <AppBar
       position="absolute"
-      className={clsx(classes.appBar, open && classes.appBarShift)}
+      className={clsx(classes.appBar)}
     >
       <Toolbar className={classes.toolbar}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={onOpenDrawer}
-          className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography
           component="h1"
           variant="h6"

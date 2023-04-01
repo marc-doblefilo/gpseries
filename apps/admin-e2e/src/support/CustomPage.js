@@ -1,15 +1,15 @@
-export default url => ({
-    elements: {
-        appLoader: '.app-loader',
-        total: '.total',
-        layout: '.layout',
-    },
+export default (url) => ({
+  elements: {
+    appLoader: '.app-loader',
+    total: '.total',
+    layout: '.layout',
+  },
 
-    navigate() {
-        cy.visit(url);
-    },
+  navigate() {
+    cy.visit(url);
+  },
 
-    getTotal() {
-        return cy.get(this.elements.total);
-    },
+  getTotal() {
+    return cy.get(this.elements.total);
+  },
 });
