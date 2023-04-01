@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { AuthModule } from '../../auth/auth.module';
 import { DatabaseModule } from '../../database/database.module';
@@ -24,7 +25,7 @@ const Sagas = [UserWasDeletedSaga];
 
 @Module({
   controllers: [UserController],
-  imports: [AuthModule, CqrsModule, DatabaseModule],
+  imports: [AuthModule, CqrsModule, DatabaseModule, EventSourcingModule.forFeature()],
   providers: [
     ...userProviders,
     ...CommandHandlers,

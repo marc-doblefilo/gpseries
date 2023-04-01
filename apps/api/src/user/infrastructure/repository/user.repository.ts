@@ -1,6 +1,6 @@
 import { Nullable } from '@gpseries/domain';
 import { Inject, Injectable } from '@nestjs/common';
-import { EventPublisher } from '@nestjs/cqrs';
+import { StoreEventPublisher } from 'event-sourcing-nestjs';
 import { Connection, Model } from 'mongoose';
 
 import { mongoConnection } from '../../../database/database.provider';
@@ -13,7 +13,7 @@ import { UserSchema } from './user.schema';
 export class UserMongoRepository implements UserRepository {
   private model: Model<UserDocument>;
 
-  constructor(@Inject(mongoConnection) connection: Connection, private publisher: EventPublisher) {
+  constructor(@Inject(mongoConnection) connection: Connection, private publisher: StoreEventPublisher) {
     this.model = connection.model<UserDocument>('users', UserSchema);
   }
 
