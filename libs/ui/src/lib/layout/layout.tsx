@@ -15,29 +15,27 @@ export interface LayoutProps {
   session?: Nullable<Session>
 }
 
-export const Layout: React.FunctionComponent<LayoutProps> = ({session, children}) => {
+export const Layout: React.FunctionComponent<LayoutProps> = ({ session, children }) => {
   const classes = useStyles();
 
   const logIn = () => signIn();
   const logOut = () => signOut();
-
-  return (
+  
+  return session ? (
     <div className={classes.root}>
       <CssBaseline />
       <Navbar
         session={session}
       />
-      {session ? (
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            {children}
-          </Container>
-        </main>
-      ) : (
-        <LogIn logIn={logIn} logOut={logOut} session={session} />
-      )}
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="lg" className={classes.container}>
+          {children}
+        </Container>
+      </main>
     </div>
+  ) : (
+    <LogIn logIn={logIn} logOut={logOut} session={session} />
   );
 };
 
