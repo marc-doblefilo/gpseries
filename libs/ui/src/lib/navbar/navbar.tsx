@@ -1,15 +1,13 @@
+import { Avatar, Flex, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { Nullable } from '@gpseries/domain';
 import {
   AppBar,
   Button,
-  IconButton,
   Toolbar,
-  Typography,
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+  Typography} from '@material-ui/core';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { Session , useSession } from 'next-auth/client';
+import { Session  } from 'next-auth/client';
 import React from 'react';
 
 import { useStyles } from '../theme';
@@ -38,9 +36,25 @@ export function Navbar({ session }: NavbarProps) {
           GPSeries
         </Typography>
         {session && (
-          <Link href="/api/auth/signout">
-            <Button color="inherit">Logout</Button>
-          </Link>
+          <Menu autoSelect={false}>
+            <MenuButton as={Button}>
+              <Flex alignItems='center' gap='3'>
+                <Text textColor='white'>{session.user.name}</Text>
+                <Avatar name={session.user.name!} size='md' />
+              </Flex>
+            </MenuButton>
+            <MenuList color='black' textColor='white' backgroundColor='black'>
+              <MenuItem _focus={{color: 'grey'}}>
+                Profile
+              </MenuItem>
+              <MenuDivider />
+              <Link href="/api/auth/signout">
+                <MenuItem _focus={{color: 'grey'}}>
+                Logout
+                </MenuItem>
+              </Link>
+            </MenuList>
+          </Menu>
         )}
         {!session && (
           <Link href="/api/auth/signin">

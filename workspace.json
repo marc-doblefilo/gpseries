@@ -360,6 +360,7 @@
           "options": {
             "buildTarget": "admin:build",
             "dev": true,
+            "port": 4201,
             "proxyConfig": "apps/admin/proxy.conf.json"
           },
           "configurations": {
