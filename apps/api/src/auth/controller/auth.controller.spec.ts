@@ -9,6 +9,7 @@ import { AuthController } from './auth.controller';
 
 const ID = '78dbd5bd-86c1-4925-a08c-1d0170e4851d';
 const USERNAME = 'username';
+const NAME = 'Cool Name';
 const PASSWORD = 'password';
 const CRYPT_PASSWORD =
   '$2a$04$J.qvJcqZRPBlGFKWIxPOYOsPRXpkZmTyTHScEF3Kq5/QXV.8oMcfy';
@@ -39,6 +40,7 @@ describe('AuthController', () => {
     user = {
       id: ID,
       username: USERNAME,
+      name: NAME,
       password: CRYPT_PASSWORD,
       roles: [],
     };
