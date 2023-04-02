@@ -20,6 +20,18 @@ export interface NavbarProps {
 export function Navbar({ session }: NavbarProps) {
   const classes = useStyles();
 
+  const getUserName = () => {
+    if (session?.user === null || session?.user === undefined) {
+      return undefined;
+    }
+
+    if (session?.user.name === null) {
+      return undefined;
+    }
+
+    return session?.user.name;
+  };
+
   return (
     <AppBar
       position="absolute"
@@ -35,28 +47,27 @@ export function Navbar({ session }: NavbarProps) {
         >
           GPSeries
         </Typography>
-        {session && (
+        {session ? (
           <Menu autoSelect={false}>
             <MenuButton as={Button}>
               <Flex alignItems='center' gap='3'>
-                <Text textColor='white'>{session.user.name}</Text>
-                <Avatar name={session.user.name!} size='md' />
+                <Text textColor='white'>{getUserName()}</Text>
+                <Avatar name={getUserName()} size='md' />
               </Flex>
             </MenuButton>
             <MenuList color='black' textColor='white' backgroundColor='black'>
-              <MenuItem _focus={{color: 'grey'}}>
+              <MenuItem _focus={{ color: 'grey' }}>
                 Profile
               </MenuItem>
               <MenuDivider />
               <Link href="/api/auth/signout">
-                <MenuItem _focus={{color: 'grey'}}>
-                Logout
+                <MenuItem _focus={{ color: 'grey' }}>
+                  Logout
                 </MenuItem>
               </Link>
             </MenuList>
           </Menu>
-        )}
-        {!session && (
+        ) : (
           <Link href="/api/auth/signin">
             <Button color="inherit">Login</Button>
           </Link>
