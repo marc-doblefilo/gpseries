@@ -1,6 +1,7 @@
 export interface JwtPayloadInterface {
   username: string;
   roles: string[];
+  name: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

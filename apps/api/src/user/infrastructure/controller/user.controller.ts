@@ -61,6 +61,7 @@ export class UserController {
       return await this.commandBus.execute(
         new CreateUserCommand(
           createUserDto.username,
+          createUserDto.name,
           password,
           createUserDto.roles
         )

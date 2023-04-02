@@ -34,6 +34,7 @@ export class AuthService {
     const payload: JwtPayloadInterface = {
       username: user.username,
       roles: user.roles,
+      name: user.name
     };
 
     return {

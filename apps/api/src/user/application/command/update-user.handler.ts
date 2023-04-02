@@ -27,6 +27,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     }
 
     // TODO: this.updateUsername(user, command);
+    // TODO: this.updateName(user, command);
     this.updatePassword(user, command);
     this.updateRoles(user, command);
 

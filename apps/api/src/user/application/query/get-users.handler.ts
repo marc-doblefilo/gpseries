@@ -19,6 +19,7 @@ export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
     return users.map((user) => ({
       id: user.id.value,
       username: user.username.value,
+      name: user.name.value,
       password: user.password.value,
       roles: user.roles.map((role) => role.value)
     }));

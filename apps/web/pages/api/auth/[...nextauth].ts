@@ -18,12 +18,15 @@ const options: InitOptions = {
     session: async (session, user) => {
       // @ts-expect-error: Custom session attributes
       session.roles = user.roles;
+      // @ts-expect-error: Custom session attributes
+      session.username = user.username;
       return Promise.resolve(session);
     },
     jwt: async (token, user, account, profile, isNewUser) => {
       const isSignIn = user ? true : false;
       if (isSignIn) {
         token.roles = profile.roles;
+        token.username = profile.username;
       }
       return Promise.resolve(token);
     },
@@ -94,8 +97,8 @@ const options: InitOptions = {
           }
 
           return Promise.resolve({
-            name: verify.username,
-            email: verify.username,
+            name: verify.name,
+            username: verify.username,
             roles: verify.roles,
           });
         } catch (e) {
