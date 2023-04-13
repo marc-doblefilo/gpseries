@@ -140,6 +140,7 @@ export class UserController {
         new UpdateUserCommand(
           id,
           editUserDTO.username,
+          editUserDTO.username,
           editUserDTO.plainPassword,
           editUserDTO.roles
         )

@@ -15,6 +15,7 @@ export const UserEdit = ({ permissions, ...props }) => (
     <SimpleForm validate={validateUserForm}>
       <TextInput disabled source="id" />
       <TextInput source="username" />
+      <TextInput source="name" />
       <SelectInput
         source="roles"
         choices={[

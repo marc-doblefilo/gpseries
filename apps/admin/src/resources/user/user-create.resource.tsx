@@ -17,6 +17,7 @@ export const UserCreate = (props) => (
   <Create {...props} transform={transformUserForm}>
     <SimpleForm initialValues={postDefaultValue} validate={validateUserForm}>
       <TextInput source="username" data-test="usuario" />
+      <TextInput source="name" />
       <SelectInput data-test="roles"
         source="roles"
         choices={[
