@@ -1,5 +1,3 @@
-import * as uuid from 'uuid';
-
 import { CompetitionDescription } from './competition-description';
 
 describe('Competition Description', () => {
@@ -17,7 +15,7 @@ describe('Competition Description', () => {
   });
 
   it('should throw if it is longer than 200 characters', () => {
-    let description: string = '';
+    let description = '';
     for (let i = 0; i < 201; i++) {
       description += 'a';
     }

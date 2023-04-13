@@ -1,4 +1,3 @@
-import { UserId } from '../../../user/domain';
 import { Name } from './name';
 import { RaceId } from './race-id';
 
