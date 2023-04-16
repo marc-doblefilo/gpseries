@@ -18,4 +18,8 @@ export class CompetitionDescription extends ValueObject<Props> {
 
     return new CompetitionDescription({ value: description });
   }
+
+  get value(): string {
+    return this.props.value;
+  }
 }

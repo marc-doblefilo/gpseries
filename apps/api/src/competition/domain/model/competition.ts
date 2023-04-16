@@ -9,7 +9,6 @@ import { Race } from './race';
 export class Competition extends AggregateRoot {
   private _id: CompetitionId;
   private _ownerId: UserId;
-  private _inscribedDrivers: Array<UserId>;
   private _name: Name;
   private _description: CompetitionDescription;
   private _races: Array<Race>;
@@ -18,5 +17,25 @@ export class Competition extends AggregateRoot {
 
   private constructor() {
     super();
+  }
+
+  get id(): CompetitionId {
+    return this._id;
+  }
+
+  get ownerId(): UserId {
+    return this._ownerId;
+  }
+
+  get name(): Name {
+    return this._name;
+  }
+
+  get description(): CompetitionDescription {
+    return this._description;
+  }
+
+  get races(): Array<Race> {
+    return this._races;
   }
 }

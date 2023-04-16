@@ -2,6 +2,13 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx", "simple-import-sort", "import", "prettier"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts"]
+      }
+    }
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -22,7 +29,11 @@
         "import/first": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
-        "@typescript-eslint/quotes": ["error", "single", { "avoidEscape": true }],
+        "@typescript-eslint/quotes": [
+          "error",
+          "single",
+          { "avoidEscape": true }
+        ],
         "@typescript-eslint/semi": "error",
         "@typescript-eslint/indent": ["error", 2]
       }
@@ -30,7 +41,10 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "parserOptions": { "project": "./tsconfig.*?.json" },
+      "parserOptions": {
+        "project": "./tsconfig.*?.json",
+        "sourceType": "module"
+      },
       "rules": {}
     },
     {

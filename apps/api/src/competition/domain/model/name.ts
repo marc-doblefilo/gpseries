@@ -16,4 +16,8 @@ export class Name extends ValueObject<Props> {
 
     return new Name({ value: name });
   }
+
+  get value(): string {
+    return this.props.value;
+  }
 }
