@@ -1,4 +1,5 @@
 import { CompetitionDTO } from '@gpseries/contracts';
+
 import { UserId } from '../../../user/domain';
 import {
   Competition,

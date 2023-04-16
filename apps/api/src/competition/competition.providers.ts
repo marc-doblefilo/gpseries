@@ -1,4 +1,5 @@
 import { Provider } from '@nestjs/common';
+
 import { competitionRepository } from './domain';
 import { CompetitionMongoRepository } from './infrastructure/repository/competition.repository';
 

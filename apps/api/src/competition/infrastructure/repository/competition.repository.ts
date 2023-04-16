@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { StoreEventPublisher } from 'event-sourcing-nestjs';
 import { Connection, Model } from 'mongoose';
+
 import { mongoConnection } from '../../../database/database.provider';
 import { Competition, CompetitionRepository } from '../../domain';
+import { CompetitionMapper } from '../mapper/competition.mapper';
 import { CompetitionDocument } from './competition.document';
 import { CompetitionSchema } from './competition.schema';
-import { CompetitionMapper } from '../mapper/competition.mapper';
 
 @Injectable()
 export class CompetitionMongoRepository implements CompetitionRepository {

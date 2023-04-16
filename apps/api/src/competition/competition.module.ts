@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
+
 import { DatabaseModule } from '../database/database.module';
 import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './infrastructure/controller/competition.controller';
