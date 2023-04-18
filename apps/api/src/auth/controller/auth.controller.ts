@@ -4,7 +4,7 @@ import {
   Controller,
   Logger,
   Post,
-  UnauthorizedException,
+  UnauthorizedException
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -28,6 +28,9 @@ export class AuthController {
       throw new UnauthorizedException();
     }
 
-    return this.authService.generateAccessToken(username);
+    const token = await this.authService.generateAccessToken(username);
+    console.info(token);
+
+    return token;
   }
 }

@@ -31,4 +31,10 @@ export class CompetitionMongoRepository implements CompetitionRepository {
     competition = this.publisher.mergeObjectContext(competition);
     competition.commit();
   }
+
+  async findAll(): Promise<Competition[]> {
+    const documents = await this.model.find({});
+
+    return documents.map(CompetitionMapper.documentToAggregate);
+  }
 }

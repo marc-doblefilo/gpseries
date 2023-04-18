@@ -50,6 +50,8 @@ export class CompetitionMapper {
         return race;
       })
     );
+
+    return competition;
   }
 
   public static aggregateToDocument(competition: Competition) {
@@ -58,7 +60,7 @@ export class CompetitionMapper {
       ownerId: competition.ownerId.value,
       name: competition.name.value,
       description: competition.description.value,
-      races: competition.races.map((race: Race) => {
+      races: competition.races?.map((race: Race) => {
         return {
           _id: race.id.value,
           name: race.id.value,
