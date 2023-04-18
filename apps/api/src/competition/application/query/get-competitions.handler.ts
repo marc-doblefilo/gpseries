@@ -14,6 +14,7 @@ export class GetCompetitionsHandler
   ) {}
 
   async execute(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     query: GetCompetitionsQuery
   ): Promise<Nullable<Array<CompetitionDTO>>> {
     const competitions = await this.repository.findAll();

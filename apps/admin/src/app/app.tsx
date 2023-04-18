@@ -3,7 +3,13 @@ import { Admin, Resource } from 'react-admin';
 
 import { Dashboard } from '../components';
 import { authProvider, dataProvider } from '../lib';
-import { UserCreate, UserEdit, UserList } from '../resources';
+import {
+  CompetitionCreate,
+  CompetitionList,
+  UserCreate,
+  UserEdit,
+  UserList
+} from '../resources';
 
 const App = () => (
   <Admin
@@ -16,6 +22,11 @@ const App = () => (
       list={UserList}
       edit={UserEdit}
       create={UserCreate}
+    />
+    <Resource
+      name="competitions"
+      list={CompetitionList}
+      create={CompetitionCreate}
     />
   </Admin>
 );
