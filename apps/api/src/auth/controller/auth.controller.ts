@@ -28,9 +28,6 @@ export class AuthController {
       throw new UnauthorizedException();
     }
 
-    const token = await this.authService.generateAccessToken(username);
-    console.info(token);
-
-    return token;
+    return this.authService.generateAccessToken(username);
   }
 }
