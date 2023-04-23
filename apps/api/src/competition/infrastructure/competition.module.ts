@@ -5,6 +5,7 @@ import { EventSourcingModule } from 'event-sourcing-nestjs';
 import { DatabaseModule } from '../../database/database.module';
 import {
   CreateCompetitionHandler,
+  GetCompetitionHandler,
   UpdateCompetitionHandler
 } from '../application';
 import { GetCompetitionsHandler } from '../application/query/get-competitions.handler';
@@ -12,7 +13,7 @@ import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './controller/competition.controller';
 
 const CommandHandlers = [CreateCompetitionHandler, UpdateCompetitionHandler];
-const QueryHandlers = [GetCompetitionsHandler];
+const QueryHandlers = [GetCompetitionsHandler, GetCompetitionHandler];
 
 @Module({
   controllers: [CompetitionController],

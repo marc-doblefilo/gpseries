@@ -3,23 +3,30 @@ import { Nullable } from '@gpseries/domain';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
-import { CompetitionRepository, competitionRepository } from '../../domain';
-import { GetCompetitionsQuery } from './get-competitions.query';
+import {
+  CompetitionId,
+  CompetitionNotFound,
+  CompetitionRepository,
+  competitionRepository
+} from '../../domain';
+import { GetCompetitionQuery } from './get-competition.query';
 
-@QueryHandler(GetCompetitionsQuery)
-export class GetCompetitionsHandler
-  implements IQueryHandler<GetCompetitionsQuery> {
+@QueryHandler(GetCompetitionQuery)
+export class GetCompetitionHandler
+  implements IQueryHandler<GetCompetitionQuery> {
   constructor(
     @Inject(competitionRepository) private repository: CompetitionRepository
   ) {}
 
-  async execute(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    query: GetCompetitionsQuery
-  ): Promise<Nullable<Array<CompetitionDTO>>> {
-    const competitions = await this.repository.findAll();
+  async execute(query: GetCompetitionQuery): Promise<Nullable<CompetitionDTO>> {
+    const id = CompetitionId.fromString(query.id);
 
-    return competitions.map(competition => ({
+    const competition = await this.repository.find(id);
+    if (!competition) {
+      throw CompetitionNotFound.with(id);
+    }
+
+    return {
       id: competition.id.value,
       ownerId: competition.ownerId.value,
       name: competition.name.value,
@@ -31,6 +38,6 @@ export class GetCompetitionsHandler
           date: race.date
         };
       })
-    }));
+    };
   }
 }

@@ -29,6 +29,7 @@ import { Response } from 'express';
 import { Roles } from '../../../auth/security/roles.decorator';
 import {
   CreateCompetitionCommand,
+  GetCompetitionQuery,
   UpdateCompetitionCommand
 } from '../../application';
 import { GetCompetitionsQuery } from '../../application/query/get-competitions.query';
@@ -92,6 +93,26 @@ export class CompetitionController {
     try {
       return await this.commandBus.execute(
         new UpdateCompetitionCommand(id, dto.name, dto.description, dto.races)
+      );
+    } catch (e) {
+      if (e instanceof CompetitionNotFound) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get(':id')
+  @Roles(Role.Admin)
+  @ApiResponse({ status: 200, description: 'Competition found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async findOne(@Param('id') id: string): Promise<CompetitionDTO> {
+    try {
+      return await this.queryBus.execute<GetCompetitionQuery, CompetitionDTO>(
+        new GetCompetitionQuery(id)
       );
     } catch (e) {
       if (e instanceof CompetitionNotFound) {
