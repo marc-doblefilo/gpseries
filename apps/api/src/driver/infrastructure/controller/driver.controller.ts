@@ -5,15 +5,18 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
   NotFoundException,
   Post,
+  Res,
   UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 
 import { Roles } from '../../../auth/security/roles.decorator';
-import { CreateDriverCommand } from '../../application';
+import { CreateDriverCommand, GetDriversQuery } from '../../application';
 
 @ApiBearerAuth()
 @ApiTags('drivers')
@@ -41,6 +44,27 @@ export class DriverController {
       if (e instanceof NotFoundError) {
         throw new NotFoundException(e.message);
       } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get()
+  @Roles(Role.Admin)
+  @ApiResponse({ status: 200, description: 'Drivers found' })
+  async findAll(@Res({ passthrough: true }) res: Response) {
+    try {
+      const drivers = await this.queryBus.execute<GetDriversQuery, DriverDTO[]>(
+        new GetDriversQuery()
+      );
+
+      res.setHeader('X-Total-Count', drivers.length);
+
+      return drivers;
+    } catch (e) {
+      if (e instanceof Error) {
         throw new BadRequestException(e.message);
       } else {
         throw new BadRequestException('Server error');

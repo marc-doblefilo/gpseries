@@ -10,6 +10,7 @@ export interface DriverRepository {
     userId: UserId,
     competitionId: CompetitionId
   ): Promise<Nullable<Driver>>;
+  findAll(): Promise<Driver[]>;
 }
 
 export const driverRepository = 'driverRepository';
