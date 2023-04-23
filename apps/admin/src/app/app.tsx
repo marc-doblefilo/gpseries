@@ -11,6 +11,7 @@ import {
   UserEdit,
   UserList
 } from '../resources';
+import { DriverList } from '../resources/driver';
 
 const App = () => (
   <Admin
@@ -30,6 +31,7 @@ const App = () => (
       edit={CompetitionEdit}
       create={CompetitionCreate}
     />
+    <Resource name="drivers" list={DriverList} />
   </Admin>
 );
 
