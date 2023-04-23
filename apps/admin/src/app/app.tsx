@@ -5,6 +5,7 @@ import { Dashboard } from '../components';
 import { authProvider, dataProvider } from '../lib';
 import {
   CompetitionCreate,
+  CompetitionEdit,
   CompetitionList,
   UserCreate,
   UserEdit,
@@ -26,6 +27,7 @@ const App = () => (
     <Resource
       name="competitions"
       list={CompetitionList}
+      edit={CompetitionEdit}
       create={CompetitionCreate}
     />
   </Admin>

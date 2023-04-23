@@ -72,7 +72,7 @@ export class Competition extends AggregateRoot {
     }
 
     this.apply(
-      new RaceWasAdded(race.id.value, race.id.value, race.name.value, race.date)
+      new RaceWasAdded(this.id.value, race.id.value, race.name.value, race.date)
     );
   }
 

@@ -2,10 +2,9 @@ import * as React from 'react';
 import {
   Edit,
   PasswordInput,
-  required,
   SelectInput,
   SimpleForm,
-  TextInput,
+  TextInput
 } from 'react-admin';
 
 import { transformUserForm, validateUserForm } from './user.form';
@@ -20,7 +19,7 @@ export const UserEdit = ({ permissions, ...props }) => (
         source="roles"
         choices={[
           { id: 'ROLE_ADMIN', name: 'Administrador' },
-          { id: 'ROLE_USER', name: 'Usuario' },
+          { id: 'ROLE_USER', name: 'Usuario' }
         ]}
       />
       <PasswordInput source="plainPassword" />
