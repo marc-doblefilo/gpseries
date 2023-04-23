@@ -2,13 +2,16 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
 
-import { DatabaseModule } from '../database/database.module';
-import { CreateCompetitionHandler } from './application';
-import { GetCompetitionsHandler } from './application/query/get-competitions.handler';
+import { DatabaseModule } from '../../database/database.module';
+import {
+  CreateCompetitionHandler,
+  UpdateCompetitionHandler
+} from '../application';
+import { GetCompetitionsHandler } from '../application/query/get-competitions.handler';
 import { competitionProviders } from './competition.providers';
-import { CompetitionController } from './infrastructure/controller/competition.controller';
+import { CompetitionController } from './controller/competition.controller';
 
-const CommandHandlers = [CreateCompetitionHandler];
+const CommandHandlers = [CreateCompetitionHandler, UpdateCompetitionHandler];
 const QueryHandlers = [GetCompetitionsHandler];
 
 @Module({

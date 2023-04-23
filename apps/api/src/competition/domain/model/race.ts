@@ -6,6 +6,12 @@ export class Race {
   private _name: Name;
   private _date: Date;
 
+  constructor(id: RaceId, name: Name, date: Date) {
+    this._id = id;
+    this._name = name;
+    this._date = date;
+  }
+
   get id(): RaceId {
     return this._id;
   }

@@ -3,7 +3,7 @@ import { DynamicModule, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { AppLoggerMiddleware } from './app.middleware';
 import { AuthModule } from './auth/auth.module';
 import { BootstrapModule } from './bootstrap.module';
-import { CompetitionModule } from './competition/competition.module';
+import { CompetitionModule } from './competition/infrastructure/competition.module';
 import { UserModule } from './user/infrastructure';
 
 export class AppModule implements NestModule {

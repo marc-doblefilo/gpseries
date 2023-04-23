@@ -1,6 +1,7 @@
 import {
   CompetitionDTO,
   CreateCompetitionDTO,
+  EditCompetitionDTO,
   Role
 } from '@gpseries/contracts';
 import {
@@ -9,17 +10,29 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  NotFoundException,
+  Param,
   Post,
+  Put,
   Res,
   UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { Roles } from '../../../auth/security/roles.decorator';
-import { CreateCompetitionCommand } from '../../application/command/create-competition.command';
+import {
+  CreateCompetitionCommand,
+  UpdateCompetitionCommand
+} from '../../application';
 import { GetCompetitionsQuery } from '../../application/query/get-competitions.query';
+import { CompetitionNotFound } from '../../domain';
 
 @ApiBearerAuth()
 @ApiTags('competitions')
@@ -60,6 +73,30 @@ export class CompetitionController {
       return competitions;
     } catch (e) {
       if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Put(':id')
+  @Roles(Role.Admin)
+  @ApiOperation({ summary: 'Update competition' })
+  @ApiResponse({ status: 200, description: 'competition updated' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async update(
+    @Param('id') id: string,
+    @Body() dto: EditCompetitionDTO
+  ): Promise<CompetitionDTO> {
+    try {
+      return await this.commandBus.execute(
+        new UpdateCompetitionCommand(id, dto.name, dto.description, dto.races)
+      );
+    } catch (e) {
+      if (e instanceof CompetitionNotFound) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
         throw new BadRequestException(e.message);
       } else {
         throw new BadRequestException('Server error');

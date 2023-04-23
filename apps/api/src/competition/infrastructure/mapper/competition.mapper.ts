@@ -62,8 +62,8 @@ export class CompetitionMapper {
       description: competition.description.value,
       races: competition.races?.map((race: Race) => {
         return {
-          _id: race.id.value,
-          name: race.id.value,
+          id: race.id.value,
+          name: race.name.value,
           date: race.date
         };
       })

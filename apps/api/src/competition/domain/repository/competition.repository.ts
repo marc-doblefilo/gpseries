@@ -1,8 +1,12 @@
-import { Competition } from '../model';
+import { Nullable } from '@gpseries/domain';
+
+import { Competition, CompetitionId } from '../model';
 
 export interface CompetitionRepository {
-  save(competition: Competition): void;
+  create(competition: Competition): void;
+  update(competition: Competition): void;
   findAll(): Promise<Competition[]>;
+  find(id: CompetitionId): Promise<Nullable<Competition>>;
 }
 
 export const competitionRepository = 'competitionRepository';

@@ -32,7 +32,7 @@ export class CreateCompetitionHandler
       description
     );
 
-    this.repository.save(competition);
+    this.repository.create(competition);
 
     return competition;
   }
