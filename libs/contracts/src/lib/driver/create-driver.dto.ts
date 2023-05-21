@@ -1,4 +1,4 @@
 export class CreateDriverDTO {
-  userId: string;
+  name: string;
   competitionId: string;
 }

@@ -31,12 +31,12 @@ export class DriverController {
   async create(@Body() dto: CreateDriverDTO): Promise<DriverDTO> {
     try {
       const driver = await this.commandBus.execute(
-        new CreateDriverCommand(dto.userId, dto.competitionId)
+        new CreateDriverCommand(dto.name, dto.competitionId)
       );
 
       return {
         id: driver.id.value,
-        userId: driver.userId.value,
+        name: driver.name.value,
         competitionId: driver.competitionId.value,
         points: driver.points.value
       } as DriverDTO;

@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 
 export const DriverSchema = new Schema({
   _id: String,
-  userId: String,
+  name: String,
   competitionId: String,
   points: Number
 });

@@ -1,13 +1,12 @@
 import { Nullable } from '@gpseries/domain';
 
 import { CompetitionId } from '../../../competition/domain';
-import { UserId } from '../../../user/domain';
-import { Driver } from '../model';
+import { Driver, Name } from '../model';
 
 export interface DriverRepository {
   create(driver: Driver): void;
-  findByUserAndCompetition(
-    userId: UserId,
+  findByNameAndCompetition(
+    name: Name,
     competitionId: CompetitionId
   ): Promise<Nullable<Driver>>;
   findAll(): Promise<Driver[]>;

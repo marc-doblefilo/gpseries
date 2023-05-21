@@ -1,15 +1,15 @@
 import { CompetitionId } from '../../../competition/domain';
 import { UserId } from '../../../user/domain';
-import { Driver, DriverId, Points } from '../../domain';
+import { Driver, DriverId, Name, Points } from '../../domain';
 import { DriverDocument } from '../repository/driver.document';
 
 export class DriverMapper {
   public static documentToAggregate(document: DriverDocument): Driver {
-    const { _id, userId, competitionId, points } = document;
+    const { _id, name, competitionId, points } = document;
 
     const driver: Driver = Reflect.construct(Driver, []);
     Reflect.set(driver, '_id', DriverId.fromString(_id));
-    Reflect.set(driver, '_userId', UserId.fromString(userId));
+    Reflect.set(driver, '_name', Name.fromString(name));
     Reflect.set(
       driver,
       '_competitionId',
@@ -23,7 +23,7 @@ export class DriverMapper {
   public static aggregateToDocument(driver: Driver) {
     return {
       _id: driver.id.value,
-      userId: driver.userId.value,
+      name: driver.name.value,
       competitionId: driver.competitionId.value,
       points: driver.points.value
     };

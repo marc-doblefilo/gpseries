@@ -9,17 +9,13 @@ import {
   competitionRepository
 } from '../../../competition/domain';
 import { DriverAlreadyRegisteredError } from '../../../competition/domain/exception/driver-already-registered.error';
-import {
-  UserId,
-  UserIdNotFoundError,
-  UserRepository,
-  userRepository
-} from '../../../user/domain';
+import { UserRepository, userRepository } from '../../../user/domain';
 import {
   Driver,
   DriverId,
   DriverRepository,
-  driverRepository
+  driverRepository,
+  Name
 } from '../../domain';
 import { CreateDriverCommand } from './create-driver.command';
 
@@ -34,14 +30,7 @@ export class CreateDriverHandler
   ) {}
 
   async execute(command: CreateDriverCommand) {
-    const userId = UserId.fromString(command.userId);
-    const user = await this.userRepository.find(
-      UserId.fromString(command.userId)
-    );
-
-    if (!user) {
-      throw UserIdNotFoundError.with(userId);
-    }
+    const name = Name.fromString(command.name);
 
     const competitionId = CompetitionId.fromString(command.competitionId);
     const competition = await this.competitionRepository.find(competitionId);
@@ -50,18 +39,18 @@ export class CreateDriverHandler
       throw CompetitionNotFound.with(competitionId);
     }
 
-    const existsDriver = await this.repository.findByUserAndCompetition(
-      userId,
+    const existsDriver = await this.repository.findByNameAndCompetition(
+      name,
       competitionId
     );
 
     if (existsDriver) {
-      throw DriverAlreadyRegisteredError.with(userId, competitionId);
+      throw DriverAlreadyRegisteredError.with(name, competitionId);
     }
 
     const id = DriverId.generate();
 
-    const driver = Driver.add(id, userId, competitionId);
+    const driver = Driver.add(id, name, competitionId);
 
     this.repository.create(driver);
 
