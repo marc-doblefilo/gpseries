@@ -24,7 +24,6 @@ export class CreateDriverHandler
   implements ICommandHandler<CreateDriverCommand> {
   constructor(
     @Inject(driverRepository) private repository: DriverRepository,
-    @Inject(userRepository) private userRepository: UserRepository,
     @Inject(competitionRepository)
     private competitionRepository: CompetitionRepository
   ) {}
