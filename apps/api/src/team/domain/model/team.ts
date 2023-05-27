@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain';
 import { UserId } from '../../../user/domain';
+import { TeamWasCreated } from '../event/team-was-created.event';
 import { Name } from './name';
 import { TeamId } from './team-id';
 
@@ -13,6 +14,26 @@ export class Team extends AggregateRoot {
 
   private constructor() {
     super();
+  }
+
+  public static add(
+    id: TeamId,
+    ownerId: UserId,
+    competitionId: CompetitionId,
+    name: Name
+  ) {
+    const team = new Team();
+
+    team.apply(
+      new TeamWasCreated(
+        id.value,
+        ownerId.value,
+        competitionId.value,
+        name.value
+      )
+    );
+
+    return team;
   }
 
   get id() {
@@ -29,5 +50,12 @@ export class Team extends AggregateRoot {
 
   get competitionId() {
     return this._competitionId;
+  }
+
+  private onTeamWasCreated(event: TeamWasCreated) {
+    this._id = TeamId.fromString(event.id);
+    this._name = Name.fromString(event.name);
+    this._ownerId = UserId.fromString(event.ownerId);
+    this._competitionId = CompetitionId.fromString(event.competitionId);
   }
 }

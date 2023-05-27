@@ -1,8 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
 
 export class CreateDriverCommand implements ICommand {
-  constructor(
-    public readonly name: string,
-    public readonly competitionId: string
-  ) {}
+  constructor(public readonly name: string, public readonly teamId: string) {}
 }

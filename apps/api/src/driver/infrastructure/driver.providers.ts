@@ -1,7 +1,7 @@
 import { Provider } from '@nestjs/common';
 
-import { competitionRepository } from '../../competition/domain';
-import { CompetitionMongoRepository } from '../../competition/infrastructure/repository/competition.repository';
+import { teamRepository } from '../../team/domain';
+import { TeamMongoRepository } from '../../team/infrastructure/repository/team.repository';
 import { driverRepository } from '../domain';
 import { DriverMongoRepository } from './repository/driver.repository';
 
@@ -11,7 +11,7 @@ export const driverProviders: Provider[] = [
     useClass: DriverMongoRepository
   },
   {
-    provide: competitionRepository,
-    useClass: CompetitionMongoRepository
+    provide: teamRepository,
+    useClass: TeamMongoRepository
   }
 ];

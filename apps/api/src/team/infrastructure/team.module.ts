@@ -3,10 +3,11 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { DatabaseModule } from '../../database/database.module';
+import { CreateTeamHandler } from '../application/command/create-team.handler';
 import { TeamController } from './controller/team.controller';
 import { teamProviders } from './team.providers';
 
-const CommandHandlers = [];
+const CommandHandlers = [CreateTeamHandler];
 const QueryHandlers = [];
 
 @Module({

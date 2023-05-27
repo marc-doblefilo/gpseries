@@ -1,4 +1,3 @@
-import { CompetitionId } from '../../../competition/domain';
 import { UserId } from '../../../user/domain';
 import { Name, Team, TeamId } from '../../domain';
 import { TeamDocument } from '../repository/team.document';
@@ -10,11 +9,7 @@ export class TeamMapper {
     const team: Team = Reflect.construct(Team, []);
     Reflect.set(team, '_id', TeamId.fromString(_id));
     Reflect.set(team, '_name', Name.fromString(name));
-    Reflect.set(
-      team,
-      '_competitionId',
-      CompetitionId.fromString(competitionId)
-    );
+    Reflect.set(team, '_competitionId', TeamId.fromString(competitionId));
     Reflect.set(team, '_ownerId', UserId.fromString(ownerId));
 
     return team;

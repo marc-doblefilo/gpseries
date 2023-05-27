@@ -3,8 +3,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { StoreEventPublisher } from 'event-sourcing-nestjs';
 import { Connection, Model } from 'mongoose';
 
-import { CompetitionId } from '../../../competition/domain';
 import { mongoConnection } from '../../../database/database.provider';
+import { TeamId } from '../../../team/domain';
 import { Driver, DriverRepository, Name } from '../../domain';
 import { DriverMapper } from '../mapper/driver.mapper';
 import { DriverDocument } from './driver.document';
@@ -30,13 +30,13 @@ export class DriverMongoRepository implements DriverRepository {
     driver.commit();
   }
 
-  async findByNameAndCompetition(
+  async findByNameAndTeam(
     name: Name,
-    competitionId: CompetitionId
+    teamId: TeamId
   ): Promise<Nullable<Driver>> {
     const document = await this.model.findOne({
       name: name.value,
-      competitionId: competitionId.value
+      teamId: teamId.value
     });
 
     if (!document) {

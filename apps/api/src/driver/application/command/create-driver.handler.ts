@@ -2,14 +2,9 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import {
-  CompetitionId,
-  CompetitionNotFound,
-  CompetitionRepository,
-  competitionRepository
-} from '../../../competition/domain';
 import { DriverAlreadyRegisteredError } from '../../../competition/domain/exception/driver-already-registered.error';
-import { UserRepository, userRepository } from '../../../user/domain';
+import { TeamId, TeamRepository, teamRepository } from '../../../team/domain';
+import { TeamNotFound } from '../../../team/domain/exception/team-not-found.error';
 import {
   Driver,
   DriverId,
@@ -24,32 +19,29 @@ export class CreateDriverHandler
   implements ICommandHandler<CreateDriverCommand> {
   constructor(
     @Inject(driverRepository) private repository: DriverRepository,
-    @Inject(competitionRepository)
-    private competitionRepository: CompetitionRepository
+    @Inject(teamRepository)
+    private teamRepository: TeamRepository
   ) {}
 
   async execute(command: CreateDriverCommand) {
     const name = Name.fromString(command.name);
 
-    const competitionId = CompetitionId.fromString(command.competitionId);
-    const competition = await this.competitionRepository.find(competitionId);
+    const teamId = TeamId.fromString(command.teamId);
+    const team = await this.teamRepository.find(teamId);
 
-    if (!competition) {
-      throw CompetitionNotFound.with(competitionId);
+    if (!team) {
+      throw TeamNotFound.with(teamId);
     }
 
-    const existsDriver = await this.repository.findByNameAndCompetition(
-      name,
-      competitionId
-    );
+    const existsDriver = await this.repository.findByNameAndTeam(name, teamId);
 
     if (existsDriver) {
-      throw DriverAlreadyRegisteredError.with(name, competitionId);
+      throw DriverAlreadyRegisteredError.with(name, teamId);
     }
 
     const id = DriverId.generate();
 
-    const driver = Driver.add(id, name, competitionId);
+    const driver = Driver.add(id, name, teamId);
 
     this.repository.create(driver);
 

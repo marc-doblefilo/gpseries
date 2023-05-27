@@ -1,6 +1,6 @@
 export class DriverDTO {
   id: string;
   name: string;
-  competitionId: string;
+  teamId: string;
   points: number;
 }
