@@ -1,5 +1,4 @@
 import { CompetitionId } from '../../../competition/domain';
-import { UserId } from '../../../user/domain';
 import { Driver, DriverId, Name, Points } from '../../domain';
 import { DriverDocument } from '../repository/driver.document';
 

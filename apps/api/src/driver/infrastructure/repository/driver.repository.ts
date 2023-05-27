@@ -5,7 +5,6 @@ import { Connection, Model } from 'mongoose';
 
 import { CompetitionId } from '../../../competition/domain';
 import { mongoConnection } from '../../../database/database.provider';
-import { UserId } from '../../../user/domain';
 import { Driver, DriverRepository, Name } from '../../domain';
 import { DriverMapper } from '../mapper/driver.mapper';
 import { DriverDocument } from './driver.document';
