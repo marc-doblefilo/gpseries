@@ -5,7 +5,6 @@ import {
   Competition,
   CompetitionFinder,
   CompetitionId,
-  CompetitionNotFound,
   CompetitionRepository,
   competitionRepository,
   Name,

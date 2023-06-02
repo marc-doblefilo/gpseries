@@ -4,7 +4,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   CompetitionFinder,
   CompetitionId,
-  CompetitionNotFound,
   CompetitionRepository,
   competitionRepository
 } from '../../../competition/domain';
@@ -31,7 +30,7 @@ export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {
     @Inject(teamRepository) private repository: TeamRepository,
     @Inject(userRepository) private userRepository: UserRepository,
     @Inject(competitionRepository)
-    private competitionRepository: CompetitionRepository
+    competitionRepository: CompetitionRepository
   ) {
     this.competitionFinder = new CompetitionFinder(competitionRepository);
   }

@@ -6,7 +6,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import {
   CompetitionFinder,
   CompetitionId,
-  CompetitionNotFound,
   CompetitionRepository,
   competitionRepository
 } from '../../domain';
