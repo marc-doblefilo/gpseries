@@ -1,4 +1,4 @@
-import { Points } from './points';
+import { Points } from '../../../../src/driver/domain';
 
 describe('Points', () => {
   it('should return points with minimum value (0)', () => {

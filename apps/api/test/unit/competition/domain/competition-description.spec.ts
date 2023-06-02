@@ -1,4 +1,4 @@
-import { CompetitionDescription } from './competition-description';
+import { CompetitionDescription } from '../../../../src/competition/domain';
 
 describe('Competition Description', () => {
   it('should return a description', () => {

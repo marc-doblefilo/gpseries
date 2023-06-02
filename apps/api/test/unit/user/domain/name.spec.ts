@@ -1,4 +1,4 @@
-import { Name } from './name';
+import { Name } from '../../../../src/user/domain';
 
 describe('Name', () => {
   it('should be a string', () => {

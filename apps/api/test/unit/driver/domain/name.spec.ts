@@ -1,4 +1,4 @@
-import { Name } from './name';
+import { Name } from '../../../../src/driver/domain';
 
 describe('Name', () => {
   it('should not be empty', () => {

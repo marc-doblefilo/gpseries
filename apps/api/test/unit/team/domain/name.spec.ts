@@ -1,4 +1,4 @@
-import { Name } from './name';
+import { Name } from '../../../../src/team/domain';
 
 describe('Name', () => {
   it('should return the VO', () => {

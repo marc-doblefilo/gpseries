@@ -1,17 +1,17 @@
 import * as uuid from 'uuid';
 
-import { TeamId } from './team-id';
+import { RaceId } from '../../../../src/competition/domain';
 
-describe('Team Id', () => {
+describe('Competition Id', () => {
   it('should return a new id', () => {
-    const id = TeamId.generate();
+    const id = RaceId.generate();
 
     expect(uuid.validate(id.value)).toBeTruthy();
   });
 
   it('should throw if it is not an uuid', () => {
     expect(() => {
-      TeamId.fromString('');
+      RaceId.fromString('');
     }).toThrow();
   });
 });

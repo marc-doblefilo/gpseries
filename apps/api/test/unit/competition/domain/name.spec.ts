@@ -1,4 +1,4 @@
-import { Name } from './name';
+import { Name } from '../../../../src/competition/domain';
 
 describe('Competition Name', () => {
   it('should return a name', () => {

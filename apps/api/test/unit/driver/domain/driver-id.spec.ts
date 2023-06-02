@@ -1,17 +1,17 @@
 import * as uuid from 'uuid';
 
-import { CompetitionId } from './competition-id';
+import { DriverId } from '../../../../src/driver/domain';
 
-describe('Competition Id', () => {
+describe('Driver Id', () => {
   it('should return a new id', () => {
-    const id = CompetitionId.generate();
+    const id = DriverId.generate();
 
     expect(uuid.validate(id.value)).toBeTruthy();
   });
 
   it('should throw if it is not an uuid', () => {
     expect(() => {
-      CompetitionId.fromString('');
+      DriverId.fromString('');
     }).toThrow();
   });
 });

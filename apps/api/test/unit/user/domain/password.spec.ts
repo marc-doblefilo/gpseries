@@ -1,4 +1,4 @@
-import { Password } from './password';
+import { Password } from '../../../../src/user/domain';
 
 describe('Password', () => {
   it('should be a string', () => {

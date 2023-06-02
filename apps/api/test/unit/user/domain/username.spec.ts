@@ -1,4 +1,4 @@
-import { Username } from './username';
+import { Username } from '../../../../src/user/domain';
 
 describe('Username', () => {
   it('should be a lowercase string without spaces', () => {
