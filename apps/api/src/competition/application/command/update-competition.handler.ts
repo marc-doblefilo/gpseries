@@ -3,6 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import {
   Competition,
+  CompetitionFinder,
   CompetitionId,
   CompetitionNotFound,
   CompetitionRepository,
@@ -16,17 +17,18 @@ import { UpdateCompetitionCommand } from './update-competition.command';
 @CommandHandler(UpdateCompetitionCommand)
 export class UpdateCompetitionHandler
   implements ICommandHandler<UpdateCompetitionCommand> {
+  private readonly competitionFinder: CompetitionFinder;
+
   constructor(
     @Inject(competitionRepository) private repository: CompetitionRepository
-  ) {}
+  ) {
+    this.competitionFinder = new CompetitionFinder(repository);
+  }
 
   async execute(command: UpdateCompetitionCommand) {
     const id = CompetitionId.fromString(command.competitionId);
 
-    const competition = await this.repository.find(id);
-    if (!competition) {
-      throw CompetitionNotFound.with(id);
-    }
+    const competition = await this.competitionFinder.findOrThrow(id);
 
     this.updateRaces(competition, command);
 

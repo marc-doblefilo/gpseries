@@ -3,7 +3,12 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { DriverAlreadyRegisteredError } from '../../../competition/domain/exception/driver-already-registered.error';
-import { TeamId, TeamRepository, teamRepository } from '../../../team/domain';
+import {
+  TeamFinder,
+  TeamId,
+  TeamRepository,
+  teamRepository
+} from '../../../team/domain';
 import { TeamNotFound } from '../../../team/domain/exception/team-not-found.error';
 import {
   Driver,
@@ -17,21 +22,21 @@ import { CreateDriverCommand } from './create-driver.command';
 @CommandHandler(CreateDriverCommand)
 export class CreateDriverHandler
   implements ICommandHandler<CreateDriverCommand> {
+  private readonly teamFinder: TeamFinder;
+
   constructor(
     @Inject(driverRepository) private repository: DriverRepository,
     @Inject(teamRepository)
     private teamRepository: TeamRepository
-  ) {}
+  ) {
+    this.teamFinder = new TeamFinder(teamRepository);
+  }
 
   async execute(command: CreateDriverCommand) {
     const name = Name.fromString(command.name);
 
     const teamId = TeamId.fromString(command.teamId);
-    const team = await this.teamRepository.find(teamId);
-
-    if (!team) {
-      throw TeamNotFound.with(teamId);
-    }
+    await this.teamFinder.findOrThrow(teamId);
 
     const existsDriver = await this.repository.findByNameAndTeam(name, teamId);
 

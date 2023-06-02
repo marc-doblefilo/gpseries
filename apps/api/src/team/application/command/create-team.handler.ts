@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import {
+  CompetitionFinder,
   CompetitionId,
   CompetitionNotFound,
   CompetitionRepository,
@@ -24,12 +25,16 @@ import { CreateTeamCommand } from './create-team.command';
 
 @CommandHandler(CreateTeamCommand)
 export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {
+  private readonly competitionFinder: CompetitionFinder;
+
   constructor(
     @Inject(teamRepository) private repository: TeamRepository,
     @Inject(userRepository) private userRepository: UserRepository,
     @Inject(competitionRepository)
     private competitionRepository: CompetitionRepository
-  ) {}
+  ) {
+    this.competitionFinder = new CompetitionFinder(competitionRepository);
+  }
 
   async execute(command: CreateTeamCommand): Promise<Team> {
     const ownerId = UserId.fromString(command.ownerId);
@@ -39,10 +44,7 @@ export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {
     }
 
     const competitionId = CompetitionId.fromString(command.competitionId);
-    const competition = await this.competitionRepository.find(competitionId);
-    if (!competition) {
-      throw CompetitionNotFound.with(competitionId);
-    }
+    await this.competitionFinder.findOrThrow(competitionId);
 
     const teamId = TeamId.generate();
     const name = Name.fromString(command.name);
