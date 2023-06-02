@@ -8,6 +8,7 @@ import {
   competitionRepository
 } from '../../../competition/domain';
 import {
+  UserFinder,
   UserId,
   UserIdNotFoundError,
   UserRepository,
@@ -25,22 +26,21 @@ import { CreateTeamCommand } from './create-team.command';
 @CommandHandler(CreateTeamCommand)
 export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {
   private readonly competitionFinder: CompetitionFinder;
+  private readonly userFinder: UserFinder;
 
   constructor(
     @Inject(teamRepository) private repository: TeamRepository,
-    @Inject(userRepository) private userRepository: UserRepository,
+    @Inject(userRepository) userRepository: UserRepository,
     @Inject(competitionRepository)
     competitionRepository: CompetitionRepository
   ) {
     this.competitionFinder = new CompetitionFinder(competitionRepository);
+    this.userFinder = new UserFinder(userRepository);
   }
 
   async execute(command: CreateTeamCommand): Promise<Team> {
     const ownerId = UserId.fromString(command.ownerId);
-    const user = await this.userRepository.find(ownerId);
-    if (!user) {
-      throw UserIdNotFoundError.with(ownerId);
-    }
+    await this.userFinder.findOrThrow(ownerId);
 
     const competitionId = CompetitionId.fromString(command.competitionId);
     await this.competitionFinder.findOrThrow(competitionId);
