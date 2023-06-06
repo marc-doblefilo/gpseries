@@ -9,7 +9,6 @@ import {
   TeamRepository,
   teamRepository
 } from '../../../team/domain';
-import { TeamNotFound } from '../../../team/domain/exception/team-not-found.error';
 import {
   Driver,
   DriverId,

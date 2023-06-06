@@ -4,11 +4,13 @@ import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { DatabaseModule } from '../../database/database.module';
 import { CreateTeamHandler } from '../application/command/create-team.handler';
+import { GetTeamHandler } from '../application/query/get-team.handler';
+import { GetTeamsHandler } from '../application/query/get-teams.handler';
 import { TeamController } from './controller/team.controller';
 import { teamProviders } from './team.providers';
 
 const CommandHandlers = [CreateTeamHandler];
-const QueryHandlers = [];
+const QueryHandlers = [GetTeamHandler, GetTeamsHandler];
 
 @Module({
   controllers: [TeamController],

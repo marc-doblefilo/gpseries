@@ -7,11 +7,13 @@ import {
   CompetitionCreate,
   CompetitionEdit,
   CompetitionList,
+  DriverList,
+  TeamEdit,
+  TeamList,
   UserCreate,
   UserEdit,
   UserList
 } from '../resources';
-import { DriverList } from '../resources/driver';
 
 const App = () => (
   <Admin
@@ -32,6 +34,7 @@ const App = () => (
       create={CompetitionCreate}
     />
     <Resource name="drivers" list={DriverList} />
+    <Resource name="teams" edit={TeamEdit} list={TeamList} />
   </Admin>
 );
 

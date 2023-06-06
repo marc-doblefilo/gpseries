@@ -37,4 +37,10 @@ export class TeamMongoRepository implements TeamRepository {
 
     return TeamMapper.documentToAggregate(document);
   }
+
+  async findAll(): Promise<Team[]> {
+    const documents = await this.model.find({});
+
+    return documents.map(TeamMapper.documentToAggregate);
+  }
 }

@@ -10,8 +10,7 @@ import { GetUsersQuery } from './get-users.query';
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
   constructor(@Inject(userRepository) private users: UserRepository) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async execute(query: GetUsersQuery): Promise<Nullable<Array<UserDTO>>> {
+  async execute(): Promise<Nullable<Array<UserDTO>>> {
     const users = await this.users.findAll();
 
     return users.map(user => ({

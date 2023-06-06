@@ -8,12 +8,12 @@ import {
   TextField
 } from 'react-admin';
 
-export const DriverList = props => (
+export const TeamList = props => (
   <List {...props}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
       <TextField source="name" />
-      <ReferenceField source="teamId" reference="teams">
+      <ReferenceField source="competitionId" reference="competitions">
         <TextField source="name" />
       </ReferenceField>
     </Datagrid>
