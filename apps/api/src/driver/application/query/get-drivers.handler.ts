@@ -16,8 +16,7 @@ export class GetDriversHandler implements IQueryHandler<GetDriversQuery> {
     return drivers.map(driver => ({
       id: driver.id.value,
       name: driver.name.value,
-      teamId: driver.teamId.value,
-      points: driver.points.value
+      teamId: driver.teamId.value
     }));
   }
 }

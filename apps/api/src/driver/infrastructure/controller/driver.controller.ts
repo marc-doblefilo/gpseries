@@ -37,8 +37,7 @@ export class DriverController {
       return {
         id: driver.id.value,
         name: driver.name.value,
-        teamId: driver.teamId.value,
-        points: driver.points.value
+        teamId: driver.teamId.value
       } as DriverDTO;
     } catch (e) {
       if (e instanceof NotFoundError) {

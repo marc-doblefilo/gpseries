@@ -4,13 +4,11 @@ import { TeamId } from '../../../team/domain';
 import { DriverWasCreated } from '../event/driver-was-created.event';
 import { DriverId } from './driver-id';
 import { Name } from './name';
-import { Points } from './points';
 
 export class Driver extends AggregateRoot {
   private _id: DriverId;
   private _name: Name;
   private _teamId: TeamId;
-  private _points: Points;
 
   private constructor() {
     super();
@@ -36,14 +34,9 @@ export class Driver extends AggregateRoot {
     return this._teamId;
   }
 
-  get points(): Points {
-    return this._points;
-  }
-
   private onDriverWasCreated(event: DriverWasCreated) {
     this._id = DriverId.fromString(event.id);
     this._name = Name.fromString(event.name);
     this._teamId = TeamId.fromString(event.teamId);
-    this._points = Points.fromNumber(0);
   }
 }
