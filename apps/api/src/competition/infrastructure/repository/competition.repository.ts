@@ -7,7 +7,8 @@ import { mongoConnection } from '../../../database/database.provider';
 import {
   Competition,
   CompetitionId,
-  CompetitionRepository
+  CompetitionRepository,
+  RaceId
 } from '../../domain';
 import { CompetitionMapper } from '../mapper/competition.mapper';
 import { CompetitionDocument } from './competition.document';
@@ -59,5 +60,15 @@ export class CompetitionMongoRepository implements CompetitionRepository {
 
     competition = this.publisher.mergeObjectContext(competition);
     competition.commit();
+  }
+
+  async findByRace(raceId: RaceId): Promise<Nullable<Competition>> {
+    const document = await this.model.findOne({ 'races.id': raceId.value });
+
+    if (!document) {
+      return null;
+    }
+
+    return CompetitionMapper.documentToAggregate(document);
   }
 }

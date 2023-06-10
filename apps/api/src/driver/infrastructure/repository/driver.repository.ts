@@ -5,7 +5,7 @@ import { Connection, Model } from 'mongoose';
 
 import { mongoConnection } from '../../../database/database.provider';
 import { TeamId } from '../../../team/domain';
-import { Driver, DriverRepository, Name } from '../../domain';
+import { Driver, DriverId, DriverRepository, Name } from '../../domain';
 import { DriverMapper } from '../mapper/driver.mapper';
 import { DriverDocument } from './driver.document';
 import { DriverSchema } from './driver.schema';
@@ -50,5 +50,15 @@ export class DriverMongoRepository implements DriverRepository {
     const documents = await this.model.find({});
 
     return documents.map(DriverMapper.documentToAggregate);
+  }
+
+  async find(id: DriverId): Promise<Nullable<Driver>> {
+    const document = await this.model.findById(id.value);
+
+    if (!document) {
+      return null;
+    }
+
+    return DriverMapper.documentToAggregate(document);
   }
 }
