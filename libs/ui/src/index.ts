@@ -1,3 +1,4 @@
+export * from './lib/competition';
 export * from './lib/layout/layout';
 export * from './lib/login/login';
 export * from './lib/navbar/navbar';
