@@ -7,8 +7,7 @@ export class InscriptionWasCreated extends StorableEvent {
   constructor(
     public readonly id: string,
     public readonly driverId: string,
-    public readonly raceId: string,
-    public readonly position: number
+    public readonly raceId: string
   ) {
     super();
   }

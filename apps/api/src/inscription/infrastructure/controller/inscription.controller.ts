@@ -34,16 +34,14 @@ export class InscriptionController {
       const inscription = await this.commandBus.execute(
         new CreateInscriptionCommand({
           driverId: dto.driverId,
-          raceId: dto.raceId,
-          position: dto.position
+          raceId: dto.raceId
         })
       );
 
       return {
         id: inscription.id.value,
         driverId: inscription.driverId.value,
-        raceId: inscription.raceId.value,
-        position: inscription.position.value
+        raceId: inscription.raceId.value
       } as InscriptionDTO;
     } catch (e) {
       if (e instanceof NotFoundError) {

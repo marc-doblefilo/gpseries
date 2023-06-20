@@ -5,7 +5,6 @@ export class CreateInscriptionCommand implements ICommand {
     public readonly request: {
       driverId: string;
       raceId: string;
-      position: number;
     }
   ) {}
 }

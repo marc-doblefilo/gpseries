@@ -56,13 +56,11 @@ export class CreateInscriptionHandler
     }
 
     const inscriptionId = InscriptionId.generate();
-    const position = Position.fromPrimitive(command.request.position);
 
     const inscription = Inscription.add({
       id: inscriptionId,
       raceId,
-      driverId,
-      position
+      driverId
     });
 
     this.repository.create(inscription);

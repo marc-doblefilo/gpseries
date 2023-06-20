@@ -13,7 +13,11 @@ export class InscriptionMapper {
     Reflect.set(inscription, '_id', InscriptionId.fromString(_id));
     Reflect.set(inscription, '_driverId', DriverId.fromString(driverId));
     Reflect.set(inscription, '_raceId', RaceId.fromString(raceId));
-    Reflect.set(inscription, '_position', Position.fromPrimitive(position));
+    Reflect.set(
+      inscription,
+      '_position',
+      position ? Position.fromPrimitive(position) : null
+    );
 
     return inscription;
   }
@@ -23,7 +27,7 @@ export class InscriptionMapper {
       _id: inscription.id.value,
       driverId: inscription.driverId.value,
       raceId: inscription.raceId.value,
-      position: inscription.position.value
+      position: inscription.position?.value
     } as InscriptionDocument;
   }
 }

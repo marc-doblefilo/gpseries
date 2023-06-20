@@ -1,6 +1,7 @@
+import { Nullable } from '@gpseries/domain';
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { Race, RaceId } from '../../../competition/domain';
+import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
 import { InscriptionWasCreated } from '../event/inscription-was-created.event';
 import { InscriptionId } from './inscription-id';
@@ -10,7 +11,7 @@ export class Inscription extends AggregateRoot {
   private _id: InscriptionId;
   private _driverId: DriverId;
   private _raceId: RaceId;
-  private _position: Position;
+  private _position: Nullable<Position>;
 
   private constructor() {
     super();
@@ -20,7 +21,6 @@ export class Inscription extends AggregateRoot {
     id: InscriptionId;
     driverId: DriverId;
     raceId: RaceId;
-    position: Position;
   }) {
     const inscription = new Inscription();
 
@@ -28,8 +28,7 @@ export class Inscription extends AggregateRoot {
       new InscriptionWasCreated(
         args.id.value,
         args.driverId.value,
-        args.raceId.value,
-        args.position.value
+        args.raceId.value
       )
     );
 
@@ -48,7 +47,7 @@ export class Inscription extends AggregateRoot {
     return this._driverId;
   }
 
-  get position(): Position {
+  get position(): Nullable<Position> {
     return this._position;
   }
 
@@ -56,6 +55,6 @@ export class Inscription extends AggregateRoot {
     this._id = InscriptionId.fromString(event.id);
     this._driverId = DriverId.fromString(event.driverId);
     this._raceId = RaceId.fromString(event.raceId);
-    this._position = Position.fromPrimitive(event.position);
+    this._position = null;
   }
 }
