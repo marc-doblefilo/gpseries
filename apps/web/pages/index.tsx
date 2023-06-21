@@ -3,28 +3,27 @@ import { CompetitionGrid, Layout } from '@gpseries/ui';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import { useSession } from 'next-auth/client';
-import React from 'react';
-
-const competition: CompetitionDTO[] = [
-  {
-    id: 'holahola',
-    ownerId: 'holaadios',
-    name: 'Formula Uno',
-    description: 'Super campeonato de Formula 1',
-    races: []
-  },
-  {
-    id: 'holahola',
-    ownerId: 'holaadios',
-    name: 'Formula Dos',
-    description: 'Super campeonato de Formula 1',
-    races: []
-  }
-];
+import React, { useCallback, useState } from 'react';
 
 export default function Index() {
   const [session, loading] = useSession();
+  const [competitions, setCompetitions] = useState<CompetitionDTO[]>();
+  const [isFetching, setIsFetching] = useState(false);
+
+  const fetchCompetitions = useCallback(() => {
+    setIsFetching(true);
+    axios
+      .get(`http://localhost:3333/api/competitions`)
+      .then(response => {
+        setCompetitions(response.data);
+        setIsFetching(false);
+      })
+      .catch(() => {
+        console.error(true);
+      });
+  }, []);
 
   return (
     <Layout session={session}>
@@ -33,7 +32,11 @@ export default function Index() {
           <Typography variant="h4" component="h1" gutterBottom>
             Welcome to GPSeries!
           </Typography>
-          <CompetitionGrid competitions={competition} />
+          <CompetitionGrid
+            competitions={competitions}
+            fetchCompetitionGrid={fetchCompetitions}
+            isFetching={isFetching}
+          />
         </Box>
       </Container>
     </Layout>

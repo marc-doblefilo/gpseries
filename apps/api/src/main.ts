@@ -11,9 +11,10 @@ async function bootstrap() {
     logger:
       process.env.NODE_ENV == 'development'
         ? ['debug', 'error', 'log', 'verbose', 'warn']
-        : ['error', 'warn'],
+        : ['error', 'warn']
   });
   app.setGlobalPrefix(GLOBAL_PREFIX);
+  app.enableCors();
 
   const options = new DocumentBuilder()
     .addBearerAuth()

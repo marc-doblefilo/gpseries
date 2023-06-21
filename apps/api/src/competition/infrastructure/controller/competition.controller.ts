@@ -60,7 +60,6 @@ export class CompetitionController {
   }
 
   @Get()
-  @Roles(Role.Admin)
   @ApiResponse({ status: 200, description: 'Competitions found' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
