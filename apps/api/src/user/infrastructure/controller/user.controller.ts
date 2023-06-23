@@ -1,9 +1,4 @@
-import {
-  CreateUserDTO,
-  EditUserDTO,
-  Role,
-  UserDTO,
-} from '@gpseries/contracts';
+import { CreateUserDTO, EditUserDTO, Role, UserDTO } from '@gpseries/contracts';
 import {
   BadRequestException,
   Body,
@@ -17,14 +12,14 @@ import {
   Post,
   Put,
   Res,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBearerAuth,
   ApiOperation,
   ApiResponse,
-  ApiTags,
+  ApiTags
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -35,7 +30,7 @@ import {
   DeleteUserCommand,
   GetUserQuery,
   GetUsersQuery,
-  UpdateUserCommand,
+  UpdateUserCommand
 } from '../../application';
 import { UserIdNotFoundError } from '../../domain';
 
@@ -97,7 +92,6 @@ export class UserController {
   }
 
   @Get(':id')
-  @Roles(Role.Admin)
   @ApiResponse({ status: 200, description: 'User found' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async findOne(@Param('id') id: string): Promise<UserDTO> {
@@ -127,7 +121,7 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'Not found' })
   async update(
     @Param('id') id: string,
-      @Body() editUserDTO: EditUserDTO
+    @Body() editUserDTO: EditUserDTO
   ): Promise<UserDTO> {
     try {
       const user = await this.queryBus.execute<GetUserQuery, UserDTO>(

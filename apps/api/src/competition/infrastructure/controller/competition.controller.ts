@@ -106,7 +106,6 @@ export class CompetitionController {
   }
 
   @Get(':id')
-  @Roles(Role.Admin)
   @ApiResponse({ status: 200, description: 'Competition found' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async findOne(@Param('id') id: string): Promise<CompetitionDTO> {

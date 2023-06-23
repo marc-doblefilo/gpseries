@@ -1,13 +1,18 @@
-import { Avatar, Flex, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
-import { Nullable } from '@gpseries/domain';
 import {
-  AppBar,
-  Button,
-  Toolbar,
-  Typography} from '@material-ui/core';
+  Avatar,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text
+} from '@chakra-ui/react';
+import { Nullable } from '@gpseries/domain';
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { Session  } from 'next-auth/client';
+import { Session } from 'next-auth/client';
 import React from 'react';
 
 import { useStyles } from '../theme';
@@ -33,37 +38,32 @@ export function Navbar({ session }: NavbarProps) {
   };
 
   return (
-    <AppBar
-      position="absolute"
-      className={clsx(classes.appBar)}
-    >
+    <AppBar position="absolute" className={clsx(classes.appBar)}>
       <Toolbar className={classes.toolbar}>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          GPSeries
-        </Typography>
+        <Link block href="/">
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            GPseries
+          </Typography>
+        </Link>
         {session ? (
           <Menu autoSelect={false}>
             <MenuButton as={Button}>
-              <Flex alignItems='center' gap='3'>
-                <Text textColor='white'>{getUserName()}</Text>
-                <Avatar name={getUserName()} size='md' />
+              <Flex alignItems="center" gap="3">
+                <Text textColor="white">{getUserName()}</Text>
+                <Avatar name={getUserName()} size="md" />
               </Flex>
             </MenuButton>
-            <MenuList color='black' textColor='white' backgroundColor='black'>
-              <MenuItem _focus={{ color: 'grey' }}>
-                Profile
-              </MenuItem>
+            <MenuList color="black" textColor="white" backgroundColor="black">
+              <MenuItem _focus={{ color: 'grey' }}>Profile</MenuItem>
               <MenuDivider />
               <Link href="/api/auth/signout">
-                <MenuItem _focus={{ color: 'grey' }}>
-                  Logout
-                </MenuItem>
+                <MenuItem _focus={{ color: 'grey' }}>Logout</MenuItem>
               </Link>
             </MenuList>
           </Menu>

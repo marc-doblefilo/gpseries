@@ -1,5 +1,6 @@
 import { CompetitionDTO } from '@gpseries/contracts';
 import { Button, Card, Row, Text } from '@nextui-org/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 type Props = {
@@ -9,6 +10,8 @@ type Props = {
 export const CompetitionCard: React.FunctionComponent<Props> = ({
   competition
 }) => {
+  const router = useRouter();
+
   return (
     <Card css={{ bg: 'rgba(0,0,0,0.92)', width: '300px', height: '200px' }}>
       <Card.Body>
@@ -28,13 +31,14 @@ export const CompetitionCard: React.FunctionComponent<Props> = ({
         <Row justify="flex-end">
           <Button
             auto
-            css={{
-              color: '#000000',
-              bg: 'rgb(255,255,255)',
-              foreground: '#fff',
-              background: 'linear-gradient(to right, #007CF0, #00DFD8)',
-              border: '#007CF0'
-            }}
+            color="gradient"
+            ghost
+            onPress={() =>
+              router.push({
+                pathname: `/competition/${encodeURIComponent(competition.id)}`,
+                query: { ownerId: competition.ownerId }
+              })
+            }
           >
             More
           </Button>

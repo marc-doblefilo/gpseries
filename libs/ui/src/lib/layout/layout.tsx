@@ -20,7 +20,11 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({
   const logIn = () => signIn();
   const logOut = () => signOut();
 
-  return session ? (
+  if (!session) {
+    return <LogIn logIn={logIn} logOut={logOut} session={session} />;
+  }
+
+  return (
     <div className={classes.root}>
       <CssBaseline />
       <Navbar session={session} />
@@ -31,8 +35,6 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({
         </Container>
       </main>
     </div>
-  ) : (
-    <LogIn logIn={logIn} logOut={logOut} session={session} />
   );
 };
 
