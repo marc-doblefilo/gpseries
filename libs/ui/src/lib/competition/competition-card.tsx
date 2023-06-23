@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
 import { Button, Card, Row, Text } from '@nextui-org/react';
 import { useRouter } from 'next/router';
@@ -15,16 +16,7 @@ export const CompetitionCard: React.FunctionComponent<Props> = ({
   return (
     <Card css={{ bg: 'rgba(0,0,0,0.92)', width: '300px', height: '200px' }}>
       <Card.Body>
-        <Text
-          h3
-          css={{
-            textGradient: '45deg, $yellow600 -20%, $red600 100%',
-            color: 'white'
-          }}
-          weight="bold"
-        >
-          {competition.name}
-        </Text>
+        <Heading color="white">{competition.name}</Heading>
         <Text css={{ color: 'white' }}>{competition.description}</Text>
       </Card.Body>
       <Card.Footer>
@@ -34,10 +26,7 @@ export const CompetitionCard: React.FunctionComponent<Props> = ({
             color="gradient"
             ghost
             onPress={() =>
-              router.push({
-                pathname: `/competition/${encodeURIComponent(competition.id)}`,
-                query: { ownerId: competition.ownerId }
-              })
+              router.push(`/competition/${encodeURIComponent(competition.id)}`)
             }
           >
             More

@@ -1,11 +1,12 @@
+import { Center, Heading } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
 import { CompetitionGrid, Layout } from '@gpseries/ui';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { Text } from '@nextui-org/react';
+import { Loading, Text } from '@nextui-org/react';
 import axios from 'axios';
 import { useSession } from 'next-auth/client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export default function Index() {
   const [session, loading] = useSession();
@@ -25,11 +26,17 @@ export default function Index() {
       });
   }, []);
 
+  useEffect(() => {
+    if (loading) return;
+  }, [loading]);
+
   return (
     <Layout session={session}>
       <Container maxWidth={false}>
         <Box>
-          <Text h1>Welcome to GPSeries!</Text>
+          <Center>
+            <Heading>Welcome to GPSeries!</Heading>
+          </Center>
           <CompetitionGrid
             competitions={competitions}
             fetchCompetitionGrid={fetchCompetitions}

@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
 import { CompetitionComponent, Layout } from '@gpseries/ui';
-import { Text } from '@nextui-org/react';
+import { Loading, Text } from '@nextui-org/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
@@ -11,33 +11,34 @@ export default function Competition() {
   const router = useRouter();
   const toast = useToast();
 
-  const { id, ownerId } = router.query;
-  const [session, _loading] = useSession();
+  const [session] = useSession();
   const [competition, setCompetition] = useState<CompetitionDTO>();
   const [user, setUser] = useState<UserDTO>();
   const [isFetching, setIsFetching] = useState(false);
 
   const fetchCompetition = useCallback(() => {
     setIsFetching(true);
+    if (!router.isReady) return;
     axios
-      .get(`http://localhost:3333/api/competitions/${id}`)
+      .get(`http://localhost:3333/api/competitions/${router.query.id}`)
       .then(response => {
         setCompetition(response.data);
-      })
-      .catch(() => {
-        toast({
-          title: 'Competition not found',
-          description: 'Contact support if this problem continues',
-          status: 'error',
-          duration: 5000,
-          isClosable: true
-        });
-        router.back();
-      });
-    axios
-      .get(`http://localhost:3333/api/users/${ownerId}`)
-      .then(response => {
-        setUser(response.data);
+        axios
+          .get(`http://localhost:3333/api/users/${response.data.ownerId}`)
+          .then(response => {
+            setUser(response.data);
+            setIsFetching(false);
+          })
+          .catch(() => {
+            toast({
+              title: 'Competition not found',
+              description: 'Contact support if this problem continues',
+              status: 'error',
+              duration: 5000,
+              isClosable: true
+            });
+            router.back();
+          });
         setIsFetching(false);
       })
       .catch(() => {
@@ -50,18 +51,14 @@ export default function Competition() {
         });
         router.back();
       });
-  }, [id, ownerId, router, toast]);
+  }, [router, toast]);
 
   useEffect(() => {
     fetchCompetition();
   }, [fetchCompetition]);
 
   if (!competition || !user) {
-    return (
-      <Layout session={session}>
-        <Text>Competition not found</Text>
-      </Layout>
-    );
+    return <Loading />;
   }
 
   return (
@@ -69,7 +66,6 @@ export default function Competition() {
       <CompetitionComponent
         user={user}
         competition={competition}
-        fetchCompetition={fetchCompetition}
         isFetching={isFetching}
       />
     </Layout>
