@@ -5,12 +5,15 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import { useSession } from 'next-auth/client';
+import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useState } from 'react';
 
 export default function Index() {
   const [session, loading] = useSession();
   const [competitions, setCompetitions] = useState<CompetitionDTO[]>();
   const [isFetching, setIsFetching] = useState(false);
+
+  const t = useTranslations('Home');
 
   const fetchCompetitions = useCallback(() => {
     setIsFetching(true);
@@ -34,7 +37,7 @@ export default function Index() {
       <Container maxWidth={false}>
         <Box>
           <Center>
-            <Heading>Welcome to GPSeries!</Heading>
+            <Heading>{t('welcome')}</Heading>
           </Center>
           <CompetitionGrid
             competitions={competitions}
@@ -45,4 +48,12 @@ export default function Index() {
       </Container>
     </Layout>
   );
+}
+
+export function getStaticProps({ locale }) {
+  return {
+    props: {
+      messages: require(`../locales/${locale}.json`)
+    }
+  };
 }

@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Flex,
+  Link,
   Menu,
   MenuButton,
   MenuDivider,
@@ -13,7 +14,7 @@ import {
 import { Nullable } from '@gpseries/domain';
 import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { Session } from 'next-auth/client';
 import React from 'react';
 
@@ -43,15 +44,17 @@ export function Navbar({ session }: NavbarProps) {
     <AppBar position="absolute" className={clsx(classes.appBar)}>
       <Flex minWidth="max-content" alignItems="center" gap="2">
         <Box p={4}>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            GPseries
-          </Typography>
+          <Link as={NextLink} href="/" style={{ textDecoration: 'none' }}>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              className={classes.title}
+            >
+              GPseries
+            </Typography>
+          </Link>
         </Box>
         <Spacer />
         <Box paddingRight={6}>
@@ -66,11 +69,16 @@ export function Navbar({ session }: NavbarProps) {
               >
                 <Avatar size={'md'} name={getUserName()} />
               </MenuButton>
-              <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
+              <MenuList color="black" textColor="white" backgroundColor="black">
                 <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
+                <Link
+                  href="/api/auth/signout"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <MenuItem bg="grey.900" _focus={{ color: 'grey' }}>
+                    Logout
+                  </MenuItem>
+                </Link>
               </MenuList>
             </Menu>
           </Flex>

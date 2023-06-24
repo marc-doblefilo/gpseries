@@ -21,14 +21,13 @@ export const CompetitionCard: React.FunctionComponent<Props> = ({
   const router = useRouter();
 
   return (
-    <Card w="350px" h="300px" rounded="2xl" bg="gray.900">
+    <Card w="350px" h="150px" rounded="2xl" bg="gray.900">
       <CardHeader>
         <Heading color="white" size="lg">
           {competition.name}
         </Heading>
-        <Text css={{ color: 'white' }}>{competition.description}</Text>
       </CardHeader>
-      <CardFooter bottom={0} flex={true}>
+      <CardFooter bottom={0} flex={1}>
         <Button
           flex={1}
           fontSize={'sm'}
