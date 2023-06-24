@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const nrwlConfig = require('@nrwl/react/plugins/webpack.js');
+const nrwlConfig = require('@nx/react/plugins/webpack.js');
 
 module.exports = (config, context) => {
   nrwlConfig(config);
   return {
     ...config,
-    node: { global: true, fs: 'empty' },
+    node: { global: true, fs: 'empty' }
   };
 };

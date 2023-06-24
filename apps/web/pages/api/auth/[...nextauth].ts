@@ -1,7 +1,7 @@
 import {
   isAccessToken,
   isCredentials,
-  isJwtPayload,
+  isJwtPayload
 } from '@gpseries/contracts';
 import axios from 'axios';
 import jose from 'jose';
@@ -12,7 +12,7 @@ import Providers from 'next-auth/providers';
 
 const options: InitOptions = {
   session: {
-    jwt: true,
+    jwt: true
   },
   callbacks: {
     session: async (session, user) => {
@@ -29,7 +29,7 @@ const options: InitOptions = {
         token.username = profile.username;
       }
       return Promise.resolve(token);
-    },
+    }
   },
   secret: process.env.JWT_SECRET,
   jwt: {
@@ -37,7 +37,7 @@ const options: InitOptions = {
     encode: async ({ secret, token, maxAge }) => {
       const signingOptions: jose.JWT.SignOptions = {
         expiresIn: `${maxAge}s`,
-        algorithm: 'HS512',
+        algorithm: 'HS512'
       };
 
       return jose.JWT.sign(token, secret, signingOptions);
@@ -48,18 +48,18 @@ const options: InitOptions = {
 
       const verificationOptions = {
         maxTokenAge: `${maxAge}s`,
-        algorithms: ['RS256', 'HS256', 'RS512', 'HS512'],
+        algorithms: ['RS256', 'HS256', 'RS512', 'HS512']
       };
 
       return jose.JWT.verify(token, secret, verificationOptions);
-    },
+    }
   },
   providers: [
     Providers.Credentials({
       name: 'Credentials',
       credentials: {
         username: { label: 'Usuario', type: 'text' },
-        password: { label: 'Contraseña', type: 'password' },
+        password: { label: 'Contraseña', type: 'password' }
       },
       authorize: async (credentials): Promise<User> => {
         try {
@@ -69,7 +69,7 @@ const options: InitOptions = {
             return Promise.resolve(null);
           }
           const res = await axios.post(
-            `${process.env.NEXTAUTH_URL}/api/login`,
+            `${process.env.API_URL}/api/login`,
             credentials
           );
 
@@ -99,16 +99,16 @@ const options: InitOptions = {
           return Promise.resolve({
             name: verify.name,
             username: verify.username,
-            roles: verify.roles,
+            roles: verify.roles
           });
         } catch (e) {
-          console.error('next-auth - error in credentials');
+          console.error(e);
         }
 
         return Promise.resolve(null);
-      },
-    }),
-  ],
+      }
+    })
+  ]
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): Promise<void> =>

@@ -3,7 +3,6 @@ import { CompetitionDTO } from '@gpseries/contracts';
 import { CompetitionGrid, Layout } from '@gpseries/ui';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { Loading, Text } from '@nextui-org/react';
 import axios from 'axios';
 import { useSession } from 'next-auth/client';
 import React, { useCallback, useEffect, useState } from 'react';

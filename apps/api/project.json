@@ -1,0 +1,101 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api/src",
+  "projectType": "application",
+  "prefix": "api",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/api",
+        "main": "apps/api/src/main.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "assets": ["apps/api/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/api/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/node:node",
+      "options": {
+        "buildTarget": "api:build"
+      }
+    },
+    "serve-test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["yarn run nx serve api"],
+        "parallel": false,
+        "envFile": "apps/api/.test.env"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/api"],
+      "options": {
+        "jestConfig": "apps/api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+          "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm {args.run}"
+        ],
+        "parallel": false
+      }
+    },
+    "migration-create": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+          "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm migration:create -n {args.name}"
+        ],
+        "parallel": false
+      }
+    },
+    "migration-generate": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+          "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm migration:generate -n {args.name}"
+        ],
+        "parallel": false
+      }
+    },
+    "migration-run": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "(rm ormconfig.json || :) && yarn run ts-node tools/scripts/write-type-orm-config.ts",
+          "yarn run ts-node -P apps/api/tsconfig.typeorm.json node_modules/.bin/typeorm migration:run"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

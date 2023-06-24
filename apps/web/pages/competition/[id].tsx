@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
 import { CompetitionComponent, Layout } from '@gpseries/ui';
-import { Loading, Text } from '@nextui-org/react';
+import { Loading } from '@nextui-org/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';

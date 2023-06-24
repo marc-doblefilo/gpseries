@@ -9,13 +9,11 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "incremental": true
   },
   "files": [],
-  "include": [
-    "**/*.js",
-    "**/*.jsx"
-  ],
+  "include": ["**/*.js", "**/*.jsx"],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -24,7 +22,5 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

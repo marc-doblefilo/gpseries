@@ -43,3 +43,6 @@ Thumbs.db
 ormconfig.json
 .env.local
 cyreport
+
+# Next.js
+.next
