@@ -1,7 +1,14 @@
-import { Heading, Text } from '@chakra-ui/react';
+import {
+  Card,
+  CardHeader,
+  Container,
+  Heading,
+  Spinner,
+  Text,
+  VStack
+} from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
-import { Card, Col, Container, Loading } from '@nextui-org/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 type Props = {
   competition: CompetitionDTO;
@@ -15,7 +22,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
   isFetching
 }) => {
   if (isFetching) {
-    return <Loading size="lg" css={{ margin: 'auto' }} />;
+    return <Spinner />;
   }
 
   if (!competition) {
@@ -24,13 +31,13 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
 
   return (
     <Container>
-      <Card css={{ $$cardColor: '' }} variant="bordered">
-        <Card.Body>
-          <Col>
+      <Card>
+        <CardHeader>
+          <VStack>
             <Heading>{competition.name}</Heading>
             <Text>{user.name}</Text>
-          </Col>
-        </Card.Body>
+          </VStack>
+        </CardHeader>
       </Card>
     </Container>
   );

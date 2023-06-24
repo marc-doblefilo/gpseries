@@ -1,7 +1,6 @@
-import { useToast } from '@chakra-ui/react';
+import { Center, Spinner, useToast } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
 import { CompetitionComponent, Layout } from '@gpseries/ui';
-import { Loading } from '@nextui-org/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
@@ -58,7 +57,11 @@ export default function Competition() {
   }, [fetchCompetition]);
 
   if (!competition || !user) {
-    return <Loading />;
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
   }
 
   return (

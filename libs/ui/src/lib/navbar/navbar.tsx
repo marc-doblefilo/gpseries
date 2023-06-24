@@ -1,11 +1,13 @@
 import {
   Avatar,
+  Box,
   Flex,
   Menu,
   MenuButton,
   MenuDivider,
   MenuItem,
   MenuList,
+  Spacer,
   Text
 } from '@chakra-ui/react';
 import { Nullable } from '@gpseries/domain';
@@ -39,8 +41,8 @@ export function Navbar({ session }: NavbarProps) {
 
   return (
     <AppBar position="absolute" className={clsx(classes.appBar)}>
-      <Toolbar className={classes.toolbar}>
-        <Link block href="/">
+      <Flex minWidth="max-content" alignItems="center" gap="2">
+        <Box p={4}>
           <Typography
             component="h1"
             variant="h6"
@@ -50,29 +52,30 @@ export function Navbar({ session }: NavbarProps) {
           >
             GPseries
           </Typography>
-        </Link>
-        {session ? (
-          <Menu autoSelect={false}>
-            <MenuButton as={Button}>
-              <Flex alignItems="center" gap="3">
-                <Text textColor="white">{getUserName()}</Text>
-                <Avatar name={getUserName()} size="md" />
-              </Flex>
-            </MenuButton>
-            <MenuList color="black" textColor="white" backgroundColor="black">
-              <MenuItem _focus={{ color: 'grey' }}>Profile</MenuItem>
-              <MenuDivider />
-              <Link href="/api/auth/signout">
-                <MenuItem _focus={{ color: 'grey' }}>Logout</MenuItem>
-              </Link>
-            </MenuList>
-          </Menu>
-        ) : (
-          <Link href="/api/auth/signin">
-            <Button color="inherit">Login</Button>
-          </Link>
-        )}
-      </Toolbar>
+        </Box>
+        <Spacer />
+        <Box paddingRight={6}>
+          <Flex alignItems="center" gap="3">
+            <Text textColor="white">{getUserName()}</Text>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                cursor={'pointer'}
+                minW={0}
+              >
+                <Avatar size={'md'} name={getUserName()} />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Link 1</MenuItem>
+                <MenuItem>Link 2</MenuItem>
+                <MenuDivider />
+                <MenuItem>Link 3</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
+        </Box>
+      </Flex>
     </AppBar>
   );
 }

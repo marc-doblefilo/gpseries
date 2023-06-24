@@ -1,5 +1,5 @@
+import { Grid, GridItem, Spinner, Text } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
-import { Grid, Loading, Text } from '@nextui-org/react';
 import React, { useEffect } from 'react';
 
 import { CompetitionCard } from './competition-card';
@@ -20,7 +20,7 @@ export const CompetitionGrid: React.FunctionComponent<Props> = ({
   }, [fetchCompetitionGrid]);
 
   if (isFetching) {
-    return <Loading size="lg" css={{ margin: 'auto' }} />;
+    return <Spinner />;
   }
 
   if (competitions?.length === 0 || !competitions) {
@@ -28,12 +28,12 @@ export const CompetitionGrid: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <Grid.Container justify="center" gap={2}>
+    <Grid gap={6} templateColumns="repeat(3, 0.5fr)">
       {competitions.map(competition => (
-        <Grid>
+        <GridItem>
           <CompetitionCard competition={competition} />
-        </Grid>
+        </GridItem>
       ))}
-    </Grid.Container>
+    </Grid>
   );
 };
