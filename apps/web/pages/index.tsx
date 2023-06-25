@@ -13,8 +13,6 @@ export default function Index() {
   const [competitions, setCompetitions] = useState<CompetitionDTO[]>();
   const [isFetching, setIsFetching] = useState(false);
 
-  const t = useTranslations('Home');
-
   const fetchCompetitions = useCallback(() => {
     setIsFetching(true);
     axios
@@ -36,8 +34,8 @@ export default function Index() {
     <Layout session={session}>
       <Container maxWidth={false}>
         <Box>
-          <Center>
-            <Heading>{t('welcome')}</Heading>
+          <Center paddingBottom={4}>
+            <Heading>Welcome to GPseries!</Heading>
           </Center>
           <CompetitionGrid
             competitions={competitions}

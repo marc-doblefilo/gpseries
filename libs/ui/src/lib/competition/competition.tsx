@@ -5,7 +5,9 @@ import {
   Container,
   Divider,
   Heading,
+  Link,
   Spinner,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -18,7 +20,10 @@ import {
 } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
 import { useFormatter } from 'next-intl';
-import React from 'react';
+import React, { useState } from 'react';
+
+import { RacesComponent } from './competition-races';
+import { TeamsComponent } from './competition-teams';
 
 type Props = {
   competition: CompetitionDTO;
@@ -31,7 +36,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
   competition,
   isFetching
 }) => {
-  const format = useFormatter();
+  const [state, setState] = useState('races');
 
   if (isFetching) {
     return <Spinner />;
@@ -48,38 +53,38 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
           <VStack>
             <Heading>{competition.name}</Heading>
             <Text>{user.name}</Text>
+            <Stack direction="row" gap={4} paddingTop={5}>
+              <Link
+                fontSize={'sm'}
+                fontWeight={500}
+                _hover={{
+                  textDecoration: 'none'
+                }}
+                onClick={() => setState('races')}
+              >
+                Races
+              </Link>
+              <Link
+                fontSize={'sm'}
+                fontWeight={500}
+                _hover={{
+                  textDecoration: 'none'
+                }}
+                onClick={() => setState('teams')}
+              >
+                Teams
+              </Link>
+            </Stack>
           </VStack>
         </CardHeader>
         <Divider />
         <CardBody>
-          <TableContainer>
-            <Table>
-              <Thead>
-                <Tr>
-                  <Th>Race</Th>
-                  <Th>Date</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {competition.races.map(race => {
-                  return (
-                    <Tr>
-                      <Td>{race.name}</Td>
-                      <Td>
-                        {format.dateTime(new Date(race.date), {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric'
-                        })}
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+          {state === 'races' && (
+            <RacesComponent competition={competition} isFetching={isFetching} />
+          )}
+          {state === 'teams' && (
+            <TeamsComponent competition={competition} isFetching={isFetching} />
+          )}
         </CardBody>
       </Card>
     </Container>
