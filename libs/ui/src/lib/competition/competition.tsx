@@ -8,8 +8,13 @@ import {
   Link,
   Spinner,
   Stack,
+  Tab,
   Table,
   TableContainer,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tbody,
   Td,
   Text,
@@ -53,38 +58,31 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
           <VStack>
             <Heading>{competition.name}</Heading>
             <Text>{user.name}</Text>
-            <Stack direction="row" gap={4} paddingTop={5}>
-              <Link
-                fontSize={'sm'}
-                fontWeight={500}
-                _hover={{
-                  textDecoration: 'none'
-                }}
-                onClick={() => setState('races')}
-              >
-                Races
-              </Link>
-              <Link
-                fontSize={'sm'}
-                fontWeight={500}
-                _hover={{
-                  textDecoration: 'none'
-                }}
-                onClick={() => setState('teams')}
-              >
-                Teams
-              </Link>
-            </Stack>
+            <Stack direction="row" gap={4} paddingTop={5}></Stack>
           </VStack>
         </CardHeader>
         <Divider />
         <CardBody>
-          {state === 'races' && (
-            <RacesComponent competition={competition} isFetching={isFetching} />
-          )}
-          {state === 'teams' && (
-            <TeamsComponent competition={competition} isFetching={isFetching} />
-          )}
+          <Tabs variant="soft-rounded" isFitted>
+            <TabList>
+              <Tab>RACES</Tab>
+              <Tab>TEAMS</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <RacesComponent
+                  competition={competition}
+                  isFetching={isFetching}
+                />
+              </TabPanel>
+              <TabPanel>
+                <TeamsComponent
+                  competition={competition}
+                  isFetching={isFetching}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </CardBody>
       </Card>
     </Container>
