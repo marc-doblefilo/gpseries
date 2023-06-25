@@ -21,6 +21,7 @@ import { GetUsersQuery } from '../../../user/application';
 import { CreateTeamCommand } from '../../application/command/create-team.command';
 import { GetTeamQuery } from '../../application/query/get-team.query';
 import { GetTeamsQuery } from '../../application/query/get-teams.query';
+import { GetTeamsByCompetitionQuery } from '../../application/query/get-teams-by-competition.query';
 
 @ApiBearerAuth()
 @ApiTags('teams')
@@ -76,6 +77,30 @@ export class TeamController {
       const teams = await this.queryBus.execute<GetTeamsQuery, TeamDTO[]>(
         new GetTeamsQuery()
       );
+
+      res.setHeader('X-Total-Count', teams.length);
+
+      return teams;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get('/competition/:id')
+  @ApiResponse({ status: 200, description: 'Teams found' })
+  async findByCompetition(
+    @Param('id') id: string,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    try {
+      const teams = await this.queryBus.execute<
+        GetTeamsByCompetitionQuery,
+        TeamDTO[]
+      >(new GetTeamsByCompetitionQuery(id));
 
       res.setHeader('X-Total-Count', teams.length);
 

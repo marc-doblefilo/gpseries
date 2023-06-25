@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { StoreEventPublisher } from 'event-sourcing-nestjs';
 import { Connection, Model } from 'mongoose';
 
+import { CompetitionId } from '../../../competition/domain';
 import { mongoConnection } from '../../../database/database.provider';
 import { Team, TeamId, TeamRepository } from '../../domain';
 import { TeamMapper } from '../mapper/team.mapper';
@@ -40,6 +41,12 @@ export class TeamMongoRepository implements TeamRepository {
 
   async findAll(): Promise<Team[]> {
     const documents = await this.model.find({});
+
+    return documents.map(TeamMapper.documentToAggregate);
+  }
+
+  async findByCompetition(id: CompetitionId): Promise<Team[]> {
+    const documents = await this.model.find({ competitionId: id.value });
 
     return documents.map(TeamMapper.documentToAggregate);
   }
