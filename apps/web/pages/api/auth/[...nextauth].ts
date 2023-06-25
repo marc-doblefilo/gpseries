@@ -17,6 +17,8 @@ const options: InitOptions = {
   callbacks: {
     session: async (session, user) => {
       // @ts-expect-error: Custom session attributes
+      session.id = user.id;
+      // @ts-expect-error: Custom session attributes
       session.roles = user.roles;
       // @ts-expect-error: Custom session attributes
       session.username = user.username;
@@ -27,6 +29,7 @@ const options: InitOptions = {
       if (isSignIn) {
         token.roles = profile.roles;
         token.username = profile.username;
+        token.id = profile.id;
       }
       return Promise.resolve(token);
     }
@@ -97,6 +100,7 @@ const options: InitOptions = {
           }
 
           return Promise.resolve({
+            id: verify.id,
             name: verify.name,
             username: verify.username,
             roles: verify.roles

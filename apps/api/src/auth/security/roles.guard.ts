@@ -30,6 +30,6 @@ export class RolesGuard extends AuthGuard('jwt') {
   }
 
   private userHasRequiredRoles(user: UserDTO, roles: string[]) {
-    return user.roles.some((role) => roles.includes(role));
+    return user.roles.some(role => roles.includes(role));
   }
 }

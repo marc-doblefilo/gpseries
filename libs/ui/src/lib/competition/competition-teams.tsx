@@ -1,4 +1,10 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
   Spinner,
   Table,
   TableContainer,
@@ -64,23 +70,37 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Teams</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {teams.map(team => {
-            return (
-              <Tr>
-                <Td>{team.name}</Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <Accordion allowToggle>
+      {teams.map(team => (
+        <AccordionItem>
+          <AccordionButton>
+            <Box as="span" flex="1" textAlign="left">
+              {team.name}
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            <TableContainer>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>Drivers</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {team.drivers.map(driver => {
+                    return (
+                      <Tr>
+                        <Td>{driver.name}</Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </AccordionPanel>
+        </AccordionItem>
+      ))}
+    </Accordion>
   );
 };

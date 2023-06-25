@@ -1,4 +1,9 @@
-import { CreateTeamDTO, Role, TeamDTO } from '@gpseries/contracts';
+import {
+  CreateTeamDTO,
+  InternalTeamDTO,
+  Role,
+  TeamDTO
+} from '@gpseries/contracts';
 import { NotFoundError } from '@gpseries/domain';
 import {
   BadRequestException,
@@ -33,7 +38,7 @@ export class TeamController {
   @Post()
   @Roles(Role.Admin)
   @ApiResponse({ status: 201, description: 'Team created' })
-  async create(@Body() dto: CreateTeamDTO): Promise<TeamDTO> {
+  async create(@Body() dto: CreateTeamDTO): Promise<InternalTeamDTO> {
     try {
       return await this.commandBus.execute(
         new CreateTeamCommand(dto.name, dto.ownerId, dto.competitionId)
@@ -53,9 +58,9 @@ export class TeamController {
   @Roles(Role.Admin)
   @ApiResponse({ status: 200, description: 'Team found' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  async findOne(@Param('id') id: string): Promise<TeamDTO> {
+  async findOne(@Param('id') id: string): Promise<InternalTeamDTO> {
     try {
-      return await this.queryBus.execute<GetTeamQuery, TeamDTO>(
+      return await this.queryBus.execute<GetTeamQuery, InternalTeamDTO>(
         new GetTeamQuery(id)
       );
     } catch (e) {
@@ -74,9 +79,10 @@ export class TeamController {
   @ApiResponse({ status: 200, description: 'Teams found' })
   async findAll(@Res({ passthrough: true }) res: Response) {
     try {
-      const teams = await this.queryBus.execute<GetTeamsQuery, TeamDTO[]>(
-        new GetTeamsQuery()
-      );
+      const teams = await this.queryBus.execute<
+        GetTeamsQuery,
+        InternalTeamDTO[]
+      >(new GetTeamsQuery());
 
       res.setHeader('X-Total-Count', teams.length);
 

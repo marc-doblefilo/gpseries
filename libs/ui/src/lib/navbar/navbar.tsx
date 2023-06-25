@@ -9,10 +9,11 @@ import {
   MenuItem,
   MenuList,
   Spacer,
+  Stack,
   Text
 } from '@chakra-ui/react';
 import { Nullable } from '@gpseries/domain';
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import NextLink from 'next/link';
 import { Session } from 'next-auth/client';
@@ -23,9 +24,10 @@ import { useStyles } from '../theme';
 /* eslint-disable-next-line */
 export interface NavbarProps {
   session?: Nullable<Session>;
+  onOpenCreateCompetition: () => void;
 }
 
-export function Navbar({ session }: NavbarProps) {
+export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
   const classes = useStyles();
 
   const getUserName = () => {
@@ -57,16 +59,23 @@ export function Navbar({ session }: NavbarProps) {
           </Link>
         </Box>
         <Spacer />
+        <Stack direction={'row'} spacing={4}>
+          <Box>
+            <Link
+              _hover={{ textDecoration: 'none', fontWeight: 'bold' }}
+              onClick={onOpenCreateCompetition}
+              href="/competition/create"
+            >
+              CREATE COMPETITION
+            </Link>
+          </Box>
+        </Stack>
+        <Spacer />
         <Box paddingRight={6}>
           <Flex alignItems="center" gap="3">
             <Text textColor="white">{getUserName()}</Text>
             <Menu>
-              <MenuButton
-                as={Button}
-                rounded={'full'}
-                cursor={'pointer'}
-                minW={0}
-              >
+              <MenuButton as={Button} rounded={'full'} cursor={'pointer'}>
                 <Avatar size={'md'} name={getUserName()} />
               </MenuButton>
               <MenuList color="black" textColor="white" backgroundColor="black">

@@ -1,7 +1,7 @@
 import {
   AccessTokenInterface,
   JwtPayloadInterface,
-  UserDTO,
+  UserDTO
 } from '@gpseries/contracts';
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
@@ -32,6 +32,7 @@ export class AuthService {
     );
 
     const payload: JwtPayloadInterface = {
+      id: user.id,
       username: user.username,
       roles: user.roles,
       name: user.name
@@ -39,8 +40,8 @@ export class AuthService {
 
     return {
       access_token: this.jwtService.sign(payload, {
-        algorithm: 'HS512',
-      }),
+        algorithm: 'HS512'
+      })
     };
   }
 }

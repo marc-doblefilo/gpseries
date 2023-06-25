@@ -1,4 +1,4 @@
-import { TeamDTO } from '@gpseries/contracts';
+import { InternalTeamDTO } from '@gpseries/contracts';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
@@ -9,7 +9,7 @@ import { GetTeamsQuery } from './get-teams.query';
 export class GetTeamsHandler implements IQueryHandler<GetTeamsQuery> {
   constructor(@Inject(teamRepository) private repository: TeamRepository) {}
 
-  async execute(): Promise<TeamDTO[]> {
+  async execute(): Promise<InternalTeamDTO[]> {
     const teams = await this.repository.findAll();
 
     return teams.map(team => ({

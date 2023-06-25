@@ -1,8 +1,10 @@
+import { useDisclosure } from '@chakra-ui/react';
 import { Nullable } from '@gpseries/domain';
 import { Container, CssBaseline } from '@material-ui/core';
 import { Session, signIn, signOut } from 'next-auth/client';
 import React from 'react';
 
+import { CompetitionWizard } from '../competition';
 import { LogIn } from '../login/login';
 import Navbar from '../navbar/navbar';
 import { useStyles } from '../theme';
@@ -18,6 +20,8 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({
 }) => {
   const classes = useStyles();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const logIn = () => signIn();
   const logOut = () => signOut();
 
@@ -28,7 +32,7 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <Navbar session={session} />
+      <Navbar session={session} onOpenCreateCompetition={onOpen} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>

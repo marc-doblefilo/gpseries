@@ -61,4 +61,10 @@ export class DriverMongoRepository implements DriverRepository {
 
     return DriverMapper.documentToAggregate(document);
   }
+
+  async findAllByTeam(id: TeamId): Promise<Driver[]> {
+    const documents = await this.model.find({ teamId: id.value });
+
+    return documents.map(DriverMapper.documentToAggregate);
+  }
 }

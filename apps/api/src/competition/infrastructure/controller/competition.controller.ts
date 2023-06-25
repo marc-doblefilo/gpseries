@@ -43,7 +43,6 @@ export class CompetitionController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
   @Post()
-  @Roles(Role.Admin)
   @ApiResponse({ status: 201, description: 'Competition created' })
   async create(@Body() dto: CreateCompetitionDTO): Promise<CompetitionDTO> {
     try {

@@ -8,6 +8,7 @@ export interface DriverRepository {
   findByNameAndTeam(name: Name, teamId: TeamId): Promise<Nullable<Driver>>;
   find(id: DriverId): Promise<Nullable<Driver>>;
   findAll(): Promise<Driver[]>;
+  findAllByTeam(id: TeamId): Promise<Driver[]>;
 }
 
 export const driverRepository = 'driverRepository';

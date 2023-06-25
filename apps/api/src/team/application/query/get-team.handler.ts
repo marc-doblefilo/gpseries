@@ -1,4 +1,4 @@
-import { TeamDTO } from '@gpseries/contracts';
+import { InternalTeamDTO } from '@gpseries/contracts';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
@@ -18,7 +18,7 @@ export class GetTeamHandler implements IQueryHandler<GetTeamQuery> {
     this.teamFinder = new TeamFinder(repository);
   }
 
-  async execute(query: GetTeamQuery): Promise<TeamDTO> {
+  async execute(query: GetTeamQuery): Promise<InternalTeamDTO> {
     const id = TeamId.fromString(query.id);
     const team = await this.teamFinder.findOrThrow(id);
 
@@ -27,6 +27,6 @@ export class GetTeamHandler implements IQueryHandler<GetTeamQuery> {
       name: team.name.value,
       ownerId: team.ownerId.value,
       competitionId: team.competitionId.value
-    } as TeamDTO;
+    } as InternalTeamDTO;
   }
 }
