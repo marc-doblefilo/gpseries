@@ -45,17 +45,34 @@ export const CompetitionWizard: React.FunctionComponent = () => {
 
   const currentUserId = session!.id;
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState<string>();
   const [description, setDescription] = useState('');
 
   const competitionValues: CreateCompetitionDTO = {
     ownerId: currentUserId,
-    name,
-    description
+    name: !name ? '' : name.trim(),
+    description: description.trim()
   };
 
   const handleNameChange = e => setName(e.target.value);
-  const isNameError = name === '' || name.length > 20;
+  const isNameEmpty = () => {
+    if (!name) {
+      return true;
+    }
+
+    return false;
+  };
+  const isNameError = () => {
+    if (!name) {
+      return false;
+    }
+
+    if (name.length > 20) {
+      return true;
+    }
+
+    return false;
+  };
   const handleDescriptionChange = e => setDescription(e.target.value);
 
   const handleCreateCompetition = async () => {
@@ -76,13 +93,11 @@ export const CompetitionWizard: React.FunctionComponent = () => {
         <CardBody>
           <Center>
             <Stack direction={'column'}>
-              <FormControl isInvalid={isNameError}>
+              <FormControl isInvalid={isNameError()} isRequired>
                 <FormLabel>Name</FormLabel>
                 <Input value={name} onChange={handleNameChange} />
                 <FormErrorMessage>
-                  {name === ''
-                    ? 'Name is required'
-                    : 'Name must contain equal or less than 20 characters'}
+                  {'Name can not contain more than 20 characters'}
                 </FormErrorMessage>
               </FormControl>
               <FormControl>
@@ -95,7 +110,7 @@ export const CompetitionWizard: React.FunctionComponent = () => {
         <CardFooter justify="flex-end">
           <Button
             onClick={async () => await handleCreateCompetition()}
-            isDisabled={isNameError}
+            isDisabled={isNameError() || isNameEmpty()}
           >
             Submit
           </Button>
