@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Flex,
+  Image,
   Link,
   Menu,
   MenuButton,
@@ -45,17 +46,14 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
   return (
     <AppBar position="absolute" className={clsx(classes.appBar)}>
       <Flex minWidth="max-content" alignItems="center" gap="2">
-        <Box p={4}>
+        <Box p={1} paddingLeft={4}>
           <Link as={NextLink} href="/" style={{ textDecoration: 'none' }}>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              className={classes.title}
-            >
-              GPseries
-            </Typography>
+            <Image
+              boxSize="70px"
+              objectFit="inherit"
+              src="/gpseries-logo-black.svg"
+              alt="GPseries logo"
+            />
           </Link>
         </Box>
         <Spacer />

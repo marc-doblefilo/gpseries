@@ -5,7 +5,6 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import { useSession } from 'next-auth/client';
-import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useState } from 'react';
 
 export default function Index() {
@@ -31,7 +30,7 @@ export default function Index() {
   }, [loading]);
 
   return (
-    <Layout session={session}>
+    <Layout session={session} loading={loading}>
       <Container maxWidth={false}>
         <Box>
           <Center paddingBottom={4}>

@@ -1,10 +1,13 @@
-import { useDisclosure } from '@chakra-ui/react';
+import {
+  Container as ChakraContainer,
+  Image,
+  useDisclosure
+} from '@chakra-ui/react';
 import { Nullable } from '@gpseries/domain';
 import { Container, CssBaseline } from '@material-ui/core';
 import { Session, signIn, signOut } from 'next-auth/client';
 import React from 'react';
 
-import { CompetitionWizard } from '../competition';
 import { LogIn } from '../login/login';
 import Navbar from '../navbar/navbar';
 import { useStyles } from '../theme';
@@ -12,11 +15,13 @@ import { useStyles } from '../theme';
 export interface LayoutProps {
   children;
   session?: Nullable<Session>;
+  loading?: Nullable<boolean>;
 }
 
 export const Layout: React.FunctionComponent<LayoutProps> = ({
   session,
-  children
+  children,
+  loading
 }) => {
   const classes = useStyles();
 
@@ -25,7 +30,23 @@ export const Layout: React.FunctionComponent<LayoutProps> = ({
   const logIn = () => signIn();
   const logOut = () => signOut();
 
-  if (!session) {
+  if (loading === true) {
+    <ChakraContainer
+      maxWidth={'400px'}
+      marginTop={'100px'}
+      display={'flex'}
+      flexDirection={'column'}
+      alignItems={'center'}
+      textAlign={'center'}
+    >
+      <Image
+        boxSize="150px"
+        objectFit="cover"
+        src="/gpseries-logo-white.svg"
+        alt="GPseries logo"
+      />
+    </ChakraContainer>;
+  } else if (!session) {
     return <LogIn logIn={logIn} logOut={logOut} session={session} />;
   }
 

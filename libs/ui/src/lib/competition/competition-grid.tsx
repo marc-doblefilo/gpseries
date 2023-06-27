@@ -1,4 +1,4 @@
-import { Grid, GridItem, Spinner, Text } from '@chakra-ui/react';
+import { Container, Grid, GridItem, Image, Text } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
 import React, { useEffect } from 'react';
 
@@ -19,11 +19,27 @@ export const CompetitionGrid: React.FunctionComponent<Props> = ({
     fetchCompetitionGrid();
   }, [fetchCompetitionGrid]);
 
-  if (isFetching) {
-    return <Spinner />;
-  }
+  if (isFetching || !competitions) {
+    return (
+      <Container
+        maxWidth={'400px'}
+        marginTop={'100px'}
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={'center'}
+        textAlign={'center'}
+      >
+        <Image
+          boxSize="150px"
+          objectFit="inherit"
+          src="/gpseries-logo-white.svg"
+          alt="GPseries logo"
+        />
+      </Container>
+    );
+  } else if (competitions?.length === 0) {
+    console.info(`${isFetching} -> ${competitions?.length}`);
 
-  if (competitions?.length === 0 || !competitions) {
     return <Text>No competitions were found</Text>;
   }
 
