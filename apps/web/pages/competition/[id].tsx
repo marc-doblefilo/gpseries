@@ -70,6 +70,7 @@ export default function Competition() {
         user={user}
         competition={competition}
         isFetching={isFetching}
+        session={session!}
       />
     </Layout>
   );

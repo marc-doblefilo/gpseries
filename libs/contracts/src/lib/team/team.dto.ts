@@ -13,5 +13,6 @@ class DriverDTO {
 export class TeamDTO {
   id: string;
   name: string;
+  ownerId: string;
   drivers: DriverDTO[];
 }

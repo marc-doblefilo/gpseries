@@ -9,7 +9,8 @@ import { GetTeamsByCompetitionQuery } from './get-teams-by-competition.query';
 
 @QueryHandler(GetTeamsByCompetitionQuery)
 export class GetTeamsByCompetitionHandler
-  implements IQueryHandler<GetTeamsByCompetitionQuery> {
+  implements IQueryHandler<GetTeamsByCompetitionQuery>
+{
   constructor(
     @Inject(teamRepository) private repository: TeamRepository,
     @Inject(driverRepository) private driverRepository: DriverRepository
@@ -27,6 +28,7 @@ export class GetTeamsByCompetitionHandler
         return {
           id: team.id.value,
           name: team.name.value,
+          ownerId: team.ownerId.value,
           drivers: drivers.map(driver => ({
             id: driver.id.value,
             name: driver.name.value

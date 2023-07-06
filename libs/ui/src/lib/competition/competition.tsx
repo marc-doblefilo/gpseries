@@ -5,27 +5,19 @@ import {
   Container,
   Divider,
   Heading,
-  Link,
   Spinner,
   Stack,
   Tab,
-  Table,
-  TableContainer,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   VStack
 } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
-import { useFormatter } from 'next-intl';
-import React, { useState } from 'react';
+import { Session } from 'next-auth/client';
+import React from 'react';
 
 import { RacesComponent } from './competition-races';
 import { TeamsComponent } from './competition-teams';
@@ -34,15 +26,15 @@ type Props = {
   competition: CompetitionDTO;
   user: UserDTO;
   isFetching: boolean;
+  session: Session;
 };
 
 export const CompetitionComponent: React.FunctionComponent<Props> = ({
   user,
   competition,
-  isFetching
+  isFetching,
+  session
 }) => {
-  const [state, setState] = useState('races');
-
   if (isFetching) {
     return <Spinner />;
   }
@@ -79,6 +71,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
                 <TeamsComponent
                   competition={competition}
                   isFetching={isFetching}
+                  session={session}
                 />
               </TabPanel>
             </TabPanels>
