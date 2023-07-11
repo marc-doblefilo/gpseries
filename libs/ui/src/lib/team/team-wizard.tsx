@@ -210,15 +210,17 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                   />
-                                  <Button
-                                    margin="normal"
-                                    type="button"
-                                    colorScheme="red"
-                                    variant="outline"
-                                    onClick={() => remove(index)}
-                                  >
-                                    X
-                                  </Button>
+                                  {index !== 0 && (
+                                    <Button
+                                      margin="normal"
+                                      type="button"
+                                      colorScheme="red"
+                                      variant="outline"
+                                      onClick={() => remove(index)}
+                                    >
+                                      X
+                                    </Button>
+                                  )}
                                 </HStack>
                               );
                             })}
