@@ -4,10 +4,12 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Badge,
   Box,
   Button,
   Center,
   Container,
+  HStack,
   Spinner,
   Table,
   TableContainer,
@@ -123,9 +125,12 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
         {teams.map(team => (
           <AccordionItem>
             <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                {team.name}
-              </Box>
+              <HStack as="span" flex="1" textAlign="left">
+                <Text>{team.name}</Text>
+                {team.ownerId === session?.id && (
+                  <Badge colorScheme="red">YOUR TEAM</Badge>
+                )}
+              </HStack>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
