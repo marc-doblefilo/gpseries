@@ -38,8 +38,6 @@ export const CompetitionGrid: React.FunctionComponent<Props> = ({
       </Container>
     );
   } else if (competitions?.length === 0) {
-    console.info(`${isFetching} -> ${competitions?.length}`);
-
     return <Text>No competitions were found</Text>;
   }
 

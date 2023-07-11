@@ -36,13 +36,19 @@ export class TeamController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
   @Post()
-  @Roles(Role.Admin)
   @ApiResponse({ status: 201, description: 'Team created' })
   async create(@Body() dto: CreateTeamDTO): Promise<InternalTeamDTO> {
     try {
-      return await this.commandBus.execute(
+      const team = await this.commandBus.execute(
         new CreateTeamCommand(dto.name, dto.ownerId, dto.competitionId)
       );
+
+      return {
+        id: team.id.value,
+        name: team.name.value,
+        ownerId: team.ownerId.value,
+        competitionId: team.competitionId.value
+      };
     } catch (e) {
       if (e instanceof NotFoundError) {
         throw new NotFoundException(e.message);

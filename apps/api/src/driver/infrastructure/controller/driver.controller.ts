@@ -15,6 +15,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
+import { AppLoggerMiddleware } from '../../../app.middleware';
 import { Roles } from '../../../auth/security/roles.decorator';
 import { CreateDriverCommand, GetDriversQuery } from '../../application';
 
@@ -26,8 +27,7 @@ export class DriverController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
   @Post()
-  @Roles(Role.Admin)
-  @ApiResponse({ status: 201, description: 'Competition created' })
+  @ApiResponse({ status: 201, description: 'Driver created' })
   async create(@Body() dto: CreateDriverDTO): Promise<DriverDTO> {
     try {
       const driver = await this.commandBus.execute(

@@ -89,7 +89,6 @@ export class CompetitionController {
     @Body() dto: EditCompetitionDTO
   ): Promise<CompetitionDTO> {
     try {
-      console.info(dto);
       return await this.commandBus.execute(
         new UpdateCompetitionCommand(id, dto.name, dto.description, dto.races)
       );
