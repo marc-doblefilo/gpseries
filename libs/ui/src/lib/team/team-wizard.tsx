@@ -231,8 +231,6 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
                             >
                               ADD
                             </Button>
-                            <Divider />
-                            <Text>{JSON.stringify(values, null, 2)}</Text>
                           </Container>
                         )}
                       </FieldArray>
