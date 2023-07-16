@@ -3,10 +3,10 @@ export class CompetitionDTO {
   ownerId: string;
   name: string;
   description: string;
-  races: Array<Race>;
+  races: Array<RaceDTO>;
 }
 
-class Race {
+export class RaceDTO {
   id: string;
   name: string;
   date: Date;

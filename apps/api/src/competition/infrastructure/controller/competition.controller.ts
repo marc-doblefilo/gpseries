@@ -2,8 +2,10 @@ import {
   CompetitionDTO,
   CreateCompetitionDTO,
   EditCompetitionDTO,
+  RaceDTO,
   Role
 } from '@gpseries/contracts';
+import { NotFoundError, Nullable } from '@gpseries/domain';
 import {
   BadRequestException,
   Body,
@@ -33,6 +35,7 @@ import {
   UpdateCompetitionCommand
 } from '../../application';
 import { GetCompetitionsQuery } from '../../application/query/get-competitions.query';
+import { GetNextRaceQuery } from '../../application/query/get-next-race.query';
 import { CompetitionNotFound } from '../../domain';
 
 @ApiBearerAuth()
@@ -112,8 +115,26 @@ export class CompetitionController {
         new GetCompetitionQuery(id)
       );
     } catch (e) {
-      if (e instanceof CompetitionNotFound) {
+      if (e instanceof NotFoundError) {
         throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get(':id/upcoming-race')
+  @ApiResponse({ status: 200, description: 'Next race found' })
+  async nextRace(@Param('id') id: string): Promise<Nullable<RaceDTO>> {
+    try {
+      return this.queryBus.execute<GetNextRaceQuery, RaceDTO>(
+        new GetNextRaceQuery(id)
+      );
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e);
       } else if (e instanceof Error) {
         throw new BadRequestException(e.message);
       } else {
