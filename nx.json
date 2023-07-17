@@ -59,5 +59,15 @@
         "projects": "dependencies"
       }
     ]
+  },
+  "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true
+      },
+      "library": {
+        "unitTestRunner": "jest"
+      }
+    }
   }
 }

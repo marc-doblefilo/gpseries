@@ -1,33 +1,20 @@
 import { Center, Heading } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
+import { getCompetitions } from '@gpseries/hooks';
 import { CompetitionGrid, Layout } from '@gpseries/ui';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/client';
 import React, { useCallback, useEffect, useState } from 'react';
 
-export default function Index() {
+type PostPageProps = {
+  competitions: CompetitionDTO[];
+};
+
+export default function Index(props: PostPageProps) {
   const [session, loading] = useSession();
-  const [competitions, setCompetitions] = useState<CompetitionDTO[]>();
-  const [isFetching, setIsFetching] = useState(false);
-
-  const fetchCompetitions = useCallback(() => {
-    setIsFetching(true);
-    axios
-      .get(`http://localhost:3333/api/competitions`)
-      .then(response => {
-        setCompetitions(response.data);
-        setIsFetching(false);
-      })
-      .catch(() => {
-        console.error(true);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (loading) return;
-  }, [loading]);
 
   return (
     <Layout session={session} loading={loading}>
@@ -37,9 +24,8 @@ export default function Index() {
             <Heading>Welcome to GPseries!</Heading>
           </Center>
           <CompetitionGrid
-            competitions={competitions}
-            fetchCompetitionGrid={fetchCompetitions}
-            isFetching={isFetching}
+            competitions={props.competitions}
+            isFetching={false}
           />
         </Box>
       </Container>
@@ -47,10 +33,20 @@ export default function Index() {
   );
 }
 
-export function getStaticProps({ locale }) {
+export const getServerSideProps: GetServerSideProps<
+  PostPageProps
+> = async () => {
+  const [competitions, error] = (await getCompetitions()) ?? null;
+
+  if (error) {
+    return {
+      notFound: true
+    };
+  }
+
   return {
     props: {
-      messages: require(`../locales/${locale}.json`)
+      competitions
     }
   };
-}
+};

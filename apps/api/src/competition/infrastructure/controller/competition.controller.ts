@@ -127,14 +127,15 @@ export class CompetitionController {
 
   @Get(':id/upcoming-race')
   @ApiResponse({ status: 200, description: 'Next race found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
   async nextRace(@Param('id') id: string): Promise<Nullable<RaceDTO>> {
     try {
-      return this.queryBus.execute<GetNextRaceQuery, RaceDTO>(
+      return await this.queryBus.execute<GetNextRaceQuery, RaceDTO>(
         new GetNextRaceQuery(id)
       );
     } catch (e) {
       if (e instanceof NotFoundError) {
-        throw new NotFoundException(e);
+        throw new NotFoundException(e.message);
       } else if (e instanceof Error) {
         throw new BadRequestException(e.message);
       } else {

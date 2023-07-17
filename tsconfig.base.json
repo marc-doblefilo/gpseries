@@ -18,6 +18,7 @@
     "paths": {
       "@gpseries/contracts": ["libs/contracts/src/index.ts"],
       "@gpseries/domain": ["libs/domain/src/index.ts"],
+      "@gpseries/hooks": ["libs/hooks/src/index.ts"],
       "@gpseries/ui": ["libs/ui/src/index.ts"]
     }
   },

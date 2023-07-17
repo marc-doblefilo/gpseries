@@ -6,19 +6,13 @@ import { CompetitionCard } from './competition-card';
 
 type Props = {
   competitions?: CompetitionDTO[];
-  fetchCompetitionGrid(): void;
   isFetching: boolean;
 };
 
 export const CompetitionGrid: React.FunctionComponent<Props> = ({
   competitions,
-  fetchCompetitionGrid,
   isFetching
 }) => {
-  useEffect(() => {
-    fetchCompetitionGrid();
-  }, [fetchCompetitionGrid]);
-
   if (isFetching || !competitions) {
     return (
       <Container

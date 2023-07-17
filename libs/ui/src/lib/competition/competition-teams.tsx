@@ -5,7 +5,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Badge,
-  Box,
   Button,
   Center,
   Container,
@@ -23,13 +22,14 @@ import {
   useToast
 } from '@chakra-ui/react';
 import { CompetitionDTO, TeamDTO } from '@gpseries/contracts';
-import { Add } from '@material-ui/icons';
+import { Add, AssignmentInd } from '@material-ui/icons';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { TeamWizard } from '../team';
+import { TeamManager } from '../team/team-manager';
 
 type Props = {
   competition: CompetitionDTO;
@@ -48,7 +48,16 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
   const [teams, setTeams] = useState<TeamDTO[]>();
   const [isFetchingTeams, setIsFetchingTeams] = useState(false);
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenTeamWizard,
+    onOpen: onOpenTeamWizard,
+    onClose: onCloseTeamWizard
+  } = useDisclosure();
+  const {
+    isOpen: isOpenTeamManager,
+    onOpen: onOpenTeamManager,
+    onClose: onCloseTeamManager
+  } = useDisclosure();
 
   const getIsOwner = useCallback(() => {
     const getId = () => {
@@ -108,14 +117,35 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
 
   return (
     <Container>
-      <TeamWizard isOpen={isOpen} onClose={onClose} competition={competition} />
-      {isOwner ? undefined : (
+      <TeamWizard
+        isOpen={isOpenTeamWizard}
+        onClose={onCloseTeamWizard}
+        competition={competition}
+      />
+      <TeamManager
+        isOpen={isOpenTeamManager}
+        onClose={onCloseTeamManager}
+        competition={competition}
+        team={teams.filter(team => team.ownerId === session?.id)[0]}
+      />
+      {isOwner ? (
+        <Center paddingBottom={3}>
+          <Button
+            colorScheme="teal"
+            leftIcon={<AssignmentInd />}
+            size="sm"
+            onClick={onOpenTeamManager}
+          >
+            MANAGE YOUR TEAM
+          </Button>
+        </Center>
+      ) : (
         <Center paddingBottom={3}>
           <Button
             colorScheme="teal"
             leftIcon={<Add />}
             size="sm"
-            onClick={onOpen}
+            onClick={onOpenTeamWizard}
           >
             CREATE TEAM
           </Button>
@@ -128,7 +158,7 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
               <HStack as="span" flex="1" textAlign="left">
                 <Text>{team.name}</Text>
                 {team.ownerId === session?.id && (
-                  <Badge colorScheme="red">YOUR TEAM</Badge>
+                  <Badge colorScheme="teal">YOUR TEAM</Badge>
                 )}
               </HStack>
               <AccordionIcon />
