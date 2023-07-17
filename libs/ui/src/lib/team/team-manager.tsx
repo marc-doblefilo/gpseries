@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Text,
   useToast,
   VStack
@@ -20,33 +21,14 @@ import {
   CompetitionDTO,
   CreateDriverDTO,
   CreateTeamDTO,
+  RaceDTO,
   TeamDTO
 } from '@gpseries/contracts';
+import { getUpcomingRace } from '@gpseries/hooks';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Session, useSession } from 'next-auth/client';
-import React, { useState } from 'react';
-
-export async function getNextRace(
-  team: CreateTeamDTO,
-  session: Session
-): Promise<TeamDTO | undefined> {
-  if (session) {
-    const response = await axios.post(
-      `http://localhost:3333/api/teams`,
-      JSON.stringify(team),
-      {
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    return response.data;
-  }
-
-  return;
-}
+import React, { useCallback, useEffect, useState } from 'react';
 
 export async function createDriver(driver: CreateDriverDTO, session: Session) {
   if (session) {
@@ -83,10 +65,48 @@ export const TeamManager: React.FunctionComponent<Props> = ({
   team
 }) => {
   const router = useRouter();
-  const [session, loading] = useSession();
+  const toast = useToast();
+
+  const [session] = useSession();
+  const [upcomingRace, setUpcomingRace] = useState<RaceDTO>();
+  const [isFetching, setIsFetching] = useState(false);
 
   const currentUserId = session!.id;
   const competitionId = competition.id;
+
+  const fetchUpcomingRace = useCallback(() => {
+    setIsFetching(true);
+    if (!router.isReady) return;
+    getUpcomingRace(router.query.id as string).then(response => {
+      const [data, error] = response;
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        });
+        router.back();
+      }
+
+      setUpcomingRace(data);
+      setIsFetching(false);
+    });
+  }, [router, toast]);
+
+  useEffect(() => {
+    fetchUpcomingRace();
+  }, [fetchUpcomingRace]);
+
+  if (!upcomingRace || isFetching) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
