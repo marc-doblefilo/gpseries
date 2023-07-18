@@ -1,5 +1,6 @@
 import {
   CreateInscriptionDTO,
+  GetInscriptionDTO,
   InscriptionDTO,
   Role
 } from '@gpseries/contracts';
@@ -9,15 +10,18 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
   NotFoundException,
   Post,
+  Query,
   UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from '../../../auth/security/roles.decorator';
 import { CreateInscriptionCommand } from '../../application/command/create-inscription.command';
+import { GetInscriptionQuery } from '../../application/query/get-inscription.query';
 
 @ApiBearerAuth()
 @ApiTags('inscriptions')
@@ -43,6 +47,28 @@ export class InscriptionController {
         driverId: inscription.driverId.value,
         raceId: inscription.raceId.value
       } as InscriptionDTO;
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get()
+  @ApiQuery({ type: GetInscriptionDTO })
+  @ApiResponse({ status: 200, description: 'Inscription found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async getInscription(
+    @Query() query: GetInscriptionDTO
+  ): Promise<InscriptionDTO> {
+    try {
+      return this.queryBus.execute(
+        new GetInscriptionQuery(query.driverId, query.raceId)
+      );
     } catch (e) {
       if (e instanceof NotFoundError) {
         throw new NotFoundException(e.message);

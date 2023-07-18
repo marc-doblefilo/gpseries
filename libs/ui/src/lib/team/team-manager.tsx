@@ -14,38 +14,21 @@ import {
   ModalOverlay,
   Spinner,
   Text,
+  Tooltip,
   useToast,
   VStack
 } from '@chakra-ui/react';
 import {
   CompetitionDTO,
-  CreateDriverDTO,
-  CreateTeamDTO,
+  InscriptionDTO,
   RaceDTO,
   TeamDTO
 } from '@gpseries/contracts';
-import { getUpcomingRace } from '@gpseries/hooks';
-import axios from 'axios';
+import { getInscription, getUpcomingRace } from '@gpseries/hooks';
+import Warning from '@material-ui/icons/Warning';
 import { useRouter } from 'next/router';
-import { Session, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import React, { useCallback, useEffect, useState } from 'react';
-
-export async function createDriver(driver: CreateDriverDTO, session: Session) {
-  if (session) {
-    return await axios.post(
-      `http://localhost:3333/api/drivers`,
-      JSON.stringify(driver),
-      {
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-  }
-
-  return;
-}
 
 type Props = {
   competition: CompetitionDTO;
@@ -69,10 +52,8 @@ export const TeamManager: React.FunctionComponent<Props> = ({
 
   const [session] = useSession();
   const [upcomingRace, setUpcomingRace] = useState<RaceDTO>();
+  const [inscriptions, setInscriptions] = useState<InscriptionDTO[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-
-  const currentUserId = session!.id;
-  const competitionId = competition.id;
 
   const fetchUpcomingRace = useCallback(() => {
     setIsFetching(true);
@@ -92,6 +73,16 @@ export const TeamManager: React.FunctionComponent<Props> = ({
       }
 
       setUpcomingRace(data);
+      team.drivers.forEach(driver => {
+        getInscription(driver.id, data.id).then(response => {
+          const [data] = response;
+
+          if (data) {
+            setInscriptions([...inscriptions, data]);
+          }
+        });
+      });
+
       setIsFetching(false);
     });
   }, [router, toast]);
@@ -123,12 +114,19 @@ export const TeamManager: React.FunctionComponent<Props> = ({
               <Accordion allowToggle>
                 {team.drivers.map(driver => (
                   <AccordionItem>
-                    <AccordionButton>
+                    <AccordionButton gap={2}>
                       <Text>{driver.name}</Text>
+                      {!inscriptions.some(
+                        inscription => inscription.driverId === driver.id
+                      ) && (
+                        <Tooltip label="This driver is not inscribed for next race">
+                          <Warning style={{ color: 'orange' }} />
+                        </Tooltip>
+                      )}
                       <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel>
-                      <Button>INSCRIBE FOR NEXT RACE</Button>
+                      <Button>INSCRIBE</Button>
                     </AccordionPanel>
                   </AccordionItem>
                 ))}
