@@ -1,6 +1,7 @@
 import {
   Button,
   Center,
+  Container,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -93,6 +94,11 @@ export const TeamManager: React.FunctionComponent<Props> = ({
       }
 
       setUpcomingRace(data);
+
+      if (!team) {
+        return;
+      }
+
       team.drivers.forEach(driver => {
         getInscription(driver.id, data.id).then(response => {
           const [data] = response;
@@ -112,7 +118,11 @@ export const TeamManager: React.FunctionComponent<Props> = ({
     fetchUpcomingRaceAndInscriptions();
   }, [fetchUpcomingRaceAndInscriptions]);
 
-  if (!upcomingRace || isFetching) {
+  if (!team) {
+    return <Container></Container>;
+  }
+
+  if (isFetching) {
     return (
       <Center>
         <Spinner />
@@ -140,43 +150,48 @@ export const TeamManager: React.FunctionComponent<Props> = ({
                     {team.drivers.map(driver => (
                       <Tr>
                         <Th>{driver.name}</Th>
-                        {!inscriptions.some(
-                          inscription => inscription.driverId === driver.id
-                        ) && (
-                          <Th>
-                            <Tooltip label="This driver is not inscribed for next race">
-                              <Warning style={{ color: 'orange' }} />
-                            </Tooltip>
-                          </Th>
-                        )}
-                        {!inscriptions.some(
-                          inscription => inscription.driverId === driver.id
-                        ) && (
-                          <Th>
-                            <Button
-                              size="sm"
-                              onClick={async () => {
-                                const inscription =
-                                  await handleCreateInscription({
-                                    driverId: driver.id,
-                                    raceId: upcomingRace.id
+                        {upcomingRace &&
+                          !inscriptions.some(
+                            inscription => inscription.driverId === driver.id
+                          ) && (
+                            <Th>
+                              <Tooltip label="This driver is not inscribed for next race">
+                                <Warning style={{ color: 'orange' }} />
+                              </Tooltip>
+                            </Th>
+                          )}
+                        {upcomingRace &&
+                          !inscriptions.some(
+                            inscription => inscription.driverId === driver.id
+                          ) && (
+                            <Th>
+                              <Button
+                                size="sm"
+                                onClick={async () => {
+                                  const inscription =
+                                    await handleCreateInscription({
+                                      driverId: driver.id,
+                                      raceId: upcomingRace.id
+                                    });
+
+                                  toast({
+                                    title: `${driver.name} has been inscribed`,
+                                    description: `${driver.name} is succesfully inscribed for ${upcomingRace.name} race!`,
+                                    status: 'success',
+                                    duration: 4000,
+                                    isClosable: true
                                   });
 
-                                toast({
-                                  title: `${driver.name} has been inscribed`,
-                                  description: `${driver.name} is succesfully inscribed for ${upcomingRace.name} race!`,
-                                  status: 'success',
-                                  duration: 4000,
-                                  isClosable: true
-                                });
-
-                                setInscriptions([...inscriptions, inscription]);
-                              }}
-                            >
-                              INSCRIBE
-                            </Button>
-                          </Th>
-                        )}
+                                  setInscriptions([
+                                    ...inscriptions,
+                                    inscription
+                                  ]);
+                                }}
+                              >
+                                INSCRIBE
+                              </Button>
+                            </Th>
+                          )}
                       </Tr>
                     ))}
                   </Tbody>
