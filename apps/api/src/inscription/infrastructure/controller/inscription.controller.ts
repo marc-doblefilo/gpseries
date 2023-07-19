@@ -17,7 +17,13 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 
 import { Roles } from '../../../auth/security/roles.decorator';
 import { CreateInscriptionCommand } from '../../application/command/create-inscription.command';
@@ -31,7 +37,6 @@ export class InscriptionController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
   @Post()
-  @Roles(Role.Admin)
   @ApiResponse({ status: 201, description: 'Inscription created' })
   async create(@Body() dto: CreateInscriptionDTO): Promise<InscriptionDTO> {
     try {
@@ -59,7 +64,8 @@ export class InscriptionController {
   }
 
   @Get()
-  @ApiQuery({ type: GetInscriptionDTO })
+  @ApiParam({ name: 'driverId', type: String })
+  @ApiParam({ name: 'raceId', type: String })
   @ApiResponse({ status: 200, description: 'Inscription found' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async getInscription(

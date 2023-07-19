@@ -25,7 +25,8 @@ import { CreateInscriptionCommand } from './create-inscription.command';
 
 @CommandHandler(CreateInscriptionCommand)
 export class CreateInscriptionHandler
-  implements ICommandHandler<CreateInscriptionCommand> {
+  implements ICommandHandler<CreateInscriptionCommand>
+{
   private readonly driverFinder: DriverFinder;
   constructor(
     @Inject(inscriptionRepository) private repository: InscriptionRepository,
@@ -52,7 +53,7 @@ export class CreateInscriptionHandler
     const competition = await this.competitionRepository.findByRace(raceId);
 
     if (!competition) {
-      CompetitionNotFound.withRace(raceId);
+      throw CompetitionNotFound.withRace(raceId);
     }
 
     const inscriptionId = InscriptionId.generate();

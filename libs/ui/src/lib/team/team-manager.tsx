@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Button,
   Center,
   Modal,
@@ -13,18 +8,28 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Table,
+  TableContainer,
+  Tbody,
   Text,
+  Th,
   Tooltip,
+  Tr,
   useToast,
   VStack
 } from '@chakra-ui/react';
 import {
   CompetitionDTO,
+  CreateInscriptionDTO,
   InscriptionDTO,
   RaceDTO,
   TeamDTO
 } from '@gpseries/contracts';
-import { getInscription, getUpcomingRace } from '@gpseries/hooks';
+import {
+  createInscription,
+  getInscription,
+  getUpcomingRace
+} from '@gpseries/hooks';
 import Warning from '@material-ui/icons/Warning';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
@@ -37,10 +42,6 @@ type Props = {
   onClose: () => void;
 };
 
-type CreateDriversDTO = {
-  name: string;
-}[];
-
 export const TeamManager: React.FunctionComponent<Props> = ({
   competition,
   isOpen,
@@ -50,12 +51,31 @@ export const TeamManager: React.FunctionComponent<Props> = ({
   const router = useRouter();
   const toast = useToast();
 
-  const [session] = useSession();
+  const [, loading] = useSession();
   const [upcomingRace, setUpcomingRace] = useState<RaceDTO>();
   const [inscriptions, setInscriptions] = useState<InscriptionDTO[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
-  const fetchUpcomingRace = useCallback(() => {
+  const handleCreateInscription = async (dto: CreateInscriptionDTO) => {
+    if (!loading) {
+      const [data, error] = await createInscription(dto);
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        });
+        return;
+      }
+
+      return data;
+    }
+  };
+
+  const fetchUpcomingRaceAndInscriptions = useCallback(() => {
     setIsFetching(true);
     if (!router.isReady) return;
     getUpcomingRace(router.query.id as string).then(response => {
@@ -78,18 +98,19 @@ export const TeamManager: React.FunctionComponent<Props> = ({
           const [data] = response;
 
           if (data) {
-            setInscriptions([...inscriptions, data]);
+            const inscription = data as InscriptionDTO;
+            inscriptions.push(inscription);
           }
         });
       });
 
       setIsFetching(false);
     });
-  }, [router, toast]);
+  }, [router, toast, inscriptions, team]);
 
   useEffect(() => {
-    fetchUpcomingRace();
-  }, [fetchUpcomingRace]);
+    fetchUpcomingRaceAndInscriptions();
+  }, [fetchUpcomingRaceAndInscriptions]);
 
   if (!upcomingRace || isFetching) {
     return (
@@ -111,26 +132,46 @@ export const TeamManager: React.FunctionComponent<Props> = ({
               <Text size="2xl" as="b">
                 Drivers
               </Text>
-              <Accordion allowToggle>
-                {team.drivers.map(driver => (
-                  <AccordionItem>
-                    <AccordionButton gap={2}>
-                      <Text>{driver.name}</Text>
-                      {!inscriptions.some(
-                        inscription => inscription.driverId === driver.id
-                      ) && (
-                        <Tooltip label="This driver is not inscribed for next race">
-                          <Warning style={{ color: 'orange' }} />
-                        </Tooltip>
-                      )}
-                      <AccordionIcon />
-                    </AccordionButton>
-                    <AccordionPanel>
-                      <Button>INSCRIBE</Button>
-                    </AccordionPanel>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              <TableContainer>
+                <Table>
+                  <Tbody>
+                    {team.drivers.map(driver => (
+                      <Tr>
+                        <Th>{driver.name}</Th>
+                        {!inscriptions.some(
+                          inscription => inscription.driverId === driver.id
+                        ) && (
+                          <Th>
+                            <Tooltip label="This driver is not inscribed for next race">
+                              <Warning style={{ color: 'orange' }} />
+                            </Tooltip>
+                          </Th>
+                        )}
+                        {!inscriptions.some(
+                          inscription => inscription.driverId === driver.id
+                        ) && (
+                          <Th>
+                            <Button
+                              size="sm"
+                              onClick={async () => {
+                                const inscription =
+                                  await handleCreateInscription({
+                                    driverId: driver.id,
+                                    raceId: upcomingRace.id
+                                  });
+
+                                setInscriptions([...inscriptions, inscription]);
+                              }}
+                            >
+                              INSCRIBE
+                            </Button>
+                          </Th>
+                        )}
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
             </VStack>
           </Center>
         </ModalBody>

@@ -40,7 +40,6 @@ export class GetInscriptionHandler
   }
 
   async execute(query: GetInscriptionQuery): Promise<InscriptionDTO> {
-    console.info(query);
     const driverId = DriverId.fromString(query.driverId);
     const raceId = RaceId.fromString(query.raceId);
 

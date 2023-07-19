@@ -115,7 +115,6 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
 
   const isAnyDriverNameEmpty = (values: CreateDriversDTO) => {
     const emptyNames = values.filter(value => value.name === '');
-    console.info(emptyNames);
 
     if (emptyNames.length > 0) return true;
 
