@@ -124,7 +124,9 @@ export const TeamManager: React.FunctionComponent<Props> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{team.name}</ModalHeader>
+        <ModalHeader>
+          <Center>{team.name}</Center>
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Center>
@@ -159,6 +161,14 @@ export const TeamManager: React.FunctionComponent<Props> = ({
                                     driverId: driver.id,
                                     raceId: upcomingRace.id
                                   });
+
+                                toast({
+                                  title: `${driver.name} has been inscribed`,
+                                  description: `${driver.name} is succesfully inscribed for ${upcomingRace.name} race!`,
+                                  status: 'success',
+                                  duration: 4000,
+                                  isClosable: true
+                                });
 
                                 setInscriptions([...inscriptions, inscription]);
                               }}
