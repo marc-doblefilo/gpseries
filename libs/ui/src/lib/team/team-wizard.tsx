@@ -1,12 +1,7 @@
 import {
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
   Center,
   Container,
-  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -20,27 +15,17 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text,
-  useToast,
-  VStack
+  useToast
 } from '@chakra-ui/react';
 import {
   CompetitionDTO,
-  CreateCompetitionDTO,
   CreateDriverDTO,
   CreateTeamDTO,
   TeamDTO
 } from '@gpseries/contracts';
 import { TextField } from '@material-ui/core';
 import axios from 'axios';
-import {
-  FieldArray,
-  Form,
-  Formik,
-  FormikHelpers,
-  FormikValues,
-  getIn
-} from 'formik';
+import { FieldArray, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { Session, useSession } from 'next-auth/client';
 import React, { useState } from 'react';
