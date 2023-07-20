@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -16,6 +17,8 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
+import { SportsMotorsportsOutlined } from '@material-ui/icons';
+import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React from 'react';
 
@@ -35,6 +38,8 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
   isFetching,
   session
 }) => {
+  const router = useRouter();
+
   if (isFetching) {
     return <Spinner />;
   }
@@ -50,7 +55,18 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
           <VStack>
             <Heading>{competition.name}</Heading>
             <Text>{user.name}</Text>
-            <Stack direction="row" gap={4} paddingTop={5}></Stack>
+            {user.id === session!.id && (
+              <Button
+                colorScheme="teal"
+                leftIcon={<SportsMotorsportsOutlined />}
+                size="sm"
+                onClick={() =>
+                  router.push(`/competition/${competition.id}/manage`)
+                }
+              >
+                MANAGE COMPETITION
+              </Button>
+            )}
           </VStack>
         </CardHeader>
         <Divider />

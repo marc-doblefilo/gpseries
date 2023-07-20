@@ -179,6 +179,7 @@ export const TeamManager: React.FunctionComponent<Props> = ({
                                     description: `${driver.name} is succesfully inscribed for ${upcomingRace.name} race!`,
                                     status: 'success',
                                     duration: 4000,
+                                    colorScheme: 'teal',
                                     isClosable: true
                                   });
 

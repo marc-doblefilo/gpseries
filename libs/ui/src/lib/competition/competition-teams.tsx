@@ -153,7 +153,7 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
       )}
       <Accordion allowToggle>
         {teams.map(team => (
-          <AccordionItem>
+          <AccordionItem key={team.id}>
             <AccordionButton>
               <HStack as="span" flex="1" textAlign="left">
                 <Text>{team.name}</Text>
