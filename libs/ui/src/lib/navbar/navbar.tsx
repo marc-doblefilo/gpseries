@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Flex,
+  Heading,
   Image,
   Link,
   Menu,
@@ -71,7 +72,9 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
         <Spacer />
         <Box paddingRight={6}>
           <Flex alignItems="center" gap="3">
-            <Text textColor="white">{getUserName()}</Text>
+            <Heading size="xs" textColor="white">
+              {getUserName()}
+            </Heading>
             <Menu>
               <MenuButton as={Button} rounded={'full'} cursor={'pointer'}>
                 <Avatar size={'md'} name={getUserName()} />

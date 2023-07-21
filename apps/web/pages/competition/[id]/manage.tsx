@@ -1,6 +1,10 @@
 import { Center, Spinner, Text, useToast } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
-import { CompetitionComponent, Layout } from '@gpseries/ui';
+import {
+  CompetitionComponent,
+  CompetitionManagerComponent,
+  Layout
+} from '@gpseries/ui';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
@@ -71,7 +75,12 @@ export default function CompetitionManager() {
 
   return (
     <Layout session={session}>
-      <Text>MANAGER</Text>
+      <CompetitionManagerComponent
+        competition={competition}
+        user={user}
+        isFetching={isFetching}
+        session={session}
+      />
     </Layout>
   );
 }

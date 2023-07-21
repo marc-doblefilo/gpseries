@@ -71,7 +71,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
         </CardHeader>
         <Divider />
         <CardBody>
-          <Tabs variant="soft-rounded" isFitted>
+          <Tabs variant="soft-rounded" isFitted colorScheme="orange">
             <TabList>
               <Tab>RACES</Tab>
               <Tab>TEAMS</Tab>

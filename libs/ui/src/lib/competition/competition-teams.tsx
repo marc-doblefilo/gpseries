@@ -158,7 +158,7 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
               <HStack as="span" flex="1" textAlign="left">
                 <Text>{team.name}</Text>
                 {team.ownerId === session?.id && (
-                  <Badge colorScheme="teal">YOUR TEAM</Badge>
+                  <Badge colorScheme="orange">YOUR TEAM</Badge>
                 )}
               </HStack>
               <AccordionIcon />
