@@ -1,7 +1,4 @@
 import {
-  Card,
-  CardBody,
-  CardHeader,
   Container,
   Divider,
   Heading,
@@ -19,8 +16,6 @@ import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React from 'react';
 
-import { RacesComponent } from '../competition-races';
-import { TeamsComponent } from '../competition-teams';
 import { RacesManagerComponent } from './competition-manager-races';
 
 type Props = {

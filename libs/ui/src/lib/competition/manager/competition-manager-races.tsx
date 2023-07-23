@@ -8,12 +8,15 @@ import {
   Text,
   Th,
   Thead,
-  Tr
+  Tr,
+  useDisclosure
 } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
 import { Delete, Edit, EmojiEvents } from '@material-ui/icons';
 import { useFormatter } from 'next-intl';
 import React from 'react';
+
+import { RaceRemoverAlertDialog } from './competition-manager-race-remover';
 
 type Props = {
   competition: CompetitionDTO;
@@ -25,6 +28,12 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
   isFetching
 }) => {
   const format = useFormatter();
+
+  const {
+    isOpen: isOpenRemove,
+    onOpen: onOpenRemove,
+    onClose: onCloseRemove
+  } = useDisclosure();
 
   if (isFetching) {
     return <Spinner />;
@@ -47,6 +56,11 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
           {competition.races.map(race => {
             return (
               <Tr key={race.id}>
+                <RaceRemoverAlertDialog
+                  race={race}
+                  isOpen={isOpenRemove}
+                  onClose={onCloseRemove}
+                />
                 <Td>{race.name}</Td>
                 <Td>
                   {format.dateTime(new Date(race.date), {
@@ -76,8 +90,13 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                   </Button>
                 </Td>
                 <Td>
-                  <Button leftIcon={<Delete />} size="sm" colorScheme="red">
-                    DELETE
+                  <Button
+                    leftIcon={<Delete />}
+                    size="sm"
+                    colorScheme="red"
+                    onClick={onOpenRemove}
+                  >
+                    REMOVE
                   </Button>
                 </Td>
               </Tr>
