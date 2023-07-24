@@ -13,15 +13,19 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  Toast,
+  useToast,
   VStack
 } from '@chakra-ui/react';
-import { CreateRaceDTO } from '@gpseries/contracts';
+import { CompetitionDTO, CreateRaceDTO } from '@gpseries/contracts';
+import { addRace } from '@gpseries/hooks';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { useState } from 'react';
 
 type Props = {
   session: Session;
+  competition: CompetitionDTO;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -29,9 +33,11 @@ type Props = {
 export const AddRaceModal: React.FunctionComponent<Props> = ({
   session,
   isOpen,
+  competition,
   onClose
 }) => {
   const router = useRouter();
+  const toast = useToast();
 
   const [name, setName] = useState<string>();
   const [date, setDate] = useState<Date>();
@@ -39,8 +45,26 @@ export const AddRaceModal: React.FunctionComponent<Props> = ({
   const handleNameChange = e => setName(e.target.value);
   const handleDateChange = e => setDate(new Date(e.target.value));
 
-  const isNameEmpty = () => {
-    if (!name) {
+  const handleAddRace = async () => {
+    const [response, error] = await addRace(competition.id, raceValues);
+
+    if (error) {
+      toast({
+        title: `Race could not be registered`,
+        description: `Please try again later`,
+        status: 'error',
+        duration: 4000,
+        colorScheme: 'red',
+        isClosable: true
+      });
+      return;
+    }
+
+    return response;
+  };
+
+  const areDTOEmpty = () => {
+    if (!name || !date) {
       return true;
     }
 
@@ -115,8 +139,21 @@ export const AddRaceModal: React.FunctionComponent<Props> = ({
             Cancel
           </Button>
           <Button
-            isDisabled={isNameError() || isNameEmpty() || isDateBeforeToday()}
+            isDisabled={isNameError() || areDTOEmpty() || isDateBeforeToday()}
             colorScheme="green"
+            onClick={async () => {
+              await handleAddRace();
+
+              toast({
+                title: `${name} has been inscribed`,
+                status: 'success',
+                duration: 4000,
+                colorScheme: 'teal',
+                isClosable: true
+              });
+
+              onClose();
+            }}
           >
             Submit
           </Button>

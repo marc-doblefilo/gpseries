@@ -19,7 +19,7 @@ export async function getUpcomingRace(id: string) {
     : [null, response.data];
 }
 
-export async function postRace(id: string, dto: CreateRaceDTO) {
+export async function addRace(id: string, dto: CreateRaceDTO) {
   try {
     const response = await axios.post(
       `http://localhost:3333/api/competitions/${id}/race`,

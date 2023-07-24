@@ -117,6 +117,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                 isOpen={isOpenAdd}
                 onClose={onCloseAdd}
                 session={session}
+                competition={competition}
               />
               <Button
                 colorScheme="green"

@@ -50,6 +50,10 @@ export class CompetitionMongoRepository implements CompetitionRepository {
       return null;
     }
 
+    document.races = document.races.sort(
+      (a, b) => a.date.getTime() - b.date.getTime()
+    );
+
     return CompetitionMapper.documentToAggregate(document);
   }
 
