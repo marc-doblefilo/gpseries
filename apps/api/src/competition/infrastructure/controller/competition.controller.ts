@@ -1,6 +1,7 @@
 import {
   CompetitionDTO,
   CreateCompetitionDTO,
+  CreateRaceDTO,
   EditCompetitionDTO,
   RaceDTO,
   Role
@@ -34,6 +35,7 @@ import {
   GetCompetitionQuery,
   UpdateCompetitionCommand
 } from '../../application';
+import { AddRaceCommand } from '../../application/command/add-race.command';
 import { GetCompetitionsQuery } from '../../application/query/get-competitions.query';
 import { GetNextRaceQuery } from '../../application/query/get-next-race.query';
 import { CompetitionNotFound } from '../../domain';
@@ -132,6 +134,28 @@ export class CompetitionController {
     try {
       return await this.queryBus.execute<GetNextRaceQuery, RaceDTO>(
         new GetNextRaceQuery(id)
+      );
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Post(':id/race')
+  @ApiResponse({ status: 201, description: 'Race created' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async addRace(
+    @Param('id') id: string,
+    @Body() dto: CreateRaceDTO
+  ): Promise<Nullable<CompetitionDTO>> {
+    try {
+      return await this.commandBus.execute(
+        new AddRaceCommand(id, dto.name, dto.date)
       );
     } catch (e) {
       if (e instanceof NotFoundError) {

@@ -8,12 +8,17 @@ import {
   GetCompetitionHandler,
   UpdateCompetitionHandler
 } from '../application';
+import { AddRaceHandler } from '../application/command/add-race.handler';
 import { GetCompetitionsHandler } from '../application/query/get-competitions.handler';
 import { GetNextRaceHandler } from '../application/query/get-next-race.handler';
 import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './controller/competition.controller';
 
-const CommandHandlers = [CreateCompetitionHandler, UpdateCompetitionHandler];
+const CommandHandlers = [
+  CreateCompetitionHandler,
+  UpdateCompetitionHandler,
+  AddRaceHandler
+];
 const QueryHandlers = [
   GetCompetitionsHandler,
   GetCompetitionHandler,
