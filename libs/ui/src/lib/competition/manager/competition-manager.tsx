@@ -57,6 +57,7 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
             <RacesManagerComponent
               competition={competition}
               isFetching={isFetching}
+              session={session}
             />
           </TabPanel>
         </TabPanels>

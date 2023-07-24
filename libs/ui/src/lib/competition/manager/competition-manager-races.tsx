@@ -12,20 +12,24 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
-import { Delete, Edit, EmojiEvents } from '@material-ui/icons';
+import { Add, Delete, Edit, EmojiEvents } from '@material-ui/icons';
+import { Session } from 'next-auth/client';
 import { useFormatter } from 'next-intl';
 import React from 'react';
 
-import { RaceRemoverAlertDialog } from './competition-manager-race-remover';
+import { AddRaceModal } from './add-race-modal';
+import { RaceRemoverAlertDialog } from './race-remover-alert-dialog';
 
 type Props = {
+  session: Session;
   competition: CompetitionDTO;
   isFetching: boolean;
 };
 
 export const RacesManagerComponent: React.FunctionComponent<Props> = ({
   competition,
-  isFetching
+  isFetching,
+  session
 }) => {
   const format = useFormatter();
 
@@ -33,6 +37,11 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
     isOpen: isOpenRemove,
     onOpen: onOpenRemove,
     onClose: onCloseRemove
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAdd,
+    onOpen: onOpenAdd,
+    onClose: onCloseAdd
   } = useDisclosure();
 
   if (isFetching) {
@@ -102,6 +111,23 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
               </Tr>
             );
           })}
+          <Tr>
+            <Td>
+              <AddRaceModal
+                isOpen={isOpenAdd}
+                onClose={onCloseAdd}
+                session={session}
+              />
+              <Button
+                colorScheme="green"
+                size="sm"
+                leftIcon={<Add />}
+                onClick={onOpenAdd}
+              >
+                ADD
+              </Button>
+            </Td>
+          </Tr>
         </Tbody>
       </Table>
     </TableContainer>
