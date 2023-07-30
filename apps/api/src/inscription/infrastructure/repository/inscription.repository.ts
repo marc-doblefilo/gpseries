@@ -49,4 +49,18 @@ export class InscriptionMongoRepository implements InscriptionRepository {
 
     return InscriptionMapper.documentToAggregate(document);
   }
+
+  async findByRace(raceId: RaceId): Promise<Inscription[]> {
+    const documents = await this.model.find({
+      raceId: raceId.value
+    });
+
+    if (!documents) {
+      return [];
+    }
+
+    return documents.map(document =>
+      InscriptionMapper.documentToAggregate(document)
+    );
+  }
 }

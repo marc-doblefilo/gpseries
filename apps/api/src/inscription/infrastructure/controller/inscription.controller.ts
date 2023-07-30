@@ -28,6 +28,11 @@ import {
 import { Roles } from '../../../auth/security/roles.decorator';
 import { CreateInscriptionCommand } from '../../application/command/create-inscription.command';
 import { GetInscriptionQuery } from '../../application/query/get-inscription.query';
+import { GetInscriptionsByRaceQuery } from '../../application/query/get-inscriptions-by-race.query';
+import {
+  GetInscriptionsByRaceSwaggerDTO,
+  GetInscriptionSwaggerDTO
+} from './swagger.dto';
 
 @ApiBearerAuth()
 @ApiTags('inscriptions')
@@ -64,8 +69,7 @@ export class InscriptionController {
   }
 
   @Get()
-  @ApiParam({ name: 'driverId', type: String })
-  @ApiParam({ name: 'raceId', type: String })
+  @ApiQuery({ type: GetInscriptionSwaggerDTO })
   @ApiResponse({ status: 200, description: 'Inscription found' })
   @ApiResponse({ status: 404, description: 'Not found' })
   async getInscription(
@@ -74,6 +78,30 @@ export class InscriptionController {
     try {
       return this.queryBus.execute(
         new GetInscriptionQuery(query.driverId, query.raceId)
+      );
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get('/by-race')
+  @ApiQuery({ type: GetInscriptionsByRaceSwaggerDTO })
+  @ApiResponse({ status: 200, description: 'Inscriptions found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async getInscriptionsByRace(
+    @Query() query: { raceId: string }
+  ): Promise<InscriptionDTO[]> {
+    try {
+      console.log(`${query.raceId} // ${typeof query.raceId}`);
+
+      return this.queryBus.execute(
+        new GetInscriptionsByRaceQuery(query.raceId)
       );
     } catch (e) {
       if (e instanceof NotFoundError) {

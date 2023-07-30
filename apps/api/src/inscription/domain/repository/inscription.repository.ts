@@ -10,6 +10,7 @@ export interface InscriptionRepository {
     driverId: DriverId,
     raceId: RaceId
   ): Promise<Nullable<Inscription>>;
+  findByRace(raceId: RaceId): Promise<Inscription[]>;
 }
 
 export const inscriptionRepository = 'inscriptionRepository';
