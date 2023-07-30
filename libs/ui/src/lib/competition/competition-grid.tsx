@@ -38,7 +38,7 @@ export const CompetitionGrid: React.FunctionComponent<Props> = ({
   return (
     <Grid gap={6} templateColumns="repeat(3, 0.5fr)">
       {competitions.map(competition => (
-        <GridItem>
+        <GridItem key={competition.id}>
           <CompetitionCard competition={competition} />
         </GridItem>
       ))}

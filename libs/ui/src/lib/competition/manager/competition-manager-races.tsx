@@ -38,6 +38,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
   const toast = useToast();
 
   const [inscriptions, setInscriptions] = useState<InscriptionDTO[]>();
+  const [selectedRace, setSelectedRace] = useState<RaceDTO>();
 
   const fetchInscriptions = async (raceId: string) => {
     const [response, error] = await getInscriptionsByRace(raceId);
@@ -99,11 +100,6 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
           {competition.races.map(race => {
             return (
               <Tr key={race.id}>
-                <RaceRemoverAlertDialog
-                  race={race}
-                  isOpen={isOpenRemove}
-                  onClose={onCloseRemove}
-                />
                 <Td>{race.name}</Td>
                 <Td>
                   {format.dateTime(new Date(race.date), {
@@ -127,7 +123,6 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                       ADD RESULT
                     </Button>
                     <AddResultModal
-                      race={race}
                       isOpen={isOpenAddResult}
                       onClose={onCloseAddResult}
                       inscriptions={inscriptions}
@@ -146,10 +141,18 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                     leftIcon={<Delete />}
                     size="sm"
                     colorScheme="red"
-                    onClick={onOpenRemove}
+                    onClick={() => {
+                      setSelectedRace(race);
+                      onOpenRemove();
+                    }}
                   >
                     REMOVE
                   </Button>
+                  <RaceRemoverAlertDialog
+                    race={selectedRace}
+                    isOpen={isOpenRemove}
+                    onClose={onCloseRemove}
+                  />
                 </Td>
               </Tr>
             );

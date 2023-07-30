@@ -18,7 +18,6 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 type Props = {
-  race: RaceDTO;
   isOpen: boolean;
   inscriptions: InscriptionDTO[] | undefined;
   onClose: () => void;
@@ -26,7 +25,6 @@ type Props = {
 
 export const AddResultModal: React.FunctionComponent<Props> = ({
   isOpen,
-  race,
   inscriptions,
   onClose
 }) => {

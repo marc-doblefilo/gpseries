@@ -17,7 +17,7 @@ import { Session } from 'next-auth/client';
 import React from 'react';
 
 type Props = {
-  race: RaceDTO;
+  race: RaceDTO | undefined;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -32,8 +32,7 @@ export const RaceRemoverAlertDialog: React.FunctionComponent<Props> = ({
   const cancelRef = React.useRef(null);
 
   if (!race) {
-    router.back();
-    return <Text>Race not found</Text>;
+    return null;
   }
 
   return (
