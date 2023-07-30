@@ -98,8 +98,6 @@ export class InscriptionController {
     @Query() query: { raceId: string }
   ): Promise<InscriptionDTO[]> {
     try {
-      console.log(`${query.raceId} // ${typeof query.raceId}`);
-
       return this.queryBus.execute(
         new GetInscriptionsByRaceQuery(query.raceId)
       );
