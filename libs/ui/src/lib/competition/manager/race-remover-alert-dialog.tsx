@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import { RaceDTO } from '@gpseries/contracts';
 import { useRouter } from 'next/router';
-import { Session } from 'next-auth/client';
 import React from 'react';
 
 type Props = {

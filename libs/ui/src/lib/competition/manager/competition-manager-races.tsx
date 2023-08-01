@@ -12,8 +12,13 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react';
-import { CompetitionDTO, InscriptionDTO, RaceDTO } from '@gpseries/contracts';
-import { getInscriptionsByRace } from '@gpseries/hooks';
+import {
+  CompetitionDTO,
+  DriverDTO,
+  InscriptionDTO,
+  RaceDTO
+} from '@gpseries/contracts';
+import { getDriver, getInscriptionsByRace } from '@gpseries/hooks';
 import { Add, Delete, Edit, EmojiEvents } from '@material-ui/icons';
 import { Session } from 'next-auth/client';
 import { useFormatter } from 'next-intl';
@@ -38,6 +43,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
   const toast = useToast();
 
   const [inscriptions, setInscriptions] = useState<InscriptionDTO[]>();
+  const [drivers, setDrivers] = useState<DriverDTO[]>();
   const [selectedRace, setSelectedRace] = useState<RaceDTO>();
 
   const fetchInscriptions = async (raceId: string) => {
@@ -55,7 +61,18 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
       return;
     }
 
+    const drivers: DriverDTO[] = await Promise.all(
+      response.map(async inscription => {
+        const response = await getDriver(inscription.driverId);
+
+        const [driver] = response;
+
+        return driver;
+      })
+    );
+
     setInscriptions(response);
+    setDrivers(drivers);
   };
 
   const handleOpenAddResult = async (race: RaceDTO) => {
@@ -125,7 +142,8 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                     <AddResultModal
                       isOpen={isOpenAddResult}
                       onClose={onCloseAddResult}
-                      inscriptions={inscriptions}
+                      inscriptions={inscriptions || []}
+                      drivers={drivers || []}
                     />
                   </Td>
                 ) : (

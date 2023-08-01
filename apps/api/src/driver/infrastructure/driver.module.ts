@@ -4,11 +4,12 @@ import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { DatabaseModule } from '../../database/database.module';
 import { CreateDriverHandler, GetDriversHandler } from '../application';
+import { GetDriverHandler } from '../application/query/get-driver.handler';
 import { DriverController } from './controller/driver.controller';
 import { driverProviders } from './driver.providers';
 
 const CommandHandlers = [CreateDriverHandler];
-const QueryHandlers = [GetDriversHandler];
+const QueryHandlers = [GetDriversHandler, GetDriverHandler];
 
 @Module({
   controllers: [DriverController],

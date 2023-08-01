@@ -7,6 +7,7 @@ import {
   Controller,
   Get,
   NotFoundException,
+  Param,
   Post,
   Res,
   UseInterceptors
@@ -17,7 +18,11 @@ import { Response } from 'express';
 
 import { AppLoggerMiddleware } from '../../../app.middleware';
 import { Roles } from '../../../auth/security/roles.decorator';
-import { CreateDriverCommand, GetDriversQuery } from '../../application';
+import {
+  CreateDriverCommand,
+  GetDriverQuery,
+  GetDriversQuery
+} from '../../application';
 
 @ApiBearerAuth()
 @ApiTags('drivers')
@@ -64,6 +69,25 @@ export class DriverController {
       return drivers;
     } catch (e) {
       if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get('/:id')
+  @ApiResponse({ status: 200, description: 'Driver found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async find(@Param('id') id: string): Promise<DriverDTO> {
+    try {
+      return await this.queryBus.execute<GetDriverQuery, DriverDTO>(
+        new GetDriverQuery(id)
+      );
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
         throw new BadRequestException(e.message);
       } else {
         throw new BadRequestException('Server error');
