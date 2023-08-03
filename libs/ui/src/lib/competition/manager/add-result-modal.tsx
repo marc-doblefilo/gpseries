@@ -21,11 +21,14 @@ import { DriverDTO, InscriptionDTO } from '@gpseries/contracts';
 import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 
 type Props = {
   isOpen: boolean;
   inscriptions: InscriptionDTO[];
+  setInscriptions: React.Dispatch<
+    React.SetStateAction<InscriptionDTO[] | undefined>
+  >;
   drivers: DriverDTO[];
   onClose: () => void;
 };
@@ -33,6 +36,7 @@ type Props = {
 export const AddResultModal: React.FunctionComponent<Props> = ({
   isOpen,
   inscriptions,
+  setInscriptions,
   drivers,
   onClose
 }) => {
@@ -40,32 +44,24 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
   const toast = useToast();
   const id = 'driver-not-found-driver';
 
-  const sortByPosition = (a, b) => {
-    if (a.position === undefined && b.position === undefined) {
+  const sortByPosition = useCallback((a, b) => {
+    if (!a.position && !b.position) {
       return 0;
-    } else if (a.position === undefined) {
+    } else if (!a.position) {
       return 1;
-    } else if (b.position === undefined) {
+    } else if (!b.position) {
       return -1;
     } else {
       return a.position - b.position;
     }
-  };
+  }, []);
 
-  const [resultInscriptions, setResult] = useState<InscriptionDTO[]>();
-
-  useEffect(() => {
-    setResult(inscriptions.sort(sortByPosition));
-  }, [inscriptions]);
-
-  if (inscriptions.length === 0 || !resultInscriptions) {
+  if (inscriptions.length === 0 || !inscriptions || !drivers) {
     return null;
   }
 
-  console.log(resultInscriptions);
-
   const handleChangePosition = (position, inscriptionId) => {
-    const index = resultInscriptions.findIndex(
+    const index = inscriptions.findIndex(
       inscription => inscription.id === inscriptionId
     );
 
@@ -73,7 +69,7 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
       return;
     }
 
-    const updatedInscriptions = [...resultInscriptions];
+    const updatedInscriptions = [...inscriptions];
     const selectedInscription = updatedInscriptions[index];
 
     updatedInscriptions[index] = {
@@ -83,10 +79,13 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
       position
     };
 
-    setResult(updatedInscriptions.sort(sortByPosition));
+    setInscriptions(updatedInscriptions.sort(sortByPosition));
   };
 
-  const options = [{ label: '🏆 Winner', id: 1 }];
+  const options = [
+    { label: '🏆 Winner', id: 1 },
+    { label: 'DNS/DNF', id: null }
+  ];
 
   for (let index = 0; index < inscriptions.length - 1; index++) {
     const position = index + 2;
@@ -96,7 +95,7 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
   const hasDuplicatesWithSamePosition = () => {
     const positionCount: Record<number, number> = {};
 
-    for (const obj of resultInscriptions) {
+    for (const obj of inscriptions) {
       const { position } = obj;
       if (position !== undefined) {
         positionCount[position] = (positionCount[position] || 0) + 1;
@@ -106,13 +105,9 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
     return Object.values(positionCount).some(count => count > 1);
   };
 
-  console.log(resultInscriptions);
-
   const hasAnyUndefinedPosition = () => {
-    return resultInscriptions.some(inscription => !inscription.position);
+    return inscriptions.some(inscription => inscription.position === undefined);
   };
-
-  console.log(resultInscriptions);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -133,7 +128,7 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {resultInscriptions.map(inscription => {
+                  {inscriptions.map(inscription => {
                     const driver = drivers.find(
                       driver => driver?.id === inscription.driverId
                     );

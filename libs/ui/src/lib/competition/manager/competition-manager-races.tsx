@@ -143,6 +143,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                       isOpen={isOpenAddResult}
                       onClose={onCloseAddResult}
                       inscriptions={inscriptions || []}
+                      setInscriptions={setInscriptions}
                       drivers={drivers || []}
                     />
                   </Td>
