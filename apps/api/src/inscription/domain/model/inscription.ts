@@ -3,6 +3,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
+import { ResultAdded } from '../event';
 import { InscriptionWasCreated } from '../event/inscription-was-created.event';
 import { InscriptionId } from './inscription-id';
 import { Position } from './position';
@@ -51,10 +52,18 @@ export class Inscription extends AggregateRoot {
     return this._position;
   }
 
+  addResult(position: Position) {
+    this.apply(new ResultAdded(this.id.value, position.value));
+  }
+
   private onInscriptionWasCreated(event: InscriptionWasCreated) {
     this._id = InscriptionId.fromString(event.id);
     this._driverId = DriverId.fromString(event.driverId);
     this._raceId = RaceId.fromString(event.raceId);
     this._position = null;
+  }
+
+  private onResultAdded(event: ResultAdded) {
+    this._position = Position.fromPrimitive(event.position);
   }
 }
