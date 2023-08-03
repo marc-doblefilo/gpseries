@@ -17,11 +17,12 @@ import {
   Tr,
   useToast
 } from '@chakra-ui/react';
-import { DriverDTO, InscriptionDTO } from '@gpseries/contracts';
+import { AddResultDTO, DriverDTO, InscriptionDTO } from '@gpseries/contracts';
+import { addResults } from '@gpseries/hooks';
 import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 type Props = {
   isOpen: boolean;
@@ -44,6 +45,12 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
   const toast = useToast();
   const id = 'driver-not-found-driver';
 
+  const [isFetching, setFetching] = useState<boolean>(false);
+
+  const handleAddResult = async (dtos: AddResultDTO[]) => {
+    await addResults(dtos);
+  };
+
   const sortByPosition = useCallback((a, b) => {
     if (!a.position && !b.position) {
       return 0;
@@ -59,6 +66,8 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
   if (inscriptions.length === 0 || !inscriptions || !drivers) {
     return null;
   }
+
+  setInscriptions(inscriptions.sort(sortByPosition));
 
   const handleChangePosition = (position, inscriptionId) => {
     const index = inscriptions.findIndex(
@@ -97,7 +106,7 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
 
     for (const obj of inscriptions) {
       const { position } = obj;
-      if (position !== undefined) {
+      if (position) {
         positionCount[position] = (positionCount[position] || 0) + 1;
       }
     }
@@ -108,6 +117,8 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
   const hasAnyUndefinedPosition = () => {
     return inscriptions.some(inscription => inscription.position === undefined);
   };
+
+  console.log(hasDuplicatesWithSamePosition);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -161,6 +172,13 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
                             onChange={(event, value) =>
                               handleChangePosition(value?.id, inscription.id)
                             }
+                            value={
+                              inscription.position
+                                ? options.find(
+                                    item => item.id === inscription.position
+                                  )
+                                : null
+                            }
                           />
                         </Td>
                       </Tr>
@@ -181,6 +199,23 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
             disabled={
               hasDuplicatesWithSamePosition() || hasAnyUndefinedPosition()
             }
+            onClick={async () => {
+              setFetching(true);
+              const validInscriptions = inscriptions.filter(
+                inscription => inscription.position
+              );
+
+              await handleAddResult(
+                validInscriptions.map(inscription => {
+                  return {
+                    inscriptionId: inscription.id,
+                    position: inscription.position
+                  } as AddResultDTO;
+                })
+              );
+
+              onClose();
+            }}
           >
             Submit
           </Button>
