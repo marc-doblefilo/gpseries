@@ -9,20 +9,22 @@ import {
   NotFoundException,
   Param,
   Post,
+  Query,
   Res,
   UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { AppLoggerMiddleware } from '../../../app.middleware';
 import { Roles } from '../../../auth/security/roles.decorator';
 import {
   CreateDriverCommand,
   GetDriverQuery,
+  GetDriversByTeamQuery,
   GetDriversQuery
 } from '../../application';
+import { GetDriversByTeamSwaggerDTO } from './swagger.dto';
 
 @ApiBearerAuth()
 @ApiTags('drivers')
@@ -30,6 +32,26 @@ import {
 @UseInterceptors(ClassSerializerInterceptor)
 export class DriverController {
   constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
+
+  @Get('/by-team')
+  @ApiQuery({ type: GetDriversByTeamSwaggerDTO })
+  @ApiResponse({ status: 200, description: 'Inscriptions found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async getInscriptionsByRace(
+    @Query() query: { teamId: string }
+  ): Promise<DriverDTO[]> {
+    try {
+      return this.queryBus.execute(new GetDriversByTeamQuery(query.teamId));
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
 
   @Post()
   @ApiResponse({ status: 201, description: 'Driver created' })

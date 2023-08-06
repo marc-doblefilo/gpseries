@@ -10,16 +10,10 @@ import {
 } from '../../../competition/domain';
 import {
   DriverFinder,
-  DriverId,
   DriverRepository,
   driverRepository
 } from '../../../driver/domain';
-import {
-  InscriptionNotFound,
-  InscriptionRepository,
-  inscriptionRepository
-} from '../../domain';
-import { GetInscriptionQuery } from './get-inscription.query';
+import { InscriptionRepository, inscriptionRepository } from '../../domain';
 import { GetInscriptionsByRaceQuery } from './get-inscriptions-by-race.query';
 
 @QueryHandler(GetInscriptionsByRaceQuery)
