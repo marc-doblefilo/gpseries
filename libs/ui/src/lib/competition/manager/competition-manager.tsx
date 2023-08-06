@@ -1,7 +1,9 @@
 import {
+  Button,
   Container,
   Divider,
   Heading,
+  HStack,
   Spinner,
   Tab,
   TabList,
@@ -12,6 +14,7 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
+import { ArrowBackIosRounded } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React from 'react';
@@ -46,6 +49,13 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
       <VStack>
         <Heading>{competition.name}</Heading>
         <Heading size="md">Manager</Heading>
+        <Button
+          onClick={() => router.push(`/competition/${competition.id}`)}
+          leftIcon={<ArrowBackIosRounded />}
+          size="sm"
+        >
+          Return
+        </Button>
       </VStack>
       <Divider mt={5} mb={5} />
       <Tabs variant="soft-rounded" isFitted colorScheme="teal">

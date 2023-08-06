@@ -1,13 +1,9 @@
 import {
   Button,
-  Card,
-  CardBody,
-  CardHeader,
   Container,
   Divider,
   Heading,
   Spinner,
-  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -23,6 +19,7 @@ import { Session } from 'next-auth/client';
 import React from 'react';
 
 import { RacesComponent } from './competition-races';
+import { RankingComponent } from './competition-ranking';
 import { TeamsComponent } from './competition-teams';
 
 type Props = {
@@ -50,50 +47,52 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
 
   return (
     <Container minWidth="max-content">
-      <Card>
-        <CardHeader>
-          <VStack>
-            <Heading>{competition.name}</Heading>
-            <Text>{user.name}</Text>
-            {user.id === session!.id && (
-              <Button
-                colorScheme="teal"
-                leftIcon={<SportsMotorsportsOutlined />}
-                size="sm"
-                onClick={() =>
-                  router.push(`/competition/${competition.id}/manage`)
-                }
-              >
-                MANAGE COMPETITION
-              </Button>
-            )}
-          </VStack>
-        </CardHeader>
-        <Divider />
-        <CardBody>
-          <Tabs variant="soft-rounded" isFitted colorScheme="orange">
-            <TabList>
-              <Tab>RACES</Tab>
-              <Tab>TEAMS</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <RacesComponent
-                  competition={competition}
-                  isFetching={isFetching}
-                />
-              </TabPanel>
-              <TabPanel>
-                <TeamsComponent
-                  competition={competition}
-                  isFetching={isFetching}
-                  session={session}
-                />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </CardBody>
-      </Card>
+      <VStack>
+        <Heading>{competition.name}</Heading>
+        <Heading size="md">{user.name}</Heading>
+        {user.id === session!.id && (
+          <Button
+            colorScheme="teal"
+            leftIcon={<SportsMotorsportsOutlined />}
+            size="sm"
+            onClick={() => router.push(`/competition/${competition.id}/manage`)}
+          >
+            MANAGE COMPETITION
+          </Button>
+        )}
+      </VStack>
+      <Divider paddingTop={3} />
+      <Tabs
+        variant="soft-rounded"
+        isFitted
+        colorScheme="orange"
+        paddingTop={3}
+        isLazy
+      >
+        <TabList>
+          <Tab>RANKING</Tab>
+          <Tab>RACES</Tab>
+          <Tab>TEAMS</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <RankingComponent
+              competition={competition}
+              isFetching={isFetching}
+            />
+          </TabPanel>
+          <TabPanel>
+            <RacesComponent competition={competition} isFetching={isFetching} />
+          </TabPanel>
+          <TabPanel>
+            <TeamsComponent
+              competition={competition}
+              isFetching={isFetching}
+              session={session}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Container>
   );
 };
