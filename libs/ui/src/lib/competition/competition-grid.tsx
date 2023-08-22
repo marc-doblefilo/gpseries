@@ -1,4 +1,11 @@
-import { Container, Grid, GridItem, Image, Text } from '@chakra-ui/react';
+import {
+  Center,
+  Container,
+  Grid,
+  GridItem,
+  Image,
+  Text
+} from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
 import React, { useEffect } from 'react';
 
@@ -36,12 +43,22 @@ export const CompetitionGrid: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <Grid gap={6} templateColumns="repeat(3, 0.5fr)">
-      {competitions.map(competition => (
-        <GridItem key={competition.id}>
-          <CompetitionCard competition={competition} />
-        </GridItem>
-      ))}
-    </Grid>
+    <Center>
+      <Grid
+        gap={6}
+        templateColumns={{
+          base: 'repeat(1, 0.5fr)',
+          lg: 'repeat(2, 0fr)',
+          xl: 'repeat(3, 0.5fr)',
+          '2xl': 'repeat(4, 0.5fr)'
+        }}
+      >
+        {competitions.map(competition => (
+          <GridItem key={competition.id}>
+            <CompetitionCard competition={competition} />
+          </GridItem>
+        ))}
+      </Grid>
+    </Center>
   );
 };
