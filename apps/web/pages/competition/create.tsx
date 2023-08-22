@@ -1,11 +1,18 @@
+import { Center, Spinner } from '@chakra-ui/react';
 import { CompetitionWizard, Layout } from '@gpseries/ui';
-import axios from 'axios';
-import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
 export default function CreateCompetition() {
-  const [session] = useSession();
+  const [session, loading] = useSession();
+
+  if (loading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
 
   return (
     <Layout session={session}>
