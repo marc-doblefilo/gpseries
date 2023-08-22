@@ -111,7 +111,7 @@ export const RankingComponent: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <TableContainer overflowX="scroll">
+    <TableContainer overflowX="auto" w="70vw">
       <Table variant="striped">
         <Thead>
           <Tr>

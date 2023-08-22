@@ -46,7 +46,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <Container minWidth="max-content">
+    <Container minWidth="80vw">
       <VStack>
         <Heading>{competition.name}</Heading>
         <Heading size="md">{user.name}</Heading>

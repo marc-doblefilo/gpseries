@@ -7,7 +7,7 @@ import {
   Text
 } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { CompetitionCard } from './competition-card';
 

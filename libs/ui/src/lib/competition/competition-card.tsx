@@ -7,7 +7,6 @@ import {
   Text
 } from '@chakra-ui/react';
 import { CompetitionDTO } from '@gpseries/contracts';
-import { truncate } from 'fs/promises';
 import { useRouter } from 'next/router';
 import React from 'react';
 
