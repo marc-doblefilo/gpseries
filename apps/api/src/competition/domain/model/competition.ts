@@ -1,3 +1,4 @@
+import { Nullable } from '@gpseries/domain';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 import { UserId } from '../../../user/domain';
@@ -5,6 +6,7 @@ import { RaceWasAdded } from '../event';
 import { CompetitionWasCreated } from '../event/competition-was-created.event';
 import { CompetitionDescription } from './competition-description';
 import { CompetitionId } from './competition-id';
+import { DriversPerTeam } from './drivers-per-team';
 import { Name } from './name';
 import { Race } from './race';
 import { RaceId } from './race-id';
@@ -13,8 +15,9 @@ export class Competition extends AggregateRoot {
   private _id: CompetitionId;
   private _ownerId: UserId;
   private _name: Name;
-  private _description: CompetitionDescription;
+  private _description: Nullable<CompetitionDescription>;
   private _races: Array<Race>;
+  private _driversPerTeam: DriversPerTeam;
   private _closed?: Date;
   private _deleted?: Date;
 
@@ -26,7 +29,8 @@ export class Competition extends AggregateRoot {
     id: CompetitionId,
     ownerId: UserId,
     name: Name,
-    description: CompetitionDescription
+    description: Nullable<CompetitionDescription>,
+    driversPerTeam: DriversPerTeam
   ) {
     const competition = new Competition();
 
@@ -35,7 +39,8 @@ export class Competition extends AggregateRoot {
         id.value,
         ownerId.value,
         name.value,
-        description.value
+        description?.value || null,
+        driversPerTeam.value
       )
     );
 
@@ -54,12 +59,16 @@ export class Competition extends AggregateRoot {
     return this._name;
   }
 
-  get description(): CompetitionDescription {
+  get description(): Nullable<CompetitionDescription> {
     return this._description;
   }
 
   get races(): Array<Race> {
     return this._races;
+  }
+
+  get driversPerTeam(): DriversPerTeam {
+    return this._driversPerTeam;
   }
 
   hasRace(race: Race): boolean {
@@ -80,7 +89,10 @@ export class Competition extends AggregateRoot {
     this._id = CompetitionId.fromString(event.id);
     this._ownerId = UserId.fromString(event.ownerId);
     this._name = Name.fromString(event.name);
-    this._description = CompetitionDescription.fromString(event.description);
+    if (event.description) {
+      this._description = CompetitionDescription.fromString(event.description);
+    }
+    this._driversPerTeam = DriversPerTeam.fromPrimitive(event.driversPerTeam);
 
     this._closed = undefined;
     this._deleted = undefined;

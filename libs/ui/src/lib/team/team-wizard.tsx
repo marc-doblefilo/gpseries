@@ -183,7 +183,7 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
                               const driverName = `drivers[${index}.name]`;
 
                               return (
-                                <HStack>
+                                <HStack key={driverName}>
                                   <TextField
                                     margin="normal"
                                     variant="outlined"
@@ -208,15 +208,19 @@ export const TeamWizard: React.FunctionComponent<Props> = ({
                                 </HStack>
                               );
                             })}
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => {
-                                push({ name: '' });
-                              }}
-                            >
-                              ADD
-                            </Button>
+                            {(values.drivers.length <
+                              competition.driversPerTeam ||
+                              !competition.driversPerTeam) && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                  push({ name: '' });
+                                }}
+                              >
+                                ADD
+                              </Button>
+                            )}
                           </Container>
                         )}
                       </FieldArray>

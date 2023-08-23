@@ -12,5 +12,6 @@ export const CompetitionSchema = new Schema({
   ownerId: String,
   name: String,
   description: String,
+  driversPerTeam: Number,
   races: [RaceSchema]
 });

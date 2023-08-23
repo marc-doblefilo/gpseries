@@ -39,6 +39,7 @@ export const getServerSideProps: GetServerSideProps<
   const [competitions, error] = (await getCompetitions()) ?? null;
 
   if (error) {
+    console.info(error);
     return {
       notFound: true
     };

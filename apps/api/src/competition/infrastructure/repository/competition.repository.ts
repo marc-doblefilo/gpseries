@@ -31,6 +31,8 @@ export class CompetitionMongoRepository implements CompetitionRepository {
   async create(competition: Competition): Promise<void> {
     const document = CompetitionMapper.aggregateToDocument(competition);
 
+    console.info(document);
+
     await this.model.create(document);
 
     competition = this.publisher.mergeObjectContext(competition);

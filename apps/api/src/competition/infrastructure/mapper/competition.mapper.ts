@@ -9,6 +9,7 @@ import {
   Race,
   RaceId
 } from '../../domain';
+import { DriversPerTeam } from '../../domain/model/drivers-per-team';
 import {
   CompetitionDocument,
   RaceDocument
@@ -16,27 +17,35 @@ import {
 
 export class CompetitionMapper {
   static documentToDTO(document: CompetitionDocument): CompetitionDTO {
-    const { _id, ownerId, name, description, races } = document;
+    const { _id, ownerId, name, description, races, driversPerTeam } = document;
     return {
       id: _id,
       ownerId,
       name,
       description,
+      driversPerTeam,
       races
     };
   }
 
   public static documentToAggregate(document: CompetitionDocument) {
-    const { _id, ownerId, name, description, races } = document;
+    const { _id, ownerId, name, description, races, driversPerTeam } = document;
 
     const competition: Competition = Reflect.construct(Competition, []);
     Reflect.set(competition, '_id', CompetitionId.fromString(_id));
     Reflect.set(competition, '_ownerId', UserId.fromString(ownerId));
     Reflect.set(competition, '_name', Name.fromString(name));
+    if (description) {
+      Reflect.set(
+        competition,
+        '_description',
+        CompetitionDescription.fromString(description)
+      );
+    }
     Reflect.set(
       competition,
-      '_description',
-      CompetitionDescription.fromString(description)
+      '_driversPerTeam',
+      DriversPerTeam.fromPrimitive(driversPerTeam)
     );
     Reflect.set(
       competition,
@@ -59,7 +68,8 @@ export class CompetitionMapper {
       _id: competition.id.value,
       ownerId: competition.ownerId.value,
       name: competition.name.value,
-      description: competition.description.value,
+      description: competition.description?.value,
+      driversPerTeam: competition.driversPerTeam.value,
       races: competition.races?.map((race: Race) => {
         return {
           id: race.id.value,

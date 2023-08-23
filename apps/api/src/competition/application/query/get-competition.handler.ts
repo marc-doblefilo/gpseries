@@ -13,7 +13,8 @@ import { GetCompetitionQuery } from './get-competition.query';
 
 @QueryHandler(GetCompetitionQuery)
 export class GetCompetitionHandler
-  implements IQueryHandler<GetCompetitionQuery> {
+  implements IQueryHandler<GetCompetitionQuery>
+{
   private readonly competitionFinder: CompetitionFinder;
 
   constructor(
@@ -31,7 +32,8 @@ export class GetCompetitionHandler
       id: competition.id.value,
       ownerId: competition.ownerId.value,
       name: competition.name.value,
-      description: competition.description.value,
+      description: competition.description?.value || null,
+      driversPerTeam: competition.driversPerTeam.value,
       races: competition.races.map(race => {
         return {
           id: race.id.value,

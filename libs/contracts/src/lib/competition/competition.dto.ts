@@ -2,7 +2,8 @@ export class CompetitionDTO {
   id: string;
   ownerId: string;
   name: string;
-  description: string;
+  description: string | null;
+  driversPerTeam: number;
   races: Array<RaceDTO>;
 }
 

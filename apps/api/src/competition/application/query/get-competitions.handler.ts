@@ -8,7 +8,8 @@ import { GetCompetitionsQuery } from './get-competitions.query';
 
 @QueryHandler(GetCompetitionsQuery)
 export class GetCompetitionsHandler
-  implements IQueryHandler<GetCompetitionsQuery> {
+  implements IQueryHandler<GetCompetitionsQuery>
+{
   constructor(
     @Inject(competitionRepository) private repository: CompetitionRepository
   ) {}
@@ -23,7 +24,8 @@ export class GetCompetitionsHandler
       id: competition.id.value,
       ownerId: competition.ownerId.value,
       name: competition.name.value,
-      description: competition.description.value,
+      description: competition.description?.value || null,
+      driversPerTeam: competition.driversPerTeam.value,
       races: competition.races.map(race => {
         return {
           id: race.id.value,

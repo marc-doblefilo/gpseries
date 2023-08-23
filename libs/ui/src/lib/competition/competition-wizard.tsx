@@ -12,6 +12,11 @@ import {
   FormLabel,
   Heading,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Stack,
   VStack
 } from '@chakra-ui/react';
@@ -26,16 +31,20 @@ export async function createCompetition(
   session: Session
 ) {
   if (session) {
-    await axios.post(
-      `http://localhost:3333/api/competitions`,
-      JSON.stringify(competition),
-      {
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          'Content-Type': 'application/json'
+    try {
+      await axios.post(
+        `http://localhost:3333/api/competitions`,
+        JSON.stringify(competition),
+        {
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+            'Content-Type': 'application/json'
+          }
         }
-      }
-    );
+      );
+    } catch (error) {
+      console.info(error);
+    }
   }
 }
 
@@ -46,13 +55,18 @@ export const CompetitionWizard: React.FunctionComponent = () => {
   const currentUserId = session!.id;
 
   const [name, setName] = useState<string>();
+  const [driversPerTeam, setDriversPerTeam] = useState<number>(2);
   const [description, setDescription] = useState('');
 
   const competitionValues: CreateCompetitionDTO = {
     ownerId: currentUserId,
     name: !name ? '' : name.trim(),
-    description: description.trim()
+    description: description.trim(),
+    driversPerTeam: driversPerTeam
   };
+
+  const handleDriversPerTeamChange = (string, value) =>
+    setDriversPerTeam(value);
 
   const handleNameChange = e => setName(e.target.value);
   const isNameEmpty = () => {
@@ -103,6 +117,20 @@ export const CompetitionWizard: React.FunctionComponent = () => {
               <FormControl>
                 <FormLabel>Description</FormLabel>
                 <Input value={description} onChange={handleDescriptionChange} />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Number of drivers per team</FormLabel>
+                <NumberInput
+                  value={driversPerTeam}
+                  min={1}
+                  onChange={handleDriversPerTeamChange}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
               </FormControl>
             </Stack>
           </Center>

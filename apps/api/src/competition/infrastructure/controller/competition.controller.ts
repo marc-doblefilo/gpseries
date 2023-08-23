@@ -52,7 +52,12 @@ export class CompetitionController {
   async create(@Body() dto: CreateCompetitionDTO): Promise<CompetitionDTO> {
     try {
       return await this.commandBus.execute(
-        new CreateCompetitionCommand(dto.ownerId, dto.name, dto.description)
+        new CreateCompetitionCommand(
+          dto.ownerId,
+          dto.name,
+          dto.description,
+          dto.driversPerTeam
+        )
       );
     } catch (e) {
       if (e instanceof Error) {

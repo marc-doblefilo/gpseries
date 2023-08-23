@@ -5,6 +5,7 @@ export interface CompetitionDocument extends Document {
   name: string;
   description: string;
   races: Array<RaceDocument>;
+  driversPerTeam: number;
 }
 
 export interface RaceDocument {
