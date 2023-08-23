@@ -18,22 +18,24 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { CompetitionDTO, CreateRaceDTO } from '@gpseries/contracts';
-import { addRace } from '@gpseries/hooks';
+import { addRace, getCompetition } from '@gpseries/hooks';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 type Props = {
   session: Session;
   competition: CompetitionDTO;
   isOpen: boolean;
   onClose: () => void;
+  setCompetition: Dispatch<SetStateAction<CompetitionDTO | undefined>>;
 };
 
 export const AddRaceModal: React.FunctionComponent<Props> = ({
   session,
   isOpen,
   competition,
+  setCompetition,
   onClose
 }) => {
   const router = useRouter();
@@ -151,6 +153,8 @@ export const AddRaceModal: React.FunctionComponent<Props> = ({
                 colorScheme: 'teal',
                 isClosable: true
               });
+
+              router.reload();
 
               onClose();
             }}

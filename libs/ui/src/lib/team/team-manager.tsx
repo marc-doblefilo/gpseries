@@ -148,7 +148,7 @@ export const TeamManager: React.FunctionComponent<Props> = ({
                 <Table>
                   <Tbody>
                     {team.drivers.map(driver => (
-                      <Tr>
+                      <Tr key={driver.id}>
                         <Th>{driver.name}</Th>
                         {upcomingRace &&
                           !inscriptions.some(

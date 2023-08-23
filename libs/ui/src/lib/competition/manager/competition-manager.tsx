@@ -17,7 +17,7 @@ import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
 import { ArrowBackIosRounded } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { RacesManagerComponent } from './competition-manager-races';
 
@@ -26,11 +26,13 @@ type Props = {
   user: UserDTO;
   isFetching: boolean;
   session: Session;
+  setCompetition: Dispatch<SetStateAction<CompetitionDTO | undefined>>;
 };
 
 export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
   user,
   competition,
+  setCompetition,
   isFetching,
   session
 }) => {
@@ -65,6 +67,7 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
         <TabPanels>
           <TabPanel>
             <RacesManagerComponent
+              setCompetition={setCompetition}
               competition={competition}
               isFetching={isFetching}
               session={session}

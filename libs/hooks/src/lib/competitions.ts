@@ -13,6 +13,20 @@ export async function getCompetitions() {
   }
 }
 
+export async function getCompetition(id: string) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3333/api/competitions/${id}`
+    );
+
+    return [response.data, null];
+  } catch (error) {
+    console.info(error);
+
+    return [null, error];
+  }
+}
+
 export async function getUpcomingRace(id: string) {
   const response = await axios.get(
     `http://localhost:3333/api/competitions/${id}/upcoming-race`

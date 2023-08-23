@@ -22,7 +22,7 @@ import { getDriver, getInscriptionsByRace } from '@gpseries/hooks';
 import { Add, Delete, Edit, EmojiEvents } from '@material-ui/icons';
 import { Session } from 'next-auth/client';
 import { useFormatter } from 'next-intl';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { AddRaceModal } from './add-race-modal';
 import { AddResultModal } from './add-result-modal';
@@ -32,10 +32,12 @@ type Props = {
   session: Session;
   competition: CompetitionDTO;
   isFetching: boolean;
+  setCompetition: Dispatch<SetStateAction<CompetitionDTO | undefined>>;
 };
 
 export const RacesManagerComponent: React.FunctionComponent<Props> = ({
   competition,
+  setCompetition,
   isFetching,
   session
 }) => {
@@ -183,6 +185,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                 onClose={onCloseAdd}
                 session={session}
                 competition={competition}
+                setCompetition={setCompetition}
               />
               <Button
                 colorScheme="green"

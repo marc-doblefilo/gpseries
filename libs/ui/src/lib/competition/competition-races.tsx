@@ -44,7 +44,7 @@ export const RacesComponent: React.FunctionComponent<Props> = ({
         <Tbody>
           {competition.races.map(race => {
             return (
-              <Tr>
+              <Tr key={race.id}>
                 <Td>{race.name}</Td>
                 <Td>
                   {format.dateTime(new Date(race.date), {

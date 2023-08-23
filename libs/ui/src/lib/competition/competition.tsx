@@ -16,7 +16,7 @@ import { CompetitionDTO, UserDTO } from '@gpseries/contracts';
 import { SportsMotorsportsOutlined } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { RacesComponent } from './competition-races';
 import { RankingComponent } from './competition-ranking';
@@ -27,12 +27,14 @@ type Props = {
   user: UserDTO;
   isFetching: boolean;
   session: Session;
+  setCompetition: Dispatch<SetStateAction<CompetitionDTO | undefined>>;
 };
 
 export const CompetitionComponent: React.FunctionComponent<Props> = ({
   user,
   competition,
   isFetching,
+  setCompetition,
   session
 }) => {
   const router = useRouter();

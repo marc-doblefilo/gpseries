@@ -69,6 +69,7 @@ export default function Competition() {
       <CompetitionComponent
         user={user}
         competition={competition}
+        setCompetition={setCompetition}
         isFetching={isFetching}
         session={session!}
       />

@@ -28,7 +28,7 @@ import axios from 'axios';
 import { FieldArray, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { Session, useSession } from 'next-auth/client';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 export async function createTeam(
   team: CreateTeamDTO,

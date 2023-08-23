@@ -76,6 +76,7 @@ export default function CompetitionManager() {
   return (
     <Layout session={session}>
       <CompetitionManagerComponent
+        setCompetition={setCompetition}
         competition={competition}
         user={user}
         isFetching={isFetching}

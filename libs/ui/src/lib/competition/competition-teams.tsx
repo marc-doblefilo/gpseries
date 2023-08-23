@@ -174,7 +174,7 @@ export const TeamsComponent: React.FunctionComponent<Props> = ({
                   <Tbody>
                     {team.drivers.map(driver => {
                       return (
-                        <Tr>
+                        <Tr key={driver.id}>
                           <Td>{driver.name}</Td>
                         </Tr>
                       );
