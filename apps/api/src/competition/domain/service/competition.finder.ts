@@ -1,5 +1,6 @@
 import { CompetitionNotFound } from '../exception';
-import { CompetitionId, RaceId } from '../model';
+import { CompetitionAlreadyExists } from '../exception/competition-already-exists.error';
+import { CompetitionId, Name, RaceId } from '../model';
 import { CompetitionRepository } from '../repository';
 
 export class CompetitionFinder {
@@ -20,6 +21,16 @@ export class CompetitionFinder {
 
     if (!competition) {
       throw CompetitionNotFound.withRace(id);
+    }
+
+    return competition;
+  }
+
+  public async findByNameOrThrow(name: Name) {
+    const competition = await this.competitionRepository.findByName(name);
+
+    if (!competition) {
+      throw CompetitionAlreadyExists.with(name);
     }
 
     return competition;

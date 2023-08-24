@@ -8,6 +8,7 @@ import {
   Competition,
   CompetitionId,
   CompetitionRepository,
+  Name,
   RaceId
 } from '../../domain';
 import { CompetitionMapper } from '../mapper/competition.mapper';
@@ -70,6 +71,16 @@ export class CompetitionMongoRepository implements CompetitionRepository {
 
   async findByRace(raceId: RaceId): Promise<Nullable<Competition>> {
     const document = await this.model.findOne({ 'races.id': raceId.value });
+
+    if (!document) {
+      return null;
+    }
+
+    return CompetitionMapper.documentToAggregate(document);
+  }
+
+  async findByName(name: Name): Promise<Nullable<Competition>> {
+    const document = await this.model.findOne({ name: name.value });
 
     if (!document) {
       return null;

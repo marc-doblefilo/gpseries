@@ -26,28 +26,6 @@ import { useRouter } from 'next/router';
 import { Session, useSession } from 'next-auth/client';
 import React, { useState } from 'react';
 
-export async function createCompetition(
-  competition: CreateCompetitionDTO,
-  session: Session
-) {
-  if (session) {
-    try {
-      await axios.post(
-        `http://localhost:3333/api/competitions`,
-        JSON.stringify(competition),
-        {
-          headers: {
-            Authorization: `Bearer ${session.accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-    } catch (error) {
-      console.info(error);
-    }
-  }
-}
-
 export const CompetitionWizard: React.FunctionComponent = () => {
   const router = useRouter();
   const [session, loading] = useSession();
@@ -58,6 +36,11 @@ export const CompetitionWizard: React.FunctionComponent = () => {
   const [driversPerTeam, setDriversPerTeam] = useState<number>(2);
   const [description, setDescription] = useState('');
 
+  const [nameExistError, setNameExistError] = useState<boolean>();
+  const [errorMessage, setErrorMessage] = useState<string>(
+    'Name cannot contains more than 20 characters.'
+  );
+
   const competitionValues: CreateCompetitionDTO = {
     ownerId: currentUserId,
     name: !name ? '' : name.trim(),
@@ -65,10 +48,42 @@ export const CompetitionWizard: React.FunctionComponent = () => {
     driversPerTeam: driversPerTeam
   };
 
+  const createCompetition = async (
+    competition: CreateCompetitionDTO,
+    session: Session
+  ) => {
+    if (session) {
+      try {
+        await axios.post(
+          `http://localhost:3333/api/competitions`,
+          JSON.stringify(competition),
+          {
+            headers: {
+              Authorization: `Bearer ${session.accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        router.push('/');
+      } catch (error) {
+        setNameExistError(true);
+        setErrorMessage(error.response.data.message);
+      }
+    }
+  };
+
   const handleDriversPerTeamChange = (string, value) =>
     setDriversPerTeam(value);
 
-  const handleNameChange = e => setName(e.target.value);
+  const handleNameChange = e => {
+    if (nameExistError) {
+      setNameExistError(false);
+      setErrorMessage('Name cannot contains more than 20 characters.');
+    }
+    setName(e.target.value);
+  };
+
   const isNameEmpty = () => {
     if (!name) {
       return true;
@@ -91,8 +106,6 @@ export const CompetitionWizard: React.FunctionComponent = () => {
 
   const handleCreateCompetition = async () => {
     !loading && (await createCompetition(competitionValues, session!));
-
-    router.push('/');
   };
 
   return (
@@ -107,12 +120,13 @@ export const CompetitionWizard: React.FunctionComponent = () => {
         <CardBody>
           <Center>
             <Stack direction={'column'}>
-              <FormControl isInvalid={isNameError()} isRequired>
+              <FormControl
+                isInvalid={isNameError() || nameExistError}
+                isRequired
+              >
                 <FormLabel>Name</FormLabel>
                 <Input value={name} onChange={handleNameChange} />
-                <FormErrorMessage>
-                  {'Name can not contain more than 20 characters'}
-                </FormErrorMessage>
+                <FormErrorMessage>{errorMessage}</FormErrorMessage>
               </FormControl>
               <FormControl>
                 <FormLabel>Description</FormLabel>
