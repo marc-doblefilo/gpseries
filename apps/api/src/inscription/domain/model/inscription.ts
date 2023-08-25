@@ -1,8 +1,8 @@
 import { Nullable } from '@gpseries/domain';
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
+import { RaceId } from '../../../race/domain';
 import { ResultAdded } from '../event';
 import { InscriptionWasCreated } from '../event/inscription-was-created.event';
 import { InscriptionId } from './inscription-id';

@@ -3,9 +3,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { StoreEventPublisher } from 'event-sourcing-nestjs';
 import { Connection, Model } from 'mongoose';
 
-import { RaceId } from '../../../competition/domain';
 import { mongoConnection } from '../../../database/database.provider';
 import { DriverId } from '../../../driver/domain';
+import { RaceId } from '../../../race/domain';
 import {
   Inscription,
   InscriptionId,

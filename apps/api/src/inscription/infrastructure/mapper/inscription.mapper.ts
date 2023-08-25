@@ -1,5 +1,5 @@
-import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
+import { RaceId } from '../../../race/domain';
 import { Inscription, InscriptionId, Position } from '../../domain';
 import { InscriptionDocument } from '../repository';
 

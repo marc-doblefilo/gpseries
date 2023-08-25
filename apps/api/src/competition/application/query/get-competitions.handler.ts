@@ -3,6 +3,7 @@ import { Nullable } from '@gpseries/domain';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
+import { RaceRepository, raceRepository } from '../../../race/domain';
 import { CompetitionRepository, competitionRepository } from '../../domain';
 import { GetCompetitionsQuery } from './get-competitions.query';
 
@@ -11,7 +12,8 @@ export class GetCompetitionsHandler
   implements IQueryHandler<GetCompetitionsQuery>
 {
   constructor(
-    @Inject(competitionRepository) private repository: CompetitionRepository
+    @Inject(competitionRepository) private repository: CompetitionRepository,
+    @Inject(raceRepository) private raceRepository: RaceRepository
   ) {}
 
   async execute(
@@ -20,19 +22,27 @@ export class GetCompetitionsHandler
   ): Promise<Nullable<Array<CompetitionDTO>>> {
     const competitions = await this.repository.findAll();
 
-    return competitions.map(competition => ({
-      id: competition.id.value,
-      ownerId: competition.ownerId.value,
-      name: competition.name.value,
-      description: competition.description?.value || null,
-      driversPerTeam: competition.driversPerTeam.value,
-      races: competition.races.map(race => {
+    return await Promise.all(
+      competitions.map(async competition => {
+        const races = await this.raceRepository.findByCompetition(
+          competition.id
+        );
+
         return {
-          id: race.id.value,
-          name: race.name.value,
-          date: race.date
+          id: competition.id.value,
+          ownerId: competition.ownerId.value,
+          name: competition.name.value,
+          description: competition.description?.value || null,
+          driversPerTeam: competition.driversPerTeam.value,
+          races: races.map(race => {
+            return {
+              id: race.id.value,
+              name: race.name.value,
+              date: race.date
+            };
+          })
         };
       })
-    }));
+    );
   }
 }

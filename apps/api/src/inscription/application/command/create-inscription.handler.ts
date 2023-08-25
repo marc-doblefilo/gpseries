@@ -4,8 +4,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   CompetitionNotFound,
   CompetitionRepository,
-  competitionRepository,
-  RaceId
+  competitionRepository
 } from '../../../competition/domain';
 import {
   DriverFinder,
@@ -13,6 +12,8 @@ import {
   DriverRepository,
   driverRepository
 } from '../../../driver/domain';
+import { RaceId, RaceRepository, raceRepository } from '../../../race/domain';
+import { RaceNotFound } from '../../../race/domain/exception/race-not-found.error';
 import {
   Inscription,
   InscriptionAlreadyExists,
@@ -31,8 +32,8 @@ export class CreateInscriptionHandler
   constructor(
     @Inject(inscriptionRepository) private repository: InscriptionRepository,
     @Inject(driverRepository) private driverRepository: DriverRepository,
-    @Inject(competitionRepository)
-    private competitionRepository: CompetitionRepository
+    @Inject(raceRepository)
+    private raceRepository: RaceRepository
   ) {
     this.driverFinder = new DriverFinder(driverRepository);
   }
@@ -50,10 +51,10 @@ export class CreateInscriptionHandler
       throw InscriptionAlreadyExists.with(driverId, raceId);
     }
 
-    const competition = await this.competitionRepository.findByRace(raceId);
+    const race = await this.raceRepository.find(raceId);
 
-    if (!competition) {
-      throw CompetitionNotFound.withRace(raceId);
+    if (!race) {
+      throw RaceNotFound.with(raceId);
     }
 
     const inscriptionId = InscriptionId.generate();

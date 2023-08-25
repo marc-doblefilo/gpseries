@@ -5,8 +5,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import {
   CompetitionFinder,
   CompetitionRepository,
-  competitionRepository,
-  RaceId
+  competitionRepository
 } from '../../../competition/domain';
 import {
   DriverFinder,
@@ -14,6 +13,8 @@ import {
   DriverRepository,
   driverRepository
 } from '../../../driver/domain';
+import { RaceId, RaceRepository, raceRepository } from '../../../race/domain';
+import { RaceNotFound } from '../../../race/domain/exception/race-not-found.error';
 import {
   InscriptionNotFound,
   InscriptionRepository,
@@ -25,17 +26,15 @@ import { GetInscriptionQuery } from './get-inscription.query';
 export class GetInscriptionHandler
   implements IQueryHandler<GetInscriptionQuery>
 {
-  private readonly competitionFinder: CompetitionFinder;
   private readonly driverFinder: DriverFinder;
 
   constructor(
     @Inject(inscriptionRepository) private repository: InscriptionRepository,
-    @Inject(competitionRepository)
-    private competitionRepository: CompetitionRepository,
+    @Inject(raceRepository)
+    private raceRepository: RaceRepository,
     @Inject(driverRepository)
     private driverRepository: DriverRepository
   ) {
-    this.competitionFinder = new CompetitionFinder(competitionRepository);
     this.driverFinder = new DriverFinder(driverRepository);
   }
 
@@ -43,7 +42,12 @@ export class GetInscriptionHandler
     const driverId = DriverId.fromString(query.driverId);
     const raceId = RaceId.fromString(query.raceId);
 
-    await this.competitionFinder.findByRaceOrThrow(raceId);
+    const race = await this.raceRepository.find(raceId);
+
+    if (!race) {
+      throw RaceNotFound.with(raceId);
+    }
+
     await this.driverFinder.findOrThrow(driverId);
 
     const inscription = await this.repository.findByDriverAndRace(

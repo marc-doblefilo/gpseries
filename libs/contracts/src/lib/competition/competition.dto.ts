@@ -7,7 +7,7 @@ export class CompetitionDTO {
   races: Array<RaceDTO>;
 }
 
-export class RaceDTO {
+class RaceDTO {
   id: string;
   name: string;
   date: Date;

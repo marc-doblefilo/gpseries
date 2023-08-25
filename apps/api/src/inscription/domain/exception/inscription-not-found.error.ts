@@ -1,5 +1,5 @@
-import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
+import { RaceId } from '../../../race/domain';
 
 export class InscriptionAlreadyExists extends Error {
   public static with(

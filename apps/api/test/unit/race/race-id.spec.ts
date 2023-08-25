@@ -1,8 +1,8 @@
 import * as uuid from 'uuid';
 
-import { RaceId } from '../../../../src/competition/domain';
+import { RaceId } from '../../../src/race/domain';
 
-describe('Competition Id', () => {
+describe('Race Id', () => {
   it('should return a new id', () => {
     const id = RaceId.generate();
 

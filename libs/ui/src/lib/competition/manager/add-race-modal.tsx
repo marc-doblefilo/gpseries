@@ -18,7 +18,7 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { CompetitionDTO, CreateRaceDTO } from '@gpseries/contracts';
-import { addRace, getCompetition } from '@gpseries/hooks';
+import { createRace, getCompetition } from '@gpseries/hooks';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -48,12 +48,12 @@ export const AddRaceModal: React.FunctionComponent<Props> = ({
   const handleDateChange = e => setDate(new Date(e.target.value));
 
   const handleAddRace = async () => {
-    const [response, error] = await addRace(competition.id, raceValues);
+    const [response, error] = await createRace(raceValues);
 
     if (error) {
       toast({
         title: `Race could not be registered`,
-        description: `Please try again later`,
+        description: error.response.data.message,
         status: 'error',
         duration: 4000,
         colorScheme: 'red',
@@ -98,6 +98,7 @@ export const AddRaceModal: React.FunctionComponent<Props> = ({
   };
 
   const raceValues: CreateRaceDTO = {
+    competitionId: competition.id,
     name: !name ? '' : name.trim(),
     date: !date ? new Date() : date
   };

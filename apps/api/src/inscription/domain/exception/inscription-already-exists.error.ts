@@ -1,7 +1,7 @@
 import { NotFoundError } from '@gpseries/domain';
 
-import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
+import { RaceId } from '../../../race/domain';
 
 export class InscriptionNotFound extends NotFoundError {
   public static with(driverId: DriverId, raceId: RaceId): InscriptionNotFound {

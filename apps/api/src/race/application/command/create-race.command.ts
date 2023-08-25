@@ -1,6 +1,6 @@
 import { ICommand } from '@nestjs/cqrs';
 
-export class AddRaceCommand implements ICommand {
+export class CreateRaceCommand implements ICommand {
   constructor(
     public readonly competitionId: string,
     public readonly name: string,

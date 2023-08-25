@@ -6,6 +6,7 @@ import { BootstrapModule } from './bootstrap.module';
 import { CompetitionModule } from './competition/infrastructure/competition.module';
 import { DriverModule } from './driver/infrastructure/driver.module';
 import { InscriptionModule } from './inscription/infrastructure/inscription.module';
+import { RaceModule } from './race/infrastructure/race.module';
 import { TeamModule } from './team/infrastructure/team.module';
 import { UserModule } from './user/infrastructure';
 
@@ -20,6 +21,7 @@ export class AppModule implements NestModule {
         DriverModule,
         CompetitionModule,
         TeamModule,
+        RaceModule,
         InscriptionModule
       ]
     };

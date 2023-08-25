@@ -118,8 +118,6 @@ export const AddResultModal: React.FunctionComponent<Props> = ({
     return inscriptions.some(inscription => inscription.position === undefined);
   };
 
-  console.log(hasDuplicatesWithSamePosition);
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />

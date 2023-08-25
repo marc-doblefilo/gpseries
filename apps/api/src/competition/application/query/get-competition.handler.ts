@@ -3,6 +3,7 @@ import { Nullable } from '@gpseries/domain';
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
+import { RaceRepository, raceRepository } from '../../../race/domain';
 import {
   CompetitionFinder,
   CompetitionId,
@@ -18,7 +19,8 @@ export class GetCompetitionHandler
   private readonly competitionFinder: CompetitionFinder;
 
   constructor(
-    @Inject(competitionRepository) private repository: CompetitionRepository
+    @Inject(competitionRepository) private repository: CompetitionRepository,
+    @Inject(raceRepository) private raceRepository: RaceRepository
   ) {
     this.competitionFinder = new CompetitionFinder(repository);
   }
@@ -28,13 +30,19 @@ export class GetCompetitionHandler
 
     const competition = await this.competitionFinder.findOrThrow(id);
 
+    const races = await this.raceRepository.findByCompetition(id);
+
+    const orderedRaces = races.sort(
+      (a, b) => a.date.getTime() - b.date.getTime()
+    );
+
     return {
       id: competition.id.value,
       ownerId: competition.ownerId.value,
       name: competition.name.value,
       description: competition.description?.value || null,
       driversPerTeam: competition.driversPerTeam.value,
-      races: competition.races.map(race => {
+      races: orderedRaces.map(race => {
         return {
           id: race.id.value,
           name: race.name.value,

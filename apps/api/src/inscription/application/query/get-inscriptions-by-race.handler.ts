@@ -5,14 +5,15 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import {
   CompetitionFinder,
   CompetitionRepository,
-  competitionRepository,
-  RaceId
+  competitionRepository
 } from '../../../competition/domain';
 import {
   DriverFinder,
   DriverRepository,
   driverRepository
 } from '../../../driver/domain';
+import { RaceId, RaceRepository, raceRepository } from '../../../race/domain';
+import { RaceNotFound } from '../../../race/domain/exception/race-not-found.error';
 import { InscriptionRepository, inscriptionRepository } from '../../domain';
 import { GetInscriptionsByRaceQuery } from './get-inscriptions-by-race.query';
 
@@ -25,21 +26,26 @@ export class GetInscriptionsByRaceHandler
 
   constructor(
     @Inject(inscriptionRepository) private repository: InscriptionRepository,
+    @Inject(raceRepository)
+    private raceRepository: RaceRepository,
     @Inject(competitionRepository)
-    private competitionRepository: CompetitionRepository,
-    @Inject(driverRepository)
-    private driverRepository: DriverRepository
+    private competitionRepository: CompetitionRepository
   ) {
     this.competitionFinder = new CompetitionFinder(competitionRepository);
-    this.driverFinder = new DriverFinder(driverRepository);
   }
 
   async execute(query: GetInscriptionsByRaceQuery): Promise<InscriptionDTO[]> {
     const raceId = RaceId.fromString(query.raceId);
 
-    await this.competitionFinder.findByRaceOrThrow(raceId);
+    const race = await this.raceRepository.find(raceId);
+
+    if (!race) {
+      throw RaceNotFound.with(raceId);
+    }
 
     const inscriptions = await this.repository.findByRace(raceId);
+
+    console.info(inscriptions);
 
     return inscriptions.map(inscription => ({
       id: inscription.id.value,

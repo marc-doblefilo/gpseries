@@ -32,12 +32,9 @@ import { Response } from 'express';
 import { Roles } from '../../../auth/security/roles.decorator';
 import {
   CreateCompetitionCommand,
-  GetCompetitionQuery,
-  UpdateCompetitionCommand
+  GetCompetitionQuery
 } from '../../application';
-import { AddRaceCommand } from '../../application/command/add-race.command';
 import { GetCompetitionsQuery } from '../../application/query/get-competitions.query';
-import { GetNextRaceQuery } from '../../application/query/get-next-race.query';
 import { CompetitionNotFound } from '../../domain';
 
 @ApiBearerAuth()
@@ -89,30 +86,6 @@ export class CompetitionController {
     }
   }
 
-  @Put(':id')
-  @Roles(Role.Admin)
-  @ApiOperation({ summary: 'Update competition' })
-  @ApiResponse({ status: 200, description: 'competition updated' })
-  @ApiResponse({ status: 404, description: 'Not found' })
-  async update(
-    @Param('id') id: string,
-    @Body() dto: EditCompetitionDTO
-  ): Promise<CompetitionDTO> {
-    try {
-      return await this.commandBus.execute(
-        new UpdateCompetitionCommand(id, dto.name, dto.description, dto.races)
-      );
-    } catch (e) {
-      if (e instanceof CompetitionNotFound) {
-        throw new NotFoundException(e.message);
-      } else if (e instanceof Error) {
-        throw new BadRequestException(e.message);
-      } else {
-        throw new BadRequestException('Server error');
-      }
-    }
-  }
-
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Competition found' })
   @ApiResponse({ status: 404, description: 'Not found' })
@@ -120,47 +93,6 @@ export class CompetitionController {
     try {
       return await this.queryBus.execute<GetCompetitionQuery, CompetitionDTO>(
         new GetCompetitionQuery(id)
-      );
-    } catch (e) {
-      if (e instanceof NotFoundError) {
-        throw new NotFoundException(e.message);
-      } else if (e instanceof Error) {
-        throw new BadRequestException(e.message);
-      } else {
-        throw new BadRequestException('Server error');
-      }
-    }
-  }
-
-  @Get(':id/upcoming-race')
-  @ApiResponse({ status: 200, description: 'Next race found' })
-  @ApiResponse({ status: 404, description: 'Not found' })
-  async nextRace(@Param('id') id: string): Promise<Nullable<RaceDTO>> {
-    try {
-      return await this.queryBus.execute<GetNextRaceQuery, RaceDTO>(
-        new GetNextRaceQuery(id)
-      );
-    } catch (e) {
-      if (e instanceof NotFoundError) {
-        throw new NotFoundException(e.message);
-      } else if (e instanceof Error) {
-        throw new BadRequestException(e.message);
-      } else {
-        throw new BadRequestException('Server error');
-      }
-    }
-  }
-
-  @Post(':id/race')
-  @ApiResponse({ status: 201, description: 'Race created' })
-  @ApiResponse({ status: 404, description: 'Not found' })
-  async addRace(
-    @Param('id') id: string,
-    @Body() dto: CreateRaceDTO
-  ): Promise<Nullable<CompetitionDTO>> {
-    try {
-      return await this.commandBus.execute(
-        new AddRaceCommand(id, dto.name, dto.date)
       );
     } catch (e) {
       if (e instanceof NotFoundError) {

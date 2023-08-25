@@ -8,8 +8,7 @@ import {
   Competition,
   CompetitionId,
   CompetitionRepository,
-  Name,
-  RaceId
+  Name
 } from '../../domain';
 import { CompetitionMapper } from '../mapper/competition.mapper';
 import { CompetitionDocument } from './competition.document';
@@ -32,8 +31,6 @@ export class CompetitionMongoRepository implements CompetitionRepository {
   async create(competition: Competition): Promise<void> {
     const document = CompetitionMapper.aggregateToDocument(competition);
 
-    console.info(document);
-
     await this.model.create(document);
 
     competition = this.publisher.mergeObjectContext(competition);
@@ -53,10 +50,6 @@ export class CompetitionMongoRepository implements CompetitionRepository {
       return null;
     }
 
-    document.races = document.races.sort(
-      (a, b) => a.date.getTime() - b.date.getTime()
-    );
-
     return CompetitionMapper.documentToAggregate(document);
   }
 
@@ -67,16 +60,6 @@ export class CompetitionMongoRepository implements CompetitionRepository {
 
     competition = this.publisher.mergeObjectContext(competition);
     competition.commit();
-  }
-
-  async findByRace(raceId: RaceId): Promise<Nullable<Competition>> {
-    const document = await this.model.findOne({ 'races.id': raceId.value });
-
-    if (!document) {
-      return null;
-    }
-
-    return CompetitionMapper.documentToAggregate(document);
   }
 
   async findByName(name: Name): Promise<Nullable<Competition>> {

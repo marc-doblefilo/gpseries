@@ -1,7 +1,7 @@
 import { Nullable } from '@gpseries/domain';
 
-import { RaceId } from '../../../competition/domain';
 import { DriverId } from '../../../driver/domain';
+import { RaceId } from '../../../race/domain';
 import { Inscription, InscriptionId } from '../model';
 
 export interface InscriptionRepository {
