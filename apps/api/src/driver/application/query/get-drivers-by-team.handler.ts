@@ -16,7 +16,7 @@ export class GetDriversByTeamHandler
   async execute(query: GetDriversByTeamQuery): Promise<DriverDTO[]> {
     const id = TeamId.fromString(query.teamId);
 
-    const teamDrivers = await this.repository.findAllByTeam(id);
+    const teamDrivers = await this.repository.findByTeam(id);
 
     return teamDrivers.map(
       driver =>

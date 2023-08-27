@@ -7,12 +7,17 @@ import {
   CreateCompetitionHandler,
   GetCompetitionHandler
 } from '../application';
+import { GetCompetitionRankingHandler } from '../application/query/get-competition-ranking.handler';
 import { GetCompetitionsHandler } from '../application/query/get-competitions.handler';
 import { competitionProviders } from './competition.providers';
 import { CompetitionController } from './controller/competition.controller';
 
 const CommandHandlers = [CreateCompetitionHandler];
-const QueryHandlers = [GetCompetitionsHandler, GetCompetitionHandler];
+const QueryHandlers = [
+  GetCompetitionsHandler,
+  GetCompetitionHandler,
+  GetCompetitionRankingHandler
+];
 
 @Module({
   controllers: [CompetitionController],

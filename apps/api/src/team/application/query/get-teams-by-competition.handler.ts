@@ -23,7 +23,7 @@ export class GetTeamsByCompetitionHandler
 
     return Promise.all(
       teams.map(async team => {
-        const drivers = await this.driverRepository.findAllByTeam(team.id);
+        const drivers = await this.driverRepository.findByTeam(team.id);
 
         return {
           id: team.id.value,

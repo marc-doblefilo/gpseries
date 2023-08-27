@@ -1,5 +1,6 @@
 import {
   CompetitionDTO,
+  CompetitionRankingDTO,
   CreateCompetitionDTO,
   CreateRaceDTO,
   EditCompetitionDTO,
@@ -34,6 +35,7 @@ import {
   CreateCompetitionCommand,
   GetCompetitionQuery
 } from '../../application';
+import { GetCompetitionRankingQuery } from '../../application/query/get-competition-ranking-query';
 import { GetCompetitionsQuery } from '../../application/query/get-competitions.query';
 import { CompetitionNotFound } from '../../domain';
 
@@ -94,6 +96,26 @@ export class CompetitionController {
       return await this.queryBus.execute<GetCompetitionQuery, CompetitionDTO>(
         new GetCompetitionQuery(id)
       );
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Get(':id/ranking')
+  @ApiResponse({ status: 200, description: 'Competition found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async findRanking(@Param('id') id: string): Promise<CompetitionRankingDTO> {
+    try {
+      return await this.queryBus.execute<
+        GetCompetitionRankingQuery,
+        CompetitionRankingDTO
+      >(new GetCompetitionRankingQuery(id));
     } catch (e) {
       if (e instanceof NotFoundError) {
         throw new NotFoundException(e.message);

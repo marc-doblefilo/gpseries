@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { StoreEventPublisher } from 'event-sourcing-nestjs';
 import { Connection, Model } from 'mongoose';
 
+import { CompetitionId } from '../../../competition/domain';
 import { mongoConnection } from '../../../database/database.provider';
 import { TeamId } from '../../../team/domain';
 import { Driver, DriverId, DriverRepository, Name } from '../../domain';
@@ -46,13 +47,13 @@ export class DriverMongoRepository implements DriverRepository {
     return DriverMapper.documentToAggregate(document);
   }
 
-  async findAll(): Promise<Driver[]> {
+  async find(): Promise<Driver[]> {
     const documents = await this.model.find({});
 
     return documents.map(DriverMapper.documentToAggregate);
   }
 
-  async find(id: DriverId): Promise<Nullable<Driver>> {
+  async findOne(id: DriverId): Promise<Nullable<Driver>> {
     const document = await this.model.findById(id.value);
 
     if (!document) {
@@ -62,7 +63,7 @@ export class DriverMongoRepository implements DriverRepository {
     return DriverMapper.documentToAggregate(document);
   }
 
-  async findAllByTeam(id: TeamId): Promise<Driver[]> {
+  async findByTeam(id: TeamId): Promise<Driver[]> {
     const documents = await this.model.find({ teamId: id.value });
 
     return documents.map(DriverMapper.documentToAggregate);

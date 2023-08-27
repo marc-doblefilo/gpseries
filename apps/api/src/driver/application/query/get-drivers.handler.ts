@@ -11,7 +11,7 @@ export class GetDriversHandler implements IQueryHandler<GetDriversQuery> {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(query: GetDriversQuery): Promise<Array<DriverDTO>> {
-    const drivers = await this.repository.findAll();
+    const drivers = await this.repository.find();
 
     return drivers.map(driver => ({
       id: driver.id.value,

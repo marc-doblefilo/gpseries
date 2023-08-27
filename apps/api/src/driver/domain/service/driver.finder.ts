@@ -6,7 +6,7 @@ export class DriverFinder {
   constructor(private readonly repository: DriverRepository) {}
 
   public async findOrThrow(id: DriverId) {
-    const driver = await this.repository.find(id);
+    const driver = await this.repository.findOne(id);
 
     if (!driver) {
       throw DriverNotFound.with(id);

@@ -34,6 +34,10 @@ export class GetCompetitionsHandler
           name: competition.name.value,
           description: competition.description?.value || null,
           driversPerTeam: competition.driversPerTeam.value,
+          pointsSystem: competition.pointsSystem.map(points => ({
+            position: points.position,
+            points: points.points
+          })),
           races: races.map(race => {
             return {
               id: race.id.value,

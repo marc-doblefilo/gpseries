@@ -6,9 +6,9 @@ import { Driver, DriverId, Name } from '../model';
 export interface DriverRepository {
   create(driver: Driver): void;
   findByNameAndTeam(name: Name, teamId: TeamId): Promise<Nullable<Driver>>;
-  find(id: DriverId): Promise<Nullable<Driver>>;
-  findAll(): Promise<Driver[]>;
-  findAllByTeam(id: TeamId): Promise<Driver[]>;
+  findOne(id: DriverId): Promise<Nullable<Driver>>;
+  find(): Promise<Driver[]>;
+  findByTeam(id: TeamId): Promise<Driver[]>;
 }
 
 export const driverRepository = 'driverRepository';

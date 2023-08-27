@@ -2,12 +2,12 @@ import { Nullable } from '@gpseries/domain';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 import { UserId } from '../../../user/domain';
-import { RaceWasAdded } from '../event';
 import { CompetitionWasCreated } from '../event/competition-was-created.event';
 import { CompetitionDescription } from './competition-description';
 import { CompetitionId } from './competition-id';
 import { DriversPerTeam } from './drivers-per-team';
 import { Name } from './name';
+import { Points } from './points';
 
 export class Competition extends AggregateRoot {
   private _id: CompetitionId;
@@ -15,6 +15,7 @@ export class Competition extends AggregateRoot {
   private _name: Name;
   private _description: Nullable<CompetitionDescription>;
   private _driversPerTeam: DriversPerTeam;
+  private _pointsSystem: Points[] = Points.default();
   private _closed?: Date;
   private _deleted?: Date;
 
@@ -59,8 +60,13 @@ export class Competition extends AggregateRoot {
   get description(): Nullable<CompetitionDescription> {
     return this._description;
   }
+
   get driversPerTeam(): DriversPerTeam {
     return this._driversPerTeam;
+  }
+
+  get pointsSystem(): Points[] {
+    return this._pointsSystem;
   }
 
   private onCompetitionWasCreated(event: CompetitionWasCreated) {

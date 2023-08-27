@@ -45,8 +45,6 @@ export class GetInscriptionsByRaceHandler
 
     const inscriptions = await this.repository.findByRace(raceId);
 
-    console.info(inscriptions);
-
     return inscriptions.map(inscription => ({
       id: inscription.id.value,
       driverId: inscription.driverId.value,
