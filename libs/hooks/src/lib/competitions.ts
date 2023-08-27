@@ -26,3 +26,17 @@ export async function getCompetition(id: string) {
     return [null, error];
   }
 }
+
+export async function getCompetitionRanking(id: string) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3333/api/competitions/${id}/ranking`
+    );
+
+    return [response.data, null];
+  } catch (error) {
+    console.info(error);
+
+    return [null, error];
+  }
+}

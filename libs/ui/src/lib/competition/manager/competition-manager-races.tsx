@@ -136,6 +136,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                       size="sm"
                       colorScheme="green"
                       onClick={async () => {
+                        setSelectedRace(race);
                         await handleOpenAddResult(race);
                       }}
                     >

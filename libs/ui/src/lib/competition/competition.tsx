@@ -18,8 +18,9 @@ import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { LeaderboardComponent } from './competition-leaderboard';
 import { RacesComponent } from './competition-races';
-import { RankingComponent } from './competition-ranking';
+import { StandingsComponent } from './competition-standings';
 import { TeamsComponent } from './competition-teams';
 
 type Props = {
@@ -72,13 +73,20 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
         isLazy
       >
         <TabList>
-          <Tab>RANKING</Tab>
+          <Tab>STANDINGS</Tab>
+          <Tab>LEADERBOARD</Tab>
           <Tab>RACES</Tab>
           <Tab>TEAMS</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <RankingComponent
+            <StandingsComponent
+              competition={competition}
+              isFetching={isFetching}
+            />
+          </TabPanel>
+          <TabPanel>
+            <LeaderboardComponent
               competition={competition}
               isFetching={isFetching}
             />
