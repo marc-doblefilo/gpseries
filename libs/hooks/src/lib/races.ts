@@ -19,6 +19,18 @@ export async function createRace(dto: CreateRaceDTO) {
   }
 }
 
+export async function deleteRace(id: string) {
+  try {
+    const response = await axios.delete(
+      `http://localhost:3333/api/races/${id}`
+    );
+    return [response.data, null];
+  } catch (error) {
+    const err = error as AxiosError;
+    return [null, err];
+  }
+}
+
 export async function getUpcomingRace(competitionId: string) {
   const response = await axios.get(
     `http://localhost:3333/api/races/upcoming-race`,

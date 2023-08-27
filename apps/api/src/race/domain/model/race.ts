@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 import { CompetitionId } from '../../../competition/domain';
 import { RaceWasCreated } from '../event/race-was-created.event';
+import { RaceWasDeleted } from '../event/race-was-deleted.event';
 import { Name } from './name';
 import { RaceId } from './race-id';
 
@@ -47,6 +48,10 @@ export class Race extends AggregateRoot {
     return race;
   }
 
+  public delete() {
+    this.apply(new RaceWasDeleted(this.id.value));
+  }
+
   private onRaceWasCreated(event: RaceWasCreated) {
     this._id = RaceId.fromString(event.id);
     this._competitionId = CompetitionId.fromString(event.competitionId);
@@ -54,5 +59,9 @@ export class Race extends AggregateRoot {
     this._date = event.date;
 
     this._deleted = undefined;
+  }
+
+  private onRaceWasDeleted(event: RaceWasDeleted) {
+    this._deleted = new Date();
   }
 }

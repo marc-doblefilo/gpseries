@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
+import { Role as RoleEnum } from '../../../auth/security/role.enum';
 import {
   Password,
   Role,
@@ -8,20 +9,18 @@ import {
   UserId,
   Username,
   UserRepository,
-  userRepository,
+  userRepository
 } from '../../domain';
 import {
   UserIdAlreadyTakenError,
-  UsernameAlreadyTakenError,
+  UsernameAlreadyTakenError
 } from '../../domain/exception/';
 import { Name } from '../../domain/model/name';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
-  constructor(
-    @Inject(userRepository) private repository: UserRepository,
-  ) {}
+  constructor(@Inject(userRepository) private repository: UserRepository) {}
 
   async execute(command: CreateUserCommand) {
     const userId = UserId.generate();
@@ -38,8 +37,10 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     }
 
     const user = User.add(userId, username, name, password);
-    command.roles.map((role: string) => user.addRole(Role.fromString(role)));
+    user.addRole(Role.fromString(RoleEnum.User));
 
     this.repository.save(user);
+
+    return user;
   }
 }

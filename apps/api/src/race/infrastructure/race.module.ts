@@ -3,12 +3,12 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { EventSourcingModule } from 'event-sourcing-nestjs';
 
 import { DatabaseModule } from '../../database/database.module';
-import { CreateRaceHandler } from '../application/command/create-race.handler';
+import { CreateRaceHandler, DeleteRaceHandler } from '../application';
 import { GetNextRaceHandler } from '../application/query/get-next-race.handler';
 import { RaceController } from './controller';
 import { raceProviders } from './race.providers';
 
-const CommandHandlers = [CreateRaceHandler];
+const CommandHandlers = [CreateRaceHandler, DeleteRaceHandler];
 const QueryHandlers = [GetNextRaceHandler];
 
 @Module({

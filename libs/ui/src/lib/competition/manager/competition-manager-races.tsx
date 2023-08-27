@@ -26,7 +26,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { AddRaceModal } from './add-race-modal';
 import { AddResultModal } from './add-result-modal';
-import { RaceRemoverAlertDialog } from './race-remover-alert-dialog';
+import { DeleteRaceAlertDialog } from './delete-race-alert-dialog';
 
 type Props = {
   session: Session;
@@ -154,11 +154,6 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                   <Td></Td>
                 )}
                 <Td>
-                  <Button leftIcon={<Edit />} size="sm">
-                    MODIFY
-                  </Button>
-                </Td>
-                <Td>
                   <Button
                     leftIcon={<Delete />}
                     size="sm"
@@ -170,7 +165,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
                   >
                     REMOVE
                   </Button>
-                  <RaceRemoverAlertDialog
+                  <DeleteRaceAlertDialog
                     race={selectedRace}
                     isOpen={isOpenRemove}
                     onClose={onCloseRemove}

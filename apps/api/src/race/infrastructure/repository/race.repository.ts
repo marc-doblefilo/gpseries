@@ -63,4 +63,14 @@ export class RaceMongoRepository implements RaceRepository {
 
     return RaceMapper.documentToAggregate(document);
   }
+
+  async delete(race: Race): Promise<void> {
+    await this.model.findOneAndUpdate(
+      { _id: race.id.value },
+      { deleted: new Date() }
+    );
+
+    race = this.publisher.mergeObjectContext(race);
+    race.commit();
+  }
 }

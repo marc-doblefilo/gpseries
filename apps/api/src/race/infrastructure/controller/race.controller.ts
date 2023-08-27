@@ -5,8 +5,11 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   NotFoundException,
+  Param,
   Post,
   Query,
   UseInterceptors
@@ -14,6 +17,7 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { DeleteRaceCommand } from '../../application';
 import { CreateRaceCommand } from '../../application/command/create-race.command';
 import { GetNextRaceQuery } from '../../application/query/get-next-race.query';
 
@@ -52,6 +56,26 @@ export class RaceController {
     try {
       return await this.queryBus.execute<GetNextRaceQuery, RaceDTO>(
         new GetNextRaceQuery(query.competitionId)
+      );
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new NotFoundException(e.message);
+      } else if (e instanceof Error) {
+        throw new BadRequestException(e.message);
+      } else {
+        throw new BadRequestException('Server error');
+      }
+    }
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  @ApiResponse({ status: 204, description: 'Competition found' })
+  @ApiResponse({ status: 404, description: 'Not found' })
+  async delete(@Param('id') id: string): Promise<void> {
+    try {
+      return await this.commandBus.execute<DeleteRaceCommand>(
+        new DeleteRaceCommand(id)
       );
     } catch (e) {
       if (e instanceof NotFoundError) {

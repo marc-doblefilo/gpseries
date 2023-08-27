@@ -1,4 +1,10 @@
-import { CreateUserDTO, EditUserDTO, Role, UserDTO } from '@gpseries/contracts';
+import {
+  AccessTokenInterface,
+  CreateUserDTO,
+  EditUserDTO,
+  Role,
+  UserDTO
+} from '@gpseries/contracts';
 import {
   BadRequestException,
   Body,
@@ -47,20 +53,23 @@ export class UserController {
 
   @Post()
   @ApiResponse({ status: 200, description: 'User created' })
-  async create(@Body() createUserDto: CreateUserDTO): Promise<UserDTO> {
+  async create(
+    @Body() createUserDto: CreateUserDTO
+  ): Promise<AccessTokenInterface> {
     try {
       const password = await this.authService.encodePassword(
         createUserDto.plainPassword
       );
 
-      return await this.commandBus.execute(
+      const user = await this.commandBus.execute(
         new CreateUserCommand(
           createUserDto.username,
           createUserDto.name,
-          password,
-          createUserDto.roles
+          password
         )
       );
+
+      return this.authService.generateAccessToken(user.username);
     } catch (e) {
       if (e instanceof Error) {
         throw new BadRequestException(e.message);
