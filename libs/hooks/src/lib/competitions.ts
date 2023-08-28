@@ -1,5 +1,4 @@
-import { CreateRaceDTO } from '@gpseries/contracts';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export async function getCompetitions() {
   try {
@@ -7,8 +6,6 @@ export async function getCompetitions() {
 
     return [response.data, null];
   } catch (error) {
-    console.info(error);
-
     return [null, error];
   }
 }
@@ -21,8 +18,6 @@ export async function getCompetition(id: string) {
 
     return [response.data, null];
   } catch (error) {
-    console.info(error);
-
     return [null, error];
   }
 }
@@ -35,8 +30,6 @@ export async function getCompetitionRanking(id: string) {
 
     return [response.data, null];
   } catch (error) {
-    console.info(error);
-
     return [null, error];
   }
 }

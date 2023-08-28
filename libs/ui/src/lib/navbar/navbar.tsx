@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Center,
+  Divider,
   Flex,
   Heading,
   HStack,
@@ -71,6 +72,7 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
                   />
                 </Link>
               </Box>
+              <Divider orientation="vertical" colorScheme="whiteAlpha" />
               <HStack
                 as={'nav'}
                 spacing={4}
@@ -110,7 +112,11 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
                 </Center>
                 <br />
                 <MenuDivider />
-                <MenuItem bg="grey.900" _focus={{ bg: 'gray.700' }}>
+                <MenuItem
+                  bg="grey.900"
+                  _focus={{ bg: 'gray.700' }}
+                  onClick={() => router.push('/account/settings')}
+                >
                   Account Settings
                 </MenuItem>
                 <MenuItem
