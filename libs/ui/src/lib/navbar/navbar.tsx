@@ -1,8 +1,10 @@
 import {
   Avatar,
   Box,
+  Center,
   Flex,
   Heading,
+  HStack,
   Image,
   Link,
   Menu,
@@ -18,10 +20,12 @@ import { Nullable } from '@gpseries/domain';
 import { AppBar, Button, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React from 'react';
 
 import { useStyles } from '../theme';
+import { NavLink } from './navlink';
 
 /* eslint-disable-next-line */
 export interface NavbarProps {
@@ -31,8 +35,9 @@ export interface NavbarProps {
 
 export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
   const classes = useStyles();
+  const router = useRouter();
 
-  const getUserName = () => {
+  const getName = () => {
     if (session?.user === null || session?.user === undefined) {
       return undefined;
     }
@@ -47,48 +52,74 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
   return (
     <AppBar position="absolute" className={clsx(classes.appBar)}>
       <Flex minWidth="max-content" alignItems="center" gap="2">
-        <Box p={1} paddingLeft={4}>
-          <Link as={NextLink} href="/" style={{ textDecoration: 'none' }}>
-            <Image
-              boxSize="70px"
-              objectFit="inherit"
-              src="/gpseries-logo-black.svg"
-              alt="GPseries logo"
-            />
-          </Link>
-        </Box>
-        <Spacer />
         <Stack direction={'row'} spacing={4}>
           <Box>
-            <Link
-              _hover={{ textDecoration: 'none', fontWeight: 'bold' }}
-              onClick={onOpenCreateCompetition}
-              href="/competition/create"
-            >
-              CREATE COMPETITION
-            </Link>
+            <HStack spacing={8} alignItems={'center'}>
+              <Box
+                p="1"
+                pl={{
+                  base: '2',
+                  lg: '6'
+                }}
+              >
+                <Link as={NextLink} href="/" style={{ textDecoration: 'none' }}>
+                  <Image
+                    boxSize="70px"
+                    objectFit="inherit"
+                    src="/gpseries-logo-black.svg"
+                    alt="GPseries logo"
+                  />
+                </Link>
+              </Box>
+              <HStack
+                as={'nav'}
+                spacing={4}
+                display={{ base: 'none', md: 'flex' }}
+              >
+                <NavLink
+                  key="create-competition"
+                  onClick={() => router.push('/competition/create')}
+                >
+                  CREATE COMPETITION
+                </NavLink>
+              </HStack>
+            </HStack>
           </Box>
         </Stack>
         <Spacer />
         <Box paddingRight={6}>
-          <Flex alignItems="center" gap="3">
-            <Heading size="xs" textColor="white">
-              {getUserName()}
-            </Heading>
+          <Flex alignItems="center" gap="1">
             <Menu>
-              <MenuButton as={Button} rounded={'full'} cursor={'pointer'}>
-                <Avatar size={'md'} name={getUserName()} />
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                cursor={'pointer'}
+                minW={0}
+              >
+                <Avatar size={'md'} name={getName()} />
               </MenuButton>
-              <MenuList color="black" textColor="white" backgroundColor="black">
+              <MenuList
+                alignItems={'center'}
+                color="gray.900"
+                textColor="white"
+                backgroundColor="gray.900"
+              >
+                <br />
+                <Center>
+                  <p>{getName()}</p>
+                </Center>
+                <br />
                 <MenuDivider />
-                <Link
-                  href="/api/auth/signout"
-                  style={{ textDecoration: 'none' }}
+                <MenuItem bg="grey.900" _focus={{ bg: 'gray.700' }}>
+                  Account Settings
+                </MenuItem>
+                <MenuItem
+                  bg="gray.900"
+                  _focus={{ bg: 'gray.700' }}
+                  onClick={() => router.push('/api/auth/signout')}
                 >
-                  <MenuItem bg="grey.900" _focus={{ color: 'grey' }}>
-                    Logout
-                  </MenuItem>
-                </Link>
+                  Logout
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>

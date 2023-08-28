@@ -63,6 +63,7 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
       <Tabs variant="soft-rounded" isFitted colorScheme="teal">
         <TabList>
           <Tab>RACES</Tab>
+          <Tab>INCIDENTS</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -72,6 +73,9 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
               isFetching={isFetching}
               session={session}
             />
+          </TabPanel>
+          <TabPanel>
+            <Text>TO BE IMPLEMENTED...</Text>
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -52,6 +52,24 @@
         "passWithNoTests": true
       }
     },
+    "unit": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/api"],
+      "options": {
+        "jestConfig": "apps/api/jest.config.ts",
+        "passWithNoTests": true,
+        "testPathPattern": ["apps/api/test/unit"]
+      }
+    },
+    "integration": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/api"],
+      "options": {
+        "jestConfig": "apps/api/jest.config.ts",
+        "passWithNoTests": true,
+        "testPathPattern": ["apps/api/test/integration"]
+      }
+    },
     "migration": {
       "executor": "nx:run-commands",
       "outputs": [],

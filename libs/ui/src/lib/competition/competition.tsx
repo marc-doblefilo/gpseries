@@ -77,6 +77,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
           <Tab>LEADERBOARD</Tab>
           <Tab>RACES</Tab>
           <Tab>TEAMS</Tab>
+          <Tab>INCIDENTS</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -100,6 +101,9 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
               isFetching={isFetching}
               session={session}
             />
+          </TabPanel>
+          <TabPanel>
+            <Text>TO BE IMPLEMENTED...</Text>
           </TabPanel>
         </TabPanels>
       </Tabs>
