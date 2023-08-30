@@ -18,7 +18,7 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { CompetitionDTO, CreateRaceDTO } from '@gpseries/contracts';
-import { createRace, getCompetition } from '@gpseries/hooks';
+import { createRace } from '@gpseries/hooks';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { Dispatch, SetStateAction, useState } from 'react';

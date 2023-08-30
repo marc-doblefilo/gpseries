@@ -1,5 +1,6 @@
 export * from './lib/competitions';
 export * from './lib/drivers';
+export * from './lib/incidents';
 export * from './lib/inscriptions';
 export * from './lib/races';
 export * from './lib/teams';

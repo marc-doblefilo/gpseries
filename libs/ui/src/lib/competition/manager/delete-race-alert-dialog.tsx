@@ -12,13 +12,13 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react';
-import { RaceDTO } from '@gpseries/contracts';
+import { CompetitionRaceDTO } from '@gpseries/contracts';
 import { deleteRace } from '@gpseries/hooks';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 type Props = {
-  race: RaceDTO | undefined;
+  race: CompetitionRaceDTO | undefined;
   isOpen: boolean;
   onClose: () => void;
 };

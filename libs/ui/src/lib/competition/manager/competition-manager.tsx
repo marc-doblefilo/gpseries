@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { IncidentsManagerComponent } from './competition-manager-incidents';
 import { RacesManagerComponent } from './competition-manager-races';
 
 type Props = {
@@ -47,7 +48,7 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <Container minWidth="max-content">
+    <Container minWidth="80vw">
       <VStack>
         <Heading>{competition.name}</Heading>
         <Heading size="md">Manager</Heading>
@@ -55,12 +56,13 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
           onClick={() => router.push(`/competition/${competition.id}`)}
           leftIcon={<ArrowBackIosRounded />}
           size="sm"
+          colorScheme="teal"
         >
           Return
         </Button>
       </VStack>
       <Divider mt={5} mb={5} />
-      <Tabs variant="soft-rounded" isFitted colorScheme="teal">
+      <Tabs variant="soft-rounded" isFitted colorScheme="orange" isLazy>
         <TabList>
           <Tab>RACES</Tab>
           <Tab>INCIDENTS</Tab>
@@ -75,7 +77,12 @@ export const CompetitionManagerComponent: React.FunctionComponent<Props> = ({
             />
           </TabPanel>
           <TabPanel>
-            <Text>TO BE IMPLEMENTED...</Text>
+            <IncidentsManagerComponent
+              setCompetition={setCompetition}
+              competition={competition}
+              isFetching={isFetching}
+              session={session}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

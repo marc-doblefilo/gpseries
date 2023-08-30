@@ -14,9 +14,9 @@ import {
 } from '@chakra-ui/react';
 import {
   CompetitionDTO,
+  CompetitionRaceDTO,
   DriverDTO,
-  InscriptionDTO,
-  RaceDTO
+  InscriptionDTO
 } from '@gpseries/contracts';
 import { getDriver, getInscriptionsByRace } from '@gpseries/hooks';
 import { Add, Delete, Edit, EmojiEvents } from '@material-ui/icons';
@@ -46,7 +46,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
 
   const [inscriptions, setInscriptions] = useState<InscriptionDTO[]>();
   const [drivers, setDrivers] = useState<DriverDTO[]>();
-  const [selectedRace, setSelectedRace] = useState<RaceDTO>();
+  const [selectedRace, setSelectedRace] = useState<CompetitionRaceDTO>();
 
   const fetchInscriptions = async (raceId: string) => {
     const [response, error] = await getInscriptionsByRace(raceId);
@@ -77,7 +77,7 @@ export const RacesManagerComponent: React.FunctionComponent<Props> = ({
     setDrivers(drivers);
   };
 
-  const handleOpenAddResult = async (race: RaceDTO) => {
+  const handleOpenAddResult = async (race: CompetitionRaceDTO) => {
     await fetchInscriptions(race.id);
     onOpenAddResult();
   };

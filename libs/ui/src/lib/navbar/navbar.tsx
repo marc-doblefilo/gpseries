@@ -1,24 +1,27 @@
 import {
   Avatar,
   Box,
+  Button,
   Center,
   Divider,
   Flex,
-  Heading,
   HStack,
   Image,
   Link,
   Menu,
   MenuButton,
   MenuDivider,
+  MenuGroup,
   MenuItem,
   MenuList,
   Spacer,
   Stack,
-  Text
+  Text,
+  VStack
 } from '@chakra-ui/react';
 import { Nullable } from '@gpseries/domain';
-import { AppBar, Button, Typography } from '@material-ui/core';
+import { AppBar } from '@material-ui/core';
+import { Notifications } from '@material-ui/icons';
 import clsx from 'clsx';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -90,13 +93,106 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
         </Stack>
         <Spacer />
         <Box paddingRight={6}>
-          <Flex alignItems="center" gap="1">
-            <Menu>
+          <Flex alignItems="center" gap="10">
+            <Menu autoSelect={false} isLazy>
               <MenuButton
                 as={Button}
+                bg="gray.800"
+                _hover={{ bg: 'gray.700' }}
+                _active={{ bg: 'gray.700' }}
+              >
+                <Notifications style={{ color: 'white' }} />
+              </MenuButton>
+              <MenuList
+                alignItems={'center'}
+                color="gray.100"
+                textColor="black"
+                backgroundColor="gray.100"
+                h="40vh"
+                overflowY="scroll"
+              >
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Sao Paulo was added</Text>
+                      <Text textColor="gray.800">8 hours ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuDivider color="black" />
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
+                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                    <VStack>
+                      <Text>The result for the GP Bahrain was added</Text>
+                      <Text textColor="gray.800">6 days ago</Text>
+                    </VStack>
+                  </MenuItem>
+                </MenuGroup>
+              </MenuList>
+            </Menu>
+            <Menu autoSelect={false}>
+              <MenuButton
                 rounded={'full'}
                 cursor={'pointer'}
                 minW={0}
+                bg="inherit"
+                _hover={{ bg: 'inherit' }}
               >
                 <Avatar size={'md'} name={getName()} />
               </MenuButton>

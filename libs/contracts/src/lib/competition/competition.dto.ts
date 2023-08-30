@@ -4,11 +4,11 @@ export class CompetitionDTO {
   name: string;
   description: string | null;
   driversPerTeam: number;
-  races: Array<RaceDTO>;
+  races: Array<CompetitionRaceDTO>;
   pointsSystem: StandingPointDTO[];
 }
 
-class RaceDTO {
+export class CompetitionRaceDTO {
   id: string;
   name: string;
   date: Date;

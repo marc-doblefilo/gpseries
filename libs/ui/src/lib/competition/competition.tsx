@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { CompetitionIncidents } from '../incident/incidents';
 import { LeaderboardComponent } from './competition-leaderboard';
 import { RacesComponent } from './competition-races';
 import { StandingsComponent } from './competition-standings';
@@ -103,7 +104,7 @@ export const CompetitionComponent: React.FunctionComponent<Props> = ({
             />
           </TabPanel>
           <TabPanel>
-            <Text>TO BE IMPLEMENTED...</Text>
+            <CompetitionIncidents competition={competition} session={session} />
           </TabPanel>
         </TabPanels>
       </Tabs>
