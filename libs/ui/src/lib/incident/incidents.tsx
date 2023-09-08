@@ -124,10 +124,7 @@ export const CompetitionIncidents: React.FunctionComponent<Props> = ({
               <AccordionPanel>
                 <Grid
                   templateColumns={{
-                    base: 'repeat(1, 0.5fr)',
-                    lg: 'repeat(3, 0.25fr)',
-                    xl: 'repeat(3, 0.5fr)',
-                    '2xl': 'repeat(4, 0.5fr)'
+                    base: 'repeat(1, 0.5fr)'
                   }}
                   gap={2}
                   alignItems="stretch"
@@ -135,8 +132,8 @@ export const CompetitionIncidents: React.FunctionComponent<Props> = ({
                   {raceIncidents.map(incident => (
                     <GridItem display="flex">
                       <Card
-                        maxW={{ lg: '20vw', base: '65vw' }}
-                        minW={{ lg: '20vw', base: '65vw' }}
+                        maxW={{ base: '65vw' }}
+                        minW={{ base: '65vw' }}
                         display="flex"
                         justifyContent="space-between"
                         flexFlow="column"
@@ -146,7 +143,7 @@ export const CompetitionIncidents: React.FunctionComponent<Props> = ({
                           <Stack divider={<StackDivider />} spacing="4">
                             <Box>
                               <Heading size="xs" textTransform="uppercase">
-                                Description
+                                Incident's description
                               </Heading>
                               <Text pt="2" fontSize="sm">
                                 {incident.description}

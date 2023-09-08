@@ -108,8 +108,8 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
                 color="gray.100"
                 textColor="black"
                 backgroundColor="gray.100"
-                h="40vh"
-                overflowY="scroll"
+                maxH="40vh"
+                overflowY="auto"
               >
                 <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
                   <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
@@ -120,62 +120,6 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
                   </MenuItem>
                 </MenuGroup>
                 <MenuDivider color="black" />
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
                 <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
                   <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
                     <VStack>

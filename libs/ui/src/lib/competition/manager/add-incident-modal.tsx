@@ -100,9 +100,9 @@ export const AddIncidentModal: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent minW="45vw" maxW="45vw">
         <ModalHeader>
           <Center>Add Incident</Center>
         </ModalHeader>
