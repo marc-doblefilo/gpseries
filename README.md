@@ -1,90 +1,81 @@
-# Boilerplate
+<h1 align="center">
+  <a href="https://github.com/marc-doblefilo/gpseries">
+    <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-light.svg">
+    <source media="(prefers-color-scheme: light)" srcset="assets/logo-dark.svg">
+    <img alt="GPSeries logo" src="assets/logo.svg" width="350">
+    </picture>
+  </a>
+  <br>
+  🏁 GPSeries 🏁
+  <br>
+  <img alt="GitHub Repository Stars" src="https://img.shields.io/github/stars/marc-doblefilo/gpseries">
 
-This project was generated using [Nx](https://nx.dev).
+</h1>
+<div align="center">
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+<h4 align="center">Simracing competitions management on top of <a href="https://nestjs.com/" target="_blank" style="color:#ED1543;">NestJS</a> and <a href="https://flutter.dev/" target="_blank" style="color:##0276E8;">Next.js</a>.</h4>
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+[About the project](#about-the-project) •
+[Installation](#installation) •
+[License](#license) •
+[Integrations](#third-party-integrations)
 
-## Adding capabilities to your workspace
+</div>
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## About the project
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+This repository holds my final year project during my time at the University of Córdoba titled "GPSeries, a simracing competitions management" built with NestJS and Next.js wrapped in a Nx.
 
-Below are our core plugins:
+The purpose of this project is to learn new technologies like NestJS and Next and apply concepts about Software Design like Domain-Driven-Design, CQRS, Event Sourcing, Clean Code, Clean Architecure, unit, and integration tests, etc.
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nx/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nx/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nx/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nx/node`
+## Installation
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+```sh
+# Clone the repository
+$ git clone https://github.com/marc-doblefilo/gpseries
 
-## Generate an application
+# Go into the repository
+$ cd gpseries
 
-Run `nx g @nx/react:app my-app` to generate an application.
+# Install all dependencies
+$ yarn
 
-> You can use any of the plugins above to generate applications as well.
+# Execute web and api
+$ yarn start web
+$ yarn start api
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+# For running tests
+$ yarn test api
+$ yarn test api:unit
+$ yarn test api:integration
+```
 
-## Generate a library
+## License
 
-Run `nx g @nx/react:lib my-lib` to generate a library.
+[GNU Affero General Public License v3 (AGPL)](https://www.gnu.org/licenses/agpl-3.0.en.html)
 
-> You can also use any of the plugins above to generate libraries as well.
+## Contact
 
-Libraries are sharable across libraries and applications. They can be imported from `@boilerplate/mylib`.
+<div class="box">
+  <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="20" />
+  <a href="https://github.com/marc-doblefilo">@marc-doblefilo</a>
+  <div class="vl"></div>
+  <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" height="20" /> 
+  <a href="https://twitter.com/marc_doblefilo">@marc_doblefilo</a>
+  <div class="vl"></div>
+  <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" height="20" />
+  <a href="https://www.linkedin.com/in/marc-rodriguez-moreno/">Marc Rodríguez</a>
+</div>
 
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nx/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-## ☁ Nx Cloud
-
-### Computation Memoization in the Cloud
-
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+<style>
+.box {
+   display: flex;
+   align-items:center;
+   gap: 4px;
+}
+.vl {
+  border-left: 2px solid;
+  height: 20px;
+}
+</style>
