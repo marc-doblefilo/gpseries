@@ -3,7 +3,7 @@
     <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/logo-light.svg">
     <source media="(prefers-color-scheme: light)" srcset="assets/logo-dark.svg">
-    <img alt="GPSeries logo" src="assets/logo.svg" width="350">
+    <img alt="GPSeries logo" src="assets/logo-light.svg" width="350">
     </picture>
   </a>
   <br>
