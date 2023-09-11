@@ -136,7 +136,7 @@ export const IncidentsManagerComponent: React.FunctionComponent<Props> = ({
 
   return (
     <Center>
-      <Accordion minW="70vw" maxW="70vw">
+      <Accordion minW="70vw" maxW="70vw" allowToggle>
         {competition.races.map(race => {
           const raceIncidents = incidents.filter(
             incident => incident.raceId === race.id

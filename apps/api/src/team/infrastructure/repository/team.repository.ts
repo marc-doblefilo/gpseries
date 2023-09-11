@@ -5,6 +5,7 @@ import { Connection, Model } from 'mongoose';
 
 import { CompetitionId } from '../../../competition/domain';
 import { mongoConnection } from '../../../database/database.provider';
+import { UserId } from '../../../user/domain';
 import { Team, TeamId, TeamRepository } from '../../domain';
 import { TeamMapper } from '../mapper/team.mapper';
 import { TeamDocument } from './team.document';
@@ -47,6 +48,12 @@ export class TeamMongoRepository implements TeamRepository {
 
   async findByCompetition(id: CompetitionId): Promise<Team[]> {
     const documents = await this.model.find({ competitionId: id.value });
+
+    return documents.map(TeamMapper.documentToAggregate);
+  }
+
+  async findByOwner(id: UserId): Promise<Team[]> {
+    const documents = await this.model.find({ ownerId: id.value });
 
     return documents.map(TeamMapper.documentToAggregate);
   }

@@ -19,14 +19,16 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react';
+import { NotificationDTO } from '@gpseries/contracts';
 import { Nullable } from '@gpseries/domain';
 import { AppBar } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
+import axios from 'axios';
 import clsx from 'clsx';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth/client';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { useStyles } from '../theme';
 import { NavLink } from './navlink';
@@ -41,6 +43,10 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
   const classes = useStyles();
   const router = useRouter();
 
+  const [notifications, setNotifications] = React.useState<NotificationDTO[]>(
+    []
+  );
+
   const getName = () => {
     if (session?.user === null || session?.user === undefined) {
       return undefined;
@@ -52,6 +58,27 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
 
     return session?.user.name;
   };
+
+  const fetchNotifications = useCallback(() => {
+    if (!router.isReady) return;
+    try {
+      axios
+        .get(`http://localhost:3333/api/notifications/by-user`, {
+          params: {
+            userId: session?.id
+          }
+        })
+        .then(response => {
+          setNotifications(response.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [session, router]);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   return (
     <AppBar position="absolute" className={clsx(classes.appBar)}>
@@ -111,23 +138,24 @@ export function Navbar({ session, onOpenCreateCompetition }: NavbarProps) {
                 maxH="40vh"
                 overflowY="auto"
               >
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Sao Paulo was added</Text>
-                      <Text textColor="gray.800">8 hours ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
-                <MenuDivider color="black" />
-                <MenuGroup title="Formula One" _hover={{ bg: 'inherit' }}>
-                  <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
-                    <VStack>
-                      <Text>The result for the GP Bahrain was added</Text>
-                      <Text textColor="gray.800">6 days ago</Text>
-                    </VStack>
-                  </MenuItem>
-                </MenuGroup>
+                {notifications.map(notification => (
+                  <div>
+                    <MenuGroup
+                      title={notification.competition}
+                      _hover={{ bg: 'inherit' }}
+                    >
+                      <MenuItem _hover={{ bg: 'inherit' }} bg="gray.100">
+                        <VStack>
+                          <Text>{notification.message}</Text>
+                          <Text textColor="gray.800">
+                            {notification.timeAgo}
+                          </Text>
+                        </VStack>
+                      </MenuItem>
+                    </MenuGroup>
+                    <MenuDivider color="black" />
+                  </div>
+                ))}
               </MenuList>
             </Menu>
             <Menu autoSelect={false}>

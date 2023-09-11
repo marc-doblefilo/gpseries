@@ -7,6 +7,7 @@ import { CompetitionModule } from './competition/infrastructure/competition.modu
 import { DriverModule } from './driver/infrastructure/driver.module';
 import { IncidentModule } from './incident/infrastructure/incident.module';
 import { InscriptionModule } from './inscription/infrastructure/inscription.module';
+import { NotificationModule } from './notification/infrastructure/notification.module';
 import { RaceModule } from './race/infrastructure/race.module';
 import { TeamModule } from './team/infrastructure/team.module';
 import { UserModule } from './user/infrastructure';
@@ -24,7 +25,8 @@ export class AppModule implements NestModule {
         TeamModule,
         RaceModule,
         IncidentModule,
-        InscriptionModule
+        InscriptionModule,
+        NotificationModule
       ]
     };
   }

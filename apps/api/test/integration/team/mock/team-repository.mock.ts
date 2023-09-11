@@ -3,6 +3,7 @@ import { jest } from '@jest/globals';
 
 import { CompetitionId } from '../../../../src/competition/domain';
 import { Team, TeamId, TeamRepository } from '../../../../src/team/domain';
+import { UserId } from '../../../../src/user/domain';
 
 export class TeamMockRepository implements TeamRepository {
   private readonly teams: Team[] = [];
@@ -30,6 +31,12 @@ export class TeamMockRepository implements TeamRepository {
     const team = this.teams.filter(
       team => team.competitionId.value === id.value
     );
+
+    return Promise.resolve(team);
+  }
+
+  findByOwner(id: UserId): Promise<Team[]> {
+    const team = this.teams.filter(team => team.ownerId.value === id.value);
 
     return Promise.resolve(team);
   }

@@ -133,7 +133,7 @@ export const AddIncidentModal: React.FunctionComponent<Props> = ({
                 renderInput={params => (
                   <TextField
                     {...params}
-                    label="Drivers involved in the incident"
+                    label="Driver(s) involved in the incident"
                   />
                 )}
                 value={optionsSelected}
