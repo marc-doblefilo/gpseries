@@ -13,7 +13,7 @@ import {
 export class UserBuilder {
   private id: UserId = UserId.generate();
   private username: Username = Username.fromString('marc-doblefilo');
-  private name: Name = Name.fromString(faker.person.firstName());
+  private name: Name = Name.fromString('Marc Rodríguez');
   private password: Password = Password.fromString(faker.internet.password());
   private roles: Role[] = [Role.fromString(RoleEnum.User)];
 
