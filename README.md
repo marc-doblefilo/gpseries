@@ -68,14 +68,3 @@ $ yarn test api:integration
   <a href="https://www.linkedin.com/in/marc-rodriguez-moreno/">Marc Rodríguez</a>
 </div>
 
-<style>
-.box {
-   display: flex;
-   align-items:center;
-   gap: 4px;
-}
-.vl {
-  border-left: 2px solid;
-  height: 20px;
-}
-</style>
